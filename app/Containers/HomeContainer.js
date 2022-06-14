@@ -4,7 +4,7 @@ import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 
-export default MainContainer = ({ navigation }) => {
+export default HomeContainer = ({ navigation }) => {
 
     React.useEffect(() => {
         console.log('Main')
