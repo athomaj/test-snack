@@ -7,9 +7,13 @@ import { sharedStyles } from '../utils/styles';
 
 export default LoginComponent = ({ loading, requestLogin, loginStatus }) => {
 
-    // Voir pour utiliser un context const userContext = useUserContext();
     const [email, setEmail] = React.useState("")
     const [pass, setPass] = React.useState("")
+
+    function sendLogin(){
+        
+        requestLogin(email, pass)
+    }
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -20,7 +24,7 @@ export default LoginComponent = ({ loading, requestLogin, loginStatus }) => {
                 <TouchableOpacity onPress={loginStatus} style={{ marginBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Vous n'avez pas de compte ? Cliquez-ici !</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={requestLogin} style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator style={{position: 'absolute', right: 15}} animating={loading} color={'black'}></ActivityIndicator>
                     <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Connexion</Text>
                 </TouchableOpacity>

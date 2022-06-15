@@ -1,4 +1,5 @@
 import React from 'react';
+import authApi from '../services/authApi';
 
 const UserContext = React.createContext();
 
@@ -10,9 +11,8 @@ const initialState = {
     isInitialized: false,
     user: {
         email: "",
-        firstName: "",
+        username: "",
         id: "",
-        lastName: "",
         address: ""
     }
 }
@@ -27,17 +27,30 @@ const UserProvider = ({ children }) => {
     const getCurrentUser = async () => {
         setAuthState({
             ...authState,
-            isLoading: true
+            isLoading: false
         })
-
-        
-
     }
 
     const login = async (email, password) => {
         setAuthState({
             ...authState,
             isLoading: true
+        })
+        const response = await authApi.login(email, password)
+        if(response.error){
+            setAuthState({
+                ...authState,
+                error: true,
+                errorMessage: response.error
+            })
+            return
+        }
+        setAuthState({
+            ...authState,
+            isConnected: true,
+            isInitialized: true,
+            isLoading: false,
+            user: response.user
         })
 
     };
