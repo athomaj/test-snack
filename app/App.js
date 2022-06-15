@@ -10,6 +10,7 @@ import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
 import AccountContainer from './Containers/AccountContainer';
 import { colors } from './utils/colors';
+import { UserProvider } from './context/UserContext';
 
 const RootStack = createNativeStackNavigator();
 const SplashStack = createNativeStackNavigator();

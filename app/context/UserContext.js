@@ -30,6 +30,8 @@ const UserProvider = ({ children }) => {
             isLoading: true
         })
 
+        
+
     }
 
     const login = async (email, password) => {

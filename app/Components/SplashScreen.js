@@ -2,6 +2,7 @@ import React from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { Image, View, ActivityIndicator, SafeAreaView, Text } from 'react-native';
 import { colors } from '../utils/colors';
+import { useUserContext } from '../context/UserContext';
 
 export default SplashScreen = ({ navigation }) => {
 
