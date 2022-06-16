@@ -8,14 +8,6 @@ export const storeData = async (key, value) => {
   }
 }
 
-export const deleteData = async (key) => {
-  try {
-      await AsyncStorage.removeItem(key)
-  } catch (e) {
-    // saving error
-  }
-}
-
 export const storeDataObject = async (key, value) => {
     try {
         const jsonValue = JSON.stringify(value)
@@ -36,7 +28,6 @@ export const getData = async (key) => {
     }
 }
 
-
 export const getDataObject = async (key) => {
     try {
       const jsonValue = await AsyncStorage.getItem(key)
@@ -44,4 +35,12 @@ export const getDataObject = async (key) => {
     } catch(e) {
       // error reading value
     }
+}
+
+export const deleteData = async (key) => {
+  try {
+      await AsyncStorage.removeItem(key)
+  } catch (e) {
+    // saving error
+  }
 }
