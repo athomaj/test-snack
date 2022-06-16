@@ -1,9 +1,7 @@
 import React from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { Image, View, ActivityIndicator, SafeAreaView, Text, TouchableOpacity, Pressable  } from 'react-native';
-import { colors } from '../utils/colors';
+import { Image, View, SafeAreaView, Text, TouchableOpacity  } from 'react-native';
 import { useUserContext } from '../context/UserContext';
-import { sharedStyles, primaryButton } from '../utils/styles';
+import sharedStyles from '../utils/styles';
 
 export default function SplashScreen({ navigation }){
 
@@ -47,9 +45,9 @@ export default function SplashScreen({ navigation }){
 
                 <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
                 
-                    <Pressable  onPress={navigateToRegister} style={{ ...primaryButton.avalable, margin: '3%'}}>
+                    <TouchableOpacity  onPress={navigateToRegister} style={{ ...sharedStyles.primaryButton.avalable, margin: '3%'}}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Inscription</Text>
-                    </Pressable>
+                    </TouchableOpacity>
 
                     <TouchableOpacity  style={{ marginBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Déjà membre ? <Text style={{fontWeight: 'bold'}}>Se connecter</Text></Text>
