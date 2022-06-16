@@ -3,7 +3,7 @@ import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 
 import { colors } from '../utils/colors';
 
-export default AccountContainer = ({ navigation }) => {
+export default function AccountContainer({ navigation }) {
 
     React.useEffect(() => {
         console.log('Account')

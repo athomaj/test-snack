@@ -5,7 +5,7 @@ import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 import { sharedStyles } from '../utils/styles';
 
-export default LoginComponent = ({ loading, requestLogin, loginStatus }) => {
+export default function LoginComponent({ loading, requestLogin, loginStatus }) {
 
     // Voir pour utiliser un context const userContext = useUserContext();
     const [email, setEmail] = React.useState("")

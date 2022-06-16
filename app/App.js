@@ -9,7 +9,9 @@ import SplashScreen from './Components/SplashScreen';
 import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
 import AccountContainer from './Containers/AccountContainer';
+import RegisterContainer from './Containers/RegisterContainer';
 import { colors } from './utils/colors';
+import { UserProvider } from './context/UserContext';
 
 const RootStack = createNativeStackNavigator();
 const SplashStack = createNativeStackNavigator();
@@ -34,7 +36,13 @@ function SplashStackScreen() {
     </SplashStack.Navigator>
   );
 }
-
+function RegisterStackScreen(){
+  return (
+    <LoginStack.Navigator initialRouteName={"Register"} screenOptions={{ headerTransparent: true }}>
+      <LoginStack.Screen name="Register" component={RegisterContainer} options={{ headerShown: false, gestureEnabled: false }} />
+    </LoginStack.Navigator>
+  )
+}
 function LoginStackScreen() {
   return (
     <LoginStack.Navigator initialRouteName={"Login"} screenOptions={{ headerTransparent: true }}>
@@ -60,6 +68,11 @@ export default function App() {
           <RootStack.Screen
             name="SplashStack"
             component={SplashStackScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
+          <RootStack.Screen
+            name="RegisterStack"
+            component={RegisterStackScreen}
             options={{ headerShown: false, gestureEnabled: false }}
           />
           <RootStack.Screen
