@@ -11,7 +11,6 @@ export default LoginComponent = ({ loading, requestLogin, loginStatus }) => {
     const [pass, setPass] = React.useState("")
 
     function sendLogin(){
-        
         requestLogin(email, pass)
     }
 

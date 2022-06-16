@@ -12,6 +12,10 @@ export default SignUpComponent = ({ loading, requestSignUp, loginStatus }) => {
     const [email, setEmail] = React.useState("")
     const [pass, setPass] = React.useState("")
 
+    function sendSignUp(){
+        requestSignUp(name, email, pass)
+    }
+
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <TextInput value={name} onChangeText={(text) => setName(text)} placeholder='Nom et Prénom' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
@@ -22,7 +26,7 @@ export default SignUpComponent = ({ loading, requestSignUp, loginStatus }) => {
                 <TouchableOpacity onPress={loginStatus} style={{ marginBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Vous avez un compte ? Connectez-vous !</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={requestSignUp} style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={sendSignUp} style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator style={{position: 'absolute', right: 15}} animating={loading} color={'black'}></ActivityIndicator>
                     <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Inscription</Text>
                 </TouchableOpacity>
