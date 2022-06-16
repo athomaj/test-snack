@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { Button, Image, View, Platform, Text, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 // Camera & Image Picker
 
@@ -50,9 +50,15 @@ export default function ImagePickerExample() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="+" onPress={pickImage} />
-      {image ? (<Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius: 100}}/>) : (<Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius: 100}}/>)}
-    </View>
+      <TouchableOpacity onPress={pickImage} style={{ height: 200, width: 200, alignItems: 'center', justifyContent:'center'}}>
+      {!image &&
+      <Text style={{zIndex: 1, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#F9BC0A', fontSize: 30, fontWeight: 'bold', borderRadius: 4 }}>+</Text>
+      }
+      {image ? 
+          <Image source={{ uri: image }} style={{ position: 'absolute', width: 200, height: 200, borderRadius: 100}}/>
+        : 
+          <Image source={require('../../assets/splash_login/userIcon.png')} style={{ position: 'absolute', width: 200, height: 200, borderRadius: 100}}/>
+        }
+      </TouchableOpacity>
   );
 }
