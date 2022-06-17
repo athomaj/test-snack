@@ -1,7 +1,9 @@
 import React from 'react';
-import { Image, View, SafeAreaView, Text, TouchableOpacity  } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+mport { Image, View, SafeAreaView, Text, TouchableOpacity  } from 'react-native';
+import { colors } from '../utils/colors';
 import { useUserContext } from '../context/UserContext';
-import sharedStyles from '../utils/styles';
+i
 
 export default function SplashScreen({ navigation }){
 

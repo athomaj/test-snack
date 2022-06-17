@@ -4,12 +4,12 @@ import { useUserContext } from '../context/UserContext';
 
 import { colors } from '../utils/colors';
 
-export default function AccountContainer({ navigation }) {
+export default PublishContainer = ({ navigation }) => {
 
     const userContext = useUserContext();
 
     React.useEffect(() => {
-        console.log('Account')
+        console.log('Publish')
     }, [])
 
     React.useEffect(() => {
@@ -20,10 +20,7 @@ export default function AccountContainer({ navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 26, fontWeight: 'bold', color: colors.black }}>Page de compte</Text>
-            <TouchableOpacity onPress={userContext.disconnect} style={{ marginTop: 10 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'normal', color: colors.red }}>Déconnexion</Text>
-            </TouchableOpacity>
+            <Text style={{ fontSize: 26, fontWeight: 'bold', color: colors.black }}>Publier</Text>
         </SafeAreaView>
     );
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import authApi from '../services/authApi';
+import userApi from '../services/userApi';
 
 const UserContext = React.createContext();
 
@@ -10,10 +12,10 @@ const initialState = {
     isInitialized: false,
     user: {
         email: "",
-        firstName: "",
+        username: "",
         id: "",
-        lastName: "",
-        address: ""
+        plate: "",
+        famillyGame:""
     }
 }
 
@@ -30,6 +32,22 @@ const UserProvider = ({ children }) => {
             isLoading: true
         })
 
+        const response = await userApi.getMe()
+        if (!response || response.data.error) {
+            setAuthState({
+                ...authState,
+                isLoading: false,
+                isInitialized: true
+            })
+        } else {
+            setAuthState({
+                ...authState,
+                isLoading: false,
+                isInitialized: true,
+                user: response.data.user
+            })
+        }
+
     }
 
     const login = async (email, password) => {
@@ -37,13 +55,46 @@ const UserProvider = ({ children }) => {
             ...authState,
             isLoading: true
         })
-
+        const response = await authApi.login(email, password)
+        if(response.data.error){
+            setAuthState({
+                ...authState,
+                error: true,
+                errorMessage: response.data.error.message
+            })
+            return
+        }
+        if(response.data.user){
+            setAuthState({
+                ...authState,
+                isConnected: true,
+                isInitialized: true,
+                isLoading: false,
+                user: response.data.user
+            })
+        }
     };
 
-    const register = async (user, password) => {
+    const register = async (firstname, email, password) => {
         setAuthState({
             ...authState,
             isLoading: true
+        })
+        const response = await authApi.register(firstname, email, password)
+        if(response.data.error){
+            setAuthState({
+                ...authState,
+                error: true,
+                errorMessage: response.data.error.message
+            })
+            return
+        }
+        setAuthState({
+            ...authState,
+            isConnected: true,
+            isInitialized: true,
+            isLoading: false,
+            user: response.data.user
         })
 
     };
@@ -57,7 +108,21 @@ const UserProvider = ({ children }) => {
 
     };
 
-    const logout = () => auth().signOut();
+    const disconnect = async () => {
+        await authApi.disconnect()
+        setAuthState({
+            ...authState,
+            isConnected: false,
+            isLoading: false,
+            user: {
+                email: "",
+                username: "",
+                id: "",
+                plate: "",
+                famillyGame:""
+            }
+        })
+    };
 
     return (
         <UserContext.Provider
@@ -66,7 +131,7 @@ const UserProvider = ({ children }) => {
                 login,
                 updateUserInformation,
                 register,
-                logout,
+                disconnect,
             }}
         >
             {children}

@@ -9,6 +9,7 @@ import ImagePickerExample from './Utils/picturePicker';
 import SevenFamillycheckBox from './Utils/sevenFamilyCheckbox';
 import validateEmail from './Utils/RegexValidation';
 
+
  //Constante de propriétés pour les composants annexe
  const propsSevenFamily = [
     [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
@@ -18,7 +19,7 @@ import validateEmail from './Utils/RegexValidation';
 const validateEmailicon = require('../assets/icon/validated_color.png');
 const forbidenEmail = require('../assets/icon/forbiden_color.png');
 
-export default function SignUpComponent({ loading, requestSignUp, loginStatus }) {
+export default SignUpComponent = ({ error,loading, requestSignUp, loginStatus }) => {
 
     // Voir pour utiliser un context const userContext = useUserContext();
     const [name, setName] = React.useState("")
@@ -29,6 +30,10 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
     const [shopPref, setShopPref] = React.useState("")
     const [sevenFamily, setSevenFamily] = React.useState([])
     const [isvalideEmail , setValideEmail] = React.useState(false)
+
+    function sendSignUp(){
+        requestSignUp(name, email, pass)
+    }
 
     //Info validation
 
@@ -121,6 +126,7 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
                         <Text>Ici vous allez pouvoir partager votre passion de la cuisine avec vos voisins de quartier. Ateliers thématiques, dîners partagés, prêt de matériel, bons plans circuits courts, défi de Chef, vous êtes entre passionés et en confiance.</Text>
                         <Text>Nous avons tout prévu pour que tout se passe bien, nous comptons aussi sur vous pour qu’une atmosphère de bienveillance et de partage règne!</Text>
                     </View>
+            
 
                     <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
 
@@ -182,6 +188,7 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
                     </View>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
+                    <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
                         <TouchableOpacity disabled={disabledButton} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
                             <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Continuer</Text>
                         </TouchableOpacity>

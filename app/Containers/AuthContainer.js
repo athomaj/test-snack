@@ -2,33 +2,25 @@ import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import LoginComponent from '../Components/LoginComponent';
 import SignUpComponent from '../Components/SignUpComponent';
-import SpashScreen from '../Components/SplashScreen.js'
+import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 
 export default function AuthContainer({ navigation }) {
 
-    // Voir pour utiliser un context const userContext = useUserContext();
-    const [loading, setLoading] = React.useState(false)
+    const userContext = useUserContext();
+
     const [isLogin, setIsLogin] = React.useState(true)
+    const [errorMessage, setErrorMessage] = React.useState("")
 
-    function loginRequest(email, pass) {
-        setLoading(true)
-
-        setTimeout(() => {
-            setLoading(false)
+    React.useEffect(() => {
+        if (userContext.authState.isConnected) {
             navigation.navigate('MainStack')
-        }, 1000)
-    }
-
-    function signUpRequest(name, email, pass) {
-        setLoading(true)
-
-        setTimeout(() => {
-            setLoading(false)
-            navigation.navigate('MainStack')
-        }, 1000)
-    }
+        }
+        if (userContext.authState.errorMessage){
+            setErrorMessage(userContext.authState.errorMessage);
+        }
+    }, [userContext.authState.isConnected, userContext.authState.errorMessage])
 
     function changeLoginStatus() {
         setIsLogin(!isLogin)
@@ -38,9 +30,9 @@ export default function AuthContainer({ navigation }) {
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ position: 'absolute', top: isIphoneX() ? 100 : 80, fontSize: 26, fontWeight: 'bold', color: colors.black }}>Bienvenue</Text>
             {isLogin ?
-                <LoginComponent loading={loading} requestLogin={(email, pass) => loginRequest(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
+                <LoginComponent loading={userContext.authState.isLoading} error={errorMessage} requestLogin={(email, pass) => userContext.login(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
                 :
-                <SignUpComponent loading={loading} requestSignUp={(name, email, pass) => signUpRequest(name, email, pass)} loginStatus={changeLoginStatus} ></SignUpComponent>
+                <SignUpComponent loading={userContext.authState.isLoading} error={errorMessage} requestSignUp={(name, email, pass) => userContext.register(name, email, pass)} loginStatus={changeLoginStatus} ></SignUpComponent>
             }
         </SafeAreaView>
     );
