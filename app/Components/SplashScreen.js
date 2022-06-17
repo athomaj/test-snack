@@ -1,34 +1,34 @@
 import React from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-mport { Image, View, SafeAreaView, Text, TouchableOpacity  } from 'react-native';
+import { Image, View, SafeAreaView, Text, TouchableOpacity  } from 'react-native';
 import { colors } from '../utils/colors';
 import { useUserContext } from '../context/UserContext';
-i
+import sharedStyles from '../utils/styles';
 
 export default function SplashScreen({ navigation }){
 
     const userContext = useUserContext();
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         if (userContext.authState.isLoading) {
-    //             return
-    //         }
-    //         if (userContext.authState.isInitialized) {
-    //             if (userContext.authState.isConnected) {
-    //                 navigation.navigate("MainStack")
-    //             } else {
-    //                 setTimeout(() => {
-    //                     navigation.navigate('AuthStack')
-    //                 }, 1500)
-    //             }
-    //         } else {
-    //             setTimeout(() => {
-    //                 navigation.navigate('AuthStack')
-    //             }, 1500)
-    //         }
-    //     }, [userContext.authState.isLoading])
-    // );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (userContext.authState.isLoading) {
+                return
+            }
+            if (userContext.authState.isInitialized) {
+                if (userContext.authState.isConnected) {
+                    navigation.navigate("MainStack")
+                } else {
+                    setTimeout(() => {
+                        navigation.navigate('AuthStack')
+                    }, 1500)
+                }
+            } else {
+                setTimeout(() => {
+                    navigation.navigate('AuthStack')
+                }, 1500)
+            }
+        }, [userContext.authState.isLoading])
+    );
 
      function navigateToRegister(){
         navigation.navigate('RegisterStack')

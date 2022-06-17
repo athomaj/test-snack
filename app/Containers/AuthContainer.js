@@ -28,7 +28,6 @@ export default function AuthContainer({ navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ position: 'absolute', top: isIphoneX() ? 100 : 80, fontSize: 26, fontWeight: 'bold', color: colors.black }}>Bienvenue</Text>
             {isLogin ?
                 <LoginComponent loading={userContext.authState.isLoading} error={errorMessage} requestLogin={(email, pass) => userContext.login(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
                 :
