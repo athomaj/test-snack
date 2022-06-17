@@ -3,7 +3,6 @@ import { SafeAreaView, Text } from 'react-native';
 import LoginComponent from '../Components/LoginComponent';
 import SignUpComponent from '../Components/SignUpComponent';
 import { useUserContext } from '../context/UserContext';
-import authApi from '../services/authApi';
 import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 
@@ -31,11 +30,10 @@ export default AuthContainer = ({ navigation }) => {
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ position: 'absolute', top: isIphoneX() ? 100 : 80, fontSize: 26, fontWeight: 'bold', color: colors.black }}>Bienvenue</Text>
             {isLogin ?
-                <LoginComponent loading={userContext.authState.isLoading} requestLogin={(email, pass) => userContext.login(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
+                <LoginComponent loading={userContext.authState.isLoading} error={errorMessage} requestLogin={(email, pass) => userContext.login(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
                 :
-                <SignUpComponent loading={userContext.authState.isLoading} requestSignUp={(name, email, pass) => userContext.register(name, email, pass)} loginStatus={changeLoginStatus} ></SignUpComponent>
+                <SignUpComponent loading={userContext.authState.isLoading} error={errorMessage} requestSignUp={(name, email, pass) => userContext.register(name, email, pass)} loginStatus={changeLoginStatus} ></SignUpComponent>
             }
-            <Text style={{ position: 'absolute', top: isIphoneX() ? 100 : 525, fontSize: 13, color: colors.red }}>{errorMessage}</Text>
         </SafeAreaView>
     );
 }

@@ -33,8 +33,7 @@ const UserProvider = ({ children }) => {
         })
 
         const response = await userApi.getMe()
-
-        if (response.data.error) {
+        if (!response || response.data.error) {
             setAuthState({
                 ...authState,
                 isLoading: false,
