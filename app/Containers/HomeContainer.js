@@ -1,13 +1,16 @@
 import React from 'react';
 import { SafeAreaView, Text, FlatList, Image, View } from 'react-native';
+import { useUserContext } from '../context/UserContext';
 import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 
 export default HomeContainer = ({ navigation }) => {
 
+    const userContext = useUserContext()
+
     React.useEffect(() => {
-        console.log('Main')
+        console.log('Main', userContext)
     }, [])
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
