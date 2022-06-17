@@ -7,6 +7,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import HeaderChapter from './Utils/HeaderChapter';
 import ImagePickerExample from './Utils/picturePicker';
 import SevenFamillycheckBox from './Utils/sevenFamilyCheckbox';
+import validateEmail from './Utils/RegexValidation';
+
+ //Constante de propriétés pour les composants annexe
+ const propsSevenFamily = [
+    [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
+    [['#FB10C7', 'World fusion'], ['#A29B3F', 'Tradition'], ['#FC941A', 'El Buli']]
+]
+//Importation dim'age de validation
+const validateEmailicon = require('../assets/icon/validated_color.png');
+const frogivenEmail = require('../assets/icon/validated_color.png');
 
 export default function SignUpComponent({ loading, requestSignUp, loginStatus }) {
 
@@ -18,16 +28,16 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
     const [platpref, setPlatpref] = React.useState("")
     const [commercepref, setCommercePref] = React.useState("")
     const [sevenFamily, setSevenFamily] = React.useState([])
+    const [isvalideEmail , setValideEmail] = React.useState(false)
+    //Info validation
 
+    // Hooks comportement de page
     const [stepNumber, setStep] = React.useState(0)
     const [disabledButton, setDisabledButton] = React.useState(true)
+   
+    
 
-    const propsSevenFamily = [
-        [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
-        [['#FB10C7', 'World fusion'], ['#A29B3F', 'Tradition'], ['#FC941A', 'El Buli']]
-    ]
-
-
+    //Distribution de l'état du screen
     function incremmentStep(stepIndex) {
         if (stepIndex === -1) {
             setDisabledButton(false)
@@ -37,9 +47,14 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
         setStep(stepNumber + stepIndex)
     }
 
+    //condition de dévérouillage du bouton "continué"
     function onChangeText(text, stepIndex, inputIndex) {
         if (stepIndex === 0) {
-            (email.length > 0 && pass.length > 0 && pass.length > 5) ? setDisabledButton(false) : setDisabledButton(true)
+            //COMPORTMENT BIZARRE A l'ECRITURE le focus ce remet à jour
+            (email.length && pass.length > 5) ? setDisabledButton(false) : setDisabledButton(true)
+            if(inputIndex === 0){
+                setValideEmail(validateEmail(email))
+            }
             inputIndex === 0 ? setEmail(text) : setPass(text)
         } else if (stepIndex === 1) {
             (name.length > 0) ? setDisabledButton(false) : setDisabledButton(true)
@@ -50,15 +65,7 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
         }
     }
 
-    function validationstpeTwo() {
-        if (stepNumber === 2 && name !== null) {
-
-        }
-        else {
-
-        }
-    }
-
+    //Function d'ajout et des familles selectionée
     function updateFamily(label) {
         const index2 = sevenFamily.indexOf(label)
         const arrayToEdit = [...sevenFamily]
@@ -72,15 +79,17 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
         }
 
     }
-
-    function génératedSevenFamily(array) {
-        return <SevenFamillycheckBox key={array[1]} color={array[0]} label={array[1]} selected={modifyOpacity(array[1])} updateFamily={() => updateFamily(array[1])} > </SevenFamillycheckBox>
-    }
-
-    function modifyOpacity(name) {
+    //Générateur du bouton de famille à selectionner
+    function updateStateSelected(name) {
         const index2 = sevenFamily.indexOf(name)
         return index2 != -1 ? true : false
     }
+
+    function génératedSevenFamily(array) {
+        return <SevenFamillycheckBox key={array[1]} color={array[0]} label={array[1]} selected={updateStateSelected(array[1])} updateFamily={() => updateFamily(array[1])} > </SevenFamillycheckBox>
+    }
+
+   
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%' }}>
@@ -114,7 +123,9 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
             {stepNumber === 1 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                     <HeaderChapter text={'Créez votre compte'}></HeaderChapter>
-                    <TextInput value={email} onChangeText={(text) => onChangeText(text, 0, 0)} placeholder='Email' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    <TextInput value={email} onChangeText={(text) => onChangeText(text, 0, 0)} placeholder='Email' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}>
+                        <Image style={{resizeMode: 'contain',width:15, height: 15, position: 'absolute', right: 5}} source={isvalideEmail ? validateEmailicon : frogivenEmail}></Image>  
+                    </TextInput>
                     <TextInput value={pass} onChangeText={(text) => onChangeText(text, 0, 1)} placeholder='Mot de passe' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
