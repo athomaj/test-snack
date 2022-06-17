@@ -16,7 +16,7 @@ import validateEmail from './Utils/RegexValidation';
 ]
 //Importation dim'age de validation
 const validateEmailicon = require('../assets/icon/validated_color.png');
-const frogivenEmail = require('../assets/icon/validated_color.png');
+const forbidenEmail = require('../assets/icon/forbiden_color.png');
 
 export default function SignUpComponent({ loading, requestSignUp, loginStatus }) {
 
@@ -24,11 +24,12 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
     const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [pass, setPass] = React.useState("")
-    const [image, setAvatar] = React.useState("")
-    const [platpref, setPlatpref] = React.useState("")
-    const [commercepref, setCommercePref] = React.useState("")
+    const [image, setImage] = React.useState(null);
+    const [mealPref, setMealPref] = React.useState("")
+    const [shopPref, setShopPref] = React.useState("")
     const [sevenFamily, setSevenFamily] = React.useState([])
     const [isvalideEmail , setValideEmail] = React.useState(false)
+
     //Info validation
 
     // Hooks comportement de page
@@ -48,20 +49,25 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
     }
 
     //condition de dévérouillage du bouton "continué"
-    function onChangeText(text, stepIndex, inputIndex) {
-        if (stepIndex === 0) {
-            //COMPORTMENT BIZARRE A l'ECRITURE le focus ce remet à jour
-            (email.length && pass.length > 5) ? setDisabledButton(false) : setDisabledButton(true)
+    function onChangeText(text, inputIndex) {
+        if (stepNumber === 1) {
+            (email.length > 0 && pass.length > 5) ? setDisabledButton(false) : setDisabledButton(true)
             if(inputIndex === 0){
                 setValideEmail(validateEmail(email))
             }
             inputIndex === 0 ? setEmail(text) : setPass(text)
-        } else if (stepIndex === 1) {
+        } else if (stepNumber === 2) {
             (name.length > 0) ? setDisabledButton(false) : setDisabledButton(true)
             setName(text)
+        } else if (stepNumber === 3){
+            inputIndex === 3 ? setMealPref(text) : setShopPref(text)
+
+            if(mealPref.length > 0 && shopPref.length > 0 && sevenFamily.length > 0){
+                setDisabledButton(false)
+            } else setDisabledButton(true);
+
         } else {
-            (commercepref.length > 0 && platpref.length > 0) ? setDisabledButton(false) : setDisabledButton(true)
-            inputIndex === 3 ? setPlatpref(text) : setCommercePref(text)
+            console.log('on change in else')
         }
     }
 
@@ -78,6 +84,12 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
             setSevenFamily(arrayToEdit)
         }
 
+        if(mealPref.length > 0 && shopPref.length > 0 && arrayToEdit.length > 0){
+            setDisabledButton(false) 
+        }else{
+            setDisabledButton(true)
+        }
+
     }
     //Générateur du bouton de famille à selectionner
     function updateStateSelected(name) {
@@ -85,14 +97,17 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
         return index2 != -1 ? true : false
     }
 
-    function génératedSevenFamily(array) {
+    function generateSevenFamily(array) {
         return <SevenFamillycheckBox key={array[1]} color={array[0]} label={array[1]} selected={updateStateSelected(array[1])} updateFamily={() => updateFamily(array[1])} > </SevenFamillycheckBox>
     }
 
-   
-
+    //Récupérer l'image mime
+    function setParamImage(returnImage){
+        setImage(returnImage)
+    }
+    
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%' }}>
+        <SafeAreaView style={{ height: '100%', width: '100%'}}>
             {stepNumber > 0 &&
                 <TouchableOpacity style={{ zIndex: 1, position: 'absolute', height: 30, top: 10, left: 20 }} onPress={() => incremmentStep(-1)}>
                     <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}> retour </Text>
@@ -123,10 +138,11 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
             {stepNumber === 1 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                     <HeaderChapter text={'Créez votre compte'}></HeaderChapter>
-                    <TextInput value={email} onChangeText={(text) => onChangeText(text, 0, 0)} placeholder='Email' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}>
-                        <Image style={{resizeMode: 'contain',width:15, height: 15, position: 'absolute', right: 5}} source={isvalideEmail ? validateEmailicon : frogivenEmail}></Image>  
-                    </TextInput>
-                    <TextInput value={pass} onChangeText={(text) => onChangeText(text, 0, 1)} placeholder='Mot de passe' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    <View style={{alignItems:'center', justifyContent: 'center', width:'100%'}}>
+                        <TextInput autoComplete= 'off' autoCapitalize='none' keyboardType='email-address' value={email} onChangeText={(text) => onChangeText(text, 0)} placeholder='Email' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                        <Image style={{zIndex: 1,width:15, height: 15, position: 'absolute', right: '15%', top: 17}} source={isvalideEmail ? validateEmailicon : forbidenEmail}></Image>
+                    </View>
+                    <TextInput textContentType='password' secureTextEntry={true} value={pass} onChangeText={(text) => onChangeText(text, 1)} placeholder='Mot de passe' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
                         <TouchableOpacity disabled={disabledButton} onPress={() => incremmentStep(1)} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
@@ -140,7 +156,7 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
                     <HeaderChapter text={'Vous êtes?'}></HeaderChapter>
                     <TextInput value={name} onChangeText={(text) => onChangeText(text, 1)} placeholder='Prénom' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     <View style={{ height: '60%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ImagePickerExample></ImagePickerExample>
+                        <ImagePickerExample setParamImage={setParamImage}></ImagePickerExample>
                     </View>
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
                         <TouchableOpacity disabled={disabledButton} onPress={() => incremmentStep(1)} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
@@ -152,21 +168,21 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
             {stepNumber === 3 &&
                 <View style={{ width: '100%', height: '90%', display: 'flex', alignItems: 'center' }}>
                     <HeaderChapter text={'Votre Food profil'}></HeaderChapter>
-                    <TextInput value={platpref} onChangeText={(text) => onChangeText(text, 2, 3)} placeholder='Plat préféré' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
-                    <TextInput value={commercepref} onChangeText={(text) => onChangeText(text, 2, 4)} placeholder='Commerce de bouche/Restaurant favori' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    <TextInput value={mealPref} onChangeText={(text) => onChangeText(text, 3)} placeholder='Plat préféré' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    <TextInput value={shopPref} onChangeText={(text) => onChangeText(text, 4)} placeholder='Commerce de bouche/Restaurant favori' style={{ ...sharedStyles.sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
 
                     <View style={{ marginTop: '10%' }}>
                         <Text style={{ marginTop: '5%' }}><Text style={{ fontWeight: 'bold' }}>Jeu des 7 familles</Text>(choisis la/les tiennes)</Text>
                         <View style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                            {propsSevenFamily[0].map((index) => génératedSevenFamily(index))}
+                            {propsSevenFamily[0].map((index) => generateSevenFamily(index))}
                         </View>
                         <View style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                            {propsSevenFamily[1].map((index) => génératedSevenFamily(index))}
+                            {propsSevenFamily[1].map((index) => generateSevenFamily(index))}
                         </View>
                     </View>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
-                        <TouchableOpacity disabled={false} onPress={() => incremmentStep(1)} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
+                        <TouchableOpacity disabled={disabledButton} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
                             <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Continuer</Text>
                         </TouchableOpacity>
                     </View>
@@ -181,7 +197,7 @@ export default function SignUpComponent({ loading, requestSignUp, loginStatus })
                     </View>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
-                        <TouchableOpacity disabled={false} onPress={() => incremmentStep(1)} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
+                        <TouchableOpacity disabled={false} style={disabledButton ? { ...sharedStyles.primaryButton.disabled, margin: '3%' } : { ...sharedStyles.primaryButton.avalable, margin: '3%' }}>
                             <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Continuer</Text>
                         </TouchableOpacity>
                     </View>

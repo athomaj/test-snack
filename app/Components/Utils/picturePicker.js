@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ImagePickerExample() {
+export default function ImagePickerExample({setParamImage}) {
   const [image, setImage] = React.useState(null);
 
   const pickImage = async () => {
@@ -16,11 +16,11 @@ export default function ImagePickerExample() {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setParamImage(image);
     }
   };
-
   return (
-    <TouchableOpacity onPress={pickImage} style={{ height: 200, width: 200, alignItems: 'center', justifyContent: 'center' }}>
+    <TouchableOpacity onPress={() => pickImage()} style={{ height: 200, width: 200, alignItems: 'center', justifyContent: 'center' }}>
       {!image &&
         <Text style={{ zIndex: 1, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: '#F9BC0A', fontSize: 30, fontWeight: 'bold', borderRadius: 4 }}>+</Text>
       }

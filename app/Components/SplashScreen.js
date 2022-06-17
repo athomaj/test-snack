@@ -45,7 +45,7 @@ export default function SplashScreen({ navigation }){
 
                 <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
                 
-                    <TouchableOpacity  onPress={navigateToRegister} style={{ ...sharedStyles.primaryButton.avalable, margin: '3%'}}>
+                    <TouchableOpacity  onPress={navigateToRegister} style={{...sharedStyles.primaryButton.avalable, margin: '3%'}}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Inscription</Text>
                     </TouchableOpacity>
 

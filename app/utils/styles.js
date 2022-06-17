@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colors } from '../utils/colors';
 
-const sharedStyles = StyleSheet.create({
+export const sharedStyles = StyleSheet.create({
     shadow: {
         shadowColor: 'black',
         shadowOpacity: 0.2,
@@ -18,7 +18,7 @@ const sharedStyles = StyleSheet.create({
     }
 })
 
-const primaryButton = StyleSheet.create({
+export const primaryButton = StyleSheet.create({
     avalable:{
         border: 20,
         height: 50,
