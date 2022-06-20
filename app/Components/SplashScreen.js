@@ -11,12 +11,13 @@ export default function SplashScreen({ navigation }){
 
     useFocusEffect(
         React.useCallback(() => {
-            if (userContext.authState.isLoading) {
-                return
-            }
-            if (userContext.authState.isInitialized && userContext.authState.isConnected) {
-                    navigation.navigate("MainStack")
-                }
+            // if (userContext.authState.isLoading) {
+            //     return
+            // }
+            // if (userContext.authState.isInitialized && userContext.authState.isConnected) {
+            //         navigation.navigate("MainStack")
+            //     }
+            navigation.navigate("MainStack")
         }, [userContext.authState.isLoading])
     );
 
@@ -29,7 +30,7 @@ export default function SplashScreen({ navigation }){
                 <Image style={{ width: '100%', height: '50%', resizeMode: 'contain' }} source={require('../assets/splash_login/splash_background.png')}></Image>
 
                 <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
-                
+
                     <TouchableOpacity  onPress={() => navigation.navigate('AuthStack', {isLogin: 'test'}) } style={{...sharedStyles.primaryButton.avalable, margin: '3%'}}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Inscription</Text>
                     </TouchableOpacity>

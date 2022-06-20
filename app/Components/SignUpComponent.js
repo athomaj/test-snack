@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image } from 'react-native';
+import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image, Switch } from 'react-native';
 import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 import sharedStyles from '../utils/styles';
@@ -11,7 +11,7 @@ import validateEmail from './Utils/RegexValidation';
 
 
  //Constante de propriétés pour les composants annexe
- const propsSevenFamily = [
+const propsSevenFamily = [
     [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
     [['#FB10C7', 'World fusion'], ['#A29B3F', 'Tradition'], ['#FC941A', 'El Buli']]
 ]
@@ -40,8 +40,6 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
     // Hooks comportement de page
     const [stepNumber, setStep] = React.useState(0)
     const [disabledButton, setDisabledButton] = React.useState(true)
-   
-    
 
     //Distribution de l'état du screen
     function incremmentStep(stepIndex) {
@@ -90,7 +88,7 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
         }
 
         if(mealPref.length > 0 && shopPref.length > 0 && arrayToEdit.length > 0){
-            setDisabledButton(false) 
+            setDisabledButton(false)
         }else{
             setDisabledButton(true)
         }
@@ -113,7 +111,7 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
     function setParamImage(returnImage){
         setImage(returnImage)
     }
-    
+
     return (
         <SafeAreaView style={{ height: '100%', width: '100%'}}>
             {stepNumber > 0 &&
@@ -123,13 +121,11 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
                     </TouchableOpacity>
                     <Switch
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
-                        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={() => toggleSwitch}
                         value={disabledButton}
                     />
                 </>
-                
             }
             {stepNumber === 0 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }} >
@@ -139,7 +135,6 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
                         <Text>Ici vous allez pouvoir partager votre passion de la cuisine avec vos voisins de quartier. Ateliers thématiques, dîners partagés, prêt de matériel, bons plans circuits courts, défi de Chef, vous êtes entre passionés et en confiance.</Text>
                         <Text>Nous avons tout prévu pour que tout se passe bien, nous comptons aussi sur vous pour qu’une atmosphère de bienveillance et de partage règne!</Text>
                     </View>
-            
 
                     <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
 
@@ -211,9 +206,9 @@ export default function SignUpComponent({ error,loading, requestSignUp, loginSta
             {stepNumber === 4 &&
                 <View style={{ width: '100%', height: '90%', display: 'flex', alignItems: 'center' }}>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/image1.png')}></Image>
-                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/image2.png')}></Image>
-                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/image3.png')}></Image>
+                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/avatar_blue.png')}></Image>
+                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/avatar_brown.png')}></Image>
+                        <Image style={{ resizeMode: 'contain', width: 90, height: 90, borderRadius: 45, margin: 5 }} source={require('../assets/userFakeImage/avatar_purple.png')}></Image>
                     </View>
 
                     <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 10, alignItems: 'center', width: '100%' }}>
