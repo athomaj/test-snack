@@ -4,7 +4,7 @@ import { useUserContext } from '../context/UserContext';
 
 import { colors } from '../utils/colors';
 
-export default PublishContainer = ({ navigation }) => {
+export default function PublishContainer({ navigation }){
 
     const userContext = useUserContext();
 

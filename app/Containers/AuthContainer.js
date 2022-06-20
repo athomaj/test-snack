@@ -6,7 +6,7 @@ import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 
-export default AuthContainer = ({ navigation }) => {
+export default function AuthContainer({ navigation, route }) {
 
     const userContext = useUserContext();
 
@@ -22,13 +22,18 @@ export default AuthContainer = ({ navigation }) => {
         }
     }, [userContext.authState.isConnected, userContext.authState.errorMessage])
 
+    React.useEffect(()=>{
+        console.log(route)
+        return
+        setIsLogin(route)
+    })
+
     function changeLoginStatus() {
         setIsLogin(!isLogin)
     }
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ position: 'absolute', top: isIphoneX() ? 100 : 80, fontSize: 26, fontWeight: 'bold', color: colors.black }}>Bienvenue</Text>
             {isLogin ?
                 <LoginComponent loading={userContext.authState.isLoading} error={errorMessage} requestLogin={(email, pass) => userContext.login(email, pass)} loginStatus={changeLoginStatus} ></LoginComponent>
                 :

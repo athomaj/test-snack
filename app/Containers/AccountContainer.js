@@ -4,7 +4,7 @@ import { useUserContext } from '../context/UserContext';
 
 import { colors } from '../utils/colors';
 
-export default AccountContainer = ({ navigation }) => {
+export default function AccountContainer({ navigation }) {
 
     const userContext = useUserContext();
 

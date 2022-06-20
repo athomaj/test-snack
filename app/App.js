@@ -12,6 +12,7 @@ import MembersContainer from './Containers/MembersContainer';
 import PublishContainer from './Containers/PublishContainer';
 import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
+import RegisterContainer from './Containers/RegisterContainer';
 import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
 
@@ -38,7 +39,6 @@ function SplashStackScreen() {
     </SplashStack.Navigator>
   );
 }
-
 function LoginStackScreen() {
   return (
     <LoginStack.Navigator initialRouteName={"Login"} screenOptions={{ headerTransparent: true }}>

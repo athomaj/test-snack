@@ -5,7 +5,7 @@ import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 
-export default HomeContainer = ({ navigation }) => {
+export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
