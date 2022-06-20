@@ -5,7 +5,7 @@ import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 import { sharedStyles } from '../utils/styles';
 
-export default LoginComponent = ({ error, loading, requestLogin, loginStatus }) => {
+export default function LoginComponent ({ error, loading, requestLogin, loginStatus }){
 
 
     const [email, setEmail] = React.useState("")

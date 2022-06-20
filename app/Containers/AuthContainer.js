@@ -6,7 +6,7 @@ import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { isIphoneX } from '../utils/isIphoneX';
 
-export default function AuthContainer({ navigation }) {
+export default function AuthContainer({ navigation, route }) {
 
     const userContext = useUserContext();
 
@@ -21,6 +21,12 @@ export default function AuthContainer({ navigation }) {
             setErrorMessage(userContext.authState.errorMessage);
         }
     }, [userContext.authState.isConnected, userContext.authState.errorMessage])
+
+    React.useEffect(()=>{
+        console.log(route)
+        return
+        setIsLogin(route)
+    })
 
     function changeLoginStatus() {
         setIsLogin(!isLogin)

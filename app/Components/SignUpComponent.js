@@ -19,7 +19,7 @@ import validateEmail from './Utils/RegexValidation';
 const validateEmailicon = require('../assets/icon/validated_color.png');
 const forbidenEmail = require('../assets/icon/forbiden_color.png');
 
-export default SignUpComponent = ({ error,loading, requestSignUp, loginStatus }) => {
+export default function SignUpComponent({ error,loading, requestSignUp, loginStatus }){
 
     // Voir pour utiliser un context const userContext = useUserContext();
     const [name, setName] = React.useState("")
@@ -96,6 +96,9 @@ export default SignUpComponent = ({ error,loading, requestSignUp, loginStatus })
         }
 
     }
+    function toggleSwitch(){
+        disabledButton(disabledButton)
+    }
     //Générateur du bouton de famille à selectionner
     function updateStateSelected(name) {
         const index2 = sevenFamily.indexOf(name)
@@ -114,9 +117,19 @@ export default SignUpComponent = ({ error,loading, requestSignUp, loginStatus })
     return (
         <SafeAreaView style={{ height: '100%', width: '100%'}}>
             {stepNumber > 0 &&
-                <TouchableOpacity style={{ zIndex: 1, position: 'absolute', height: 30, top: 10, left: 20 }} onPress={() => incremmentStep(-1)}>
-                    <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}> retour </Text>
-                </TouchableOpacity>
+                <>
+                    <TouchableOpacity style={{ zIndex: 1, position: 'absolute', height: 30, top: 10, left: 20 }} onPress={() => incremmentStep(-1)}>
+                        <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}> retour </Text>
+                    </TouchableOpacity>
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => toggleSwitch}
+                        value={disabledButton}
+                    />
+                </>
+                
             }
             {stepNumber === 0 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }} >

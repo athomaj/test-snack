@@ -14,29 +14,12 @@ export default function SplashScreen({ navigation }){
             if (userContext.authState.isLoading) {
                 return
             }
-            if (userContext.authState.isInitialized) {
-                if (userContext.authState.isConnected) {
+            if (userContext.authState.isInitialized && userContext.authState.isConnected) {
                     navigation.navigate("MainStack")
-                } else {
-                    setTimeout(() => {
-                        navigation.navigate('AuthStack')
-                    }, 1500)
                 }
-            } else {
-                setTimeout(() => {
-                    navigation.navigate('AuthStack')
-                }, 1500)
-            }
         }, [userContext.authState.isLoading])
     );
 
-     function navigateToRegister(){
-        navigation.navigate('RegisterStack')
-    }
-
-    React.useEffect(() => {
-        // navigation.navigate('AuthStack')
-    }, []);
 
     return (
         <View style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
@@ -47,7 +30,7 @@ export default function SplashScreen({ navigation }){
 
                 <View style={{ width: '100%', position: 'absolute', bottom: 20, alignItems: 'center' }}>
                 
-                    <TouchableOpacity  onPress={navigateToRegister} style={{...sharedStyles.primaryButton.avalable, margin: '3%'}}>
+                    <TouchableOpacity  onPress={() => navigation.navigate('AuthStack', {isLogin: 'test'}) } style={{...sharedStyles.primaryButton.avalable, margin: '3%'}}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Inscription</Text>
                     </TouchableOpacity>
 

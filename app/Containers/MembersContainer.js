@@ -4,7 +4,7 @@ import { useUserContext } from '../context/UserContext';
 
 import { colors } from '../utils/colors';
 
-export default MembersContainer = ({ navigation }) => {
+export default function MembersContainer({ navigation }) {
 
     const userContext = useUserContext();
 

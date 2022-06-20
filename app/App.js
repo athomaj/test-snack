@@ -39,13 +39,6 @@ function SplashStackScreen() {
     </SplashStack.Navigator>
   );
 }
-function RegisterStackScreen(){
-  return (
-    <LoginStack.Navigator initialRouteName={"Register"} screenOptions={{ headerTransparent: true }}>
-      <LoginStack.Screen name="Register" component={RegisterContainer} options={{ headerShown: false, gestureEnabled: false }} />
-    </LoginStack.Navigator>
-  )
-}
 function LoginStackScreen() {
   return (
     <LoginStack.Navigator initialRouteName={"Login"} screenOptions={{ headerTransparent: true }}>
@@ -74,11 +67,6 @@ export default function App() {
           <RootStack.Screen
             name="SplashStack"
             component={SplashStackScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <RootStack.Screen
-            name="RegisterStack"
-            component={RegisterStackScreen}
             options={{ headerShown: false, gestureEnabled: false }}
           />
           <RootStack.Screen
