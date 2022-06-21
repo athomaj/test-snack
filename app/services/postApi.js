@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "../config/config";
 
 async function display() {
-    return await axios.get(`${API_URL}/posts`, {})
+    return await axios.get(`${API_URL}/posts?populate=*`, {})
         .then(response => {
             console.log('posts ==',response.data.data)
             return response.data.data
