@@ -11,6 +11,10 @@ const deviceWidth = Dimensions.get('screen').width
 export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
+    
+    const [leftValue, setLeftValue] = useState(new Animated.Value(0))
+    const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
+    const [slideIndex, setSlideIndex] = useState(0);
 
     React.useEffect(() => {
         console.log('Main', userContext)
@@ -32,62 +36,34 @@ export default function HomeContainer({ navigation }) {
         []
     );
 
-
-    const [leftValue, setLeftValue] = useState(new Animated.Value(0))
-    const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
-
     function movableButton(index){
-        if(index == 0){
+        if(index !== slideIndex){
+            setSlideIndex(index)
+
+            let width = 0.15
+            let left = 0
+
+            if(index === 1){
+                width = 0.30
+                left = 0.15
+            }
+            if(index === 2){
+                width = 0.25
+                left = 0.45
+            }
+            if(index === 3){
+                width = 0.30
+                left = 0.70
+            }
+
             Animated.parallel([
                 Animated.timing(leftValue, {
-                    toValue: 0,
+                    toValue: deviceWidth * left,
                     duration: 500,
                     useNativeDriver: false
                 }),
                 Animated.timing(widthValue, {
-                    toValue: deviceWidth * 0.15,
-                    duration: 500,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-        if(index == 1){
-            Animated.parallel([
-                Animated.timing(leftValue, {
-                    toValue: deviceWidth * 0.15,
-                    duration: 500,
-                    useNativeDriver: false
-                }),
-                Animated.timing(widthValue, {
-                    toValue: deviceWidth * 0.30,
-                    duration: 500,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-        if(index == 2){
-            Animated.parallel([
-                Animated.timing(leftValue, {
-                    toValue: deviceWidth * 0.45,
-                    duration: 500,
-                    useNativeDriver: false
-                }),
-                Animated.timing(widthValue, {
-                    toValue: deviceWidth * 0.25,
-                    duration: 500,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-        if(index == 3){
-            Animated.parallel([
-                Animated.timing(leftValue, {
-                    toValue: deviceWidth * 0.70,
-                    duration: 500,
-                    useNativeDriver: false
-                }),
-                Animated.timing(widthValue, {
-                    toValue: deviceWidth * 0.30,
+                    toValue: deviceWidth * width,
                     duration: 500,
                     useNativeDriver: false
                 })
