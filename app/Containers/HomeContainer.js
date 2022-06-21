@@ -1,10 +1,12 @@
-import React from 'react';
-import { SafeAreaView, Text, FlatList, Image, View, Button, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
 import styles, { sharedStyles } from '../utils/styles';
+
+const deviceWidth = Dimensions.get('screen').width
 
 export default function HomeContainer({ navigation }) {
 
@@ -30,18 +32,66 @@ export default function HomeContainer({ navigation }) {
         []
     );
 
+
+    const [leftValue, setLeftValue] = useState(new Animated.Value(0))
+    const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
+
     function movableButton(index){
         if(index == 0){
-            console.log(index)
+            Animated.parallel([
+                Animated.timing(leftValue, {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: false
+                }),
+                Animated.timing(widthValue, {
+                    toValue: deviceWidth * 0.15,
+                    duration: 500,
+                    useNativeDriver: false
+                })
+            ]).start()
         }
         if(index == 1){
-            console.log(index)
+            Animated.parallel([
+                Animated.timing(leftValue, {
+                    toValue: deviceWidth * 0.15,
+                    duration: 500,
+                    useNativeDriver: false
+                }),
+                Animated.timing(widthValue, {
+                    toValue: deviceWidth * 0.30,
+                    duration: 500,
+                    useNativeDriver: false
+                })
+            ]).start()
         }
         if(index == 2){
-            console.log(index)
+            Animated.parallel([
+                Animated.timing(leftValue, {
+                    toValue: deviceWidth * 0.45,
+                    duration: 500,
+                    useNativeDriver: false
+                }),
+                Animated.timing(widthValue, {
+                    toValue: deviceWidth * 0.25,
+                    duration: 500,
+                    useNativeDriver: false
+                })
+            ]).start()
         }
         if(index == 3){
-            console.log(index)
+            Animated.parallel([
+                Animated.timing(leftValue, {
+                    toValue: deviceWidth * 0.70,
+                    duration: 500,
+                    useNativeDriver: false
+                }),
+                Animated.timing(widthValue, {
+                    toValue: deviceWidth * 0.30,
+                    duration: 500,
+                    useNativeDriver: false
+                })
+            ]).start()
         }
     }
 
@@ -57,7 +107,7 @@ export default function HomeContainer({ navigation }) {
                             <TouchableOpacity onPress={()=> movableButton(1)} style={{width:'30%', alignItems:'center'}}><Text>Evénements</Text></TouchableOpacity>
                             <TouchableOpacity onPress={()=> movableButton(2)} style={{width:'25%', alignItems:'center'}}><Text>Ateliers</Text></TouchableOpacity>
                             <TouchableOpacity onPress={()=> movableButton(3)} style={{width:'30%', alignItems:'center'}}><Text>Bons Plans</Text></TouchableOpacity>
-                            <View style={{position:'absolute', bottom:0, left: '15%', zIndex: 1, height:5, width:'15%', backgroundColor: colors.primaryYellow}}></View>
+                            <Animated.View style={{position:'absolute', bottom:0, left: leftValue, zIndex: 1, height:5, width: widthValue, backgroundColor: colors.primaryYellow}}></Animated.View>
                         </View>
                         </>
                     )}
