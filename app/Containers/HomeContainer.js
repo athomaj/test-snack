@@ -3,6 +3,7 @@ import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, 
 import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 import { feedHomeData } from '../fakeData/feedHome';
+import postApi from '../services/postApi';
 import { colors } from '../utils/colors';
 import styles, { sharedStyles } from '../utils/styles';
 
@@ -11,14 +12,22 @@ const deviceWidth = Dimensions.get('screen').width
 export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
-    
+
     const [leftValue, setLeftValue] = useState(new Animated.Value(0))
     const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
     const [slideIndex, setSlideIndex] = useState(0);
+    const [posts, setPosts] = useState([])
 
     React.useEffect(() => {
-        console.log('Main', userContext)
+        getPosts()
+        //console.log('Main', userContext)
     }, [])
+
+    async function getPosts(){
+        const data = await postApi.display()
+        setPosts(data)
+        console.log(data)
+    }
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
@@ -28,8 +37,8 @@ export default function HomeContainer({ navigation }) {
                 <View style={{ ...sharedStyles.shadow, height: 160, width: '100%', backgroundColor: 'white', marginBottom: 20, borderRadius: 10 }}>
                     <Image style={{ height: 100, width: '100%', resizeMode: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} source={require('../assets/paysage.jpeg')}></Image>
                     <View style={{ height: 60, width: '100%', paddingHorizontal: 10, paddingTop: 10 }}>
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }}>{item.title}</Text>
-                        <Text style={{ fontSize: 13, fontWeight: 'normal', color: colors.black }}>{item.description}</Text>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }}>{item.attributes.title}</Text>
+                        <Text style={{ fontSize: 13, fontWeight: 'normal', color: colors.black }}>{item.attributes.description}</Text>
                     </View>
                 </View>
             </View>,
@@ -87,7 +96,7 @@ export default function HomeContainer({ navigation }) {
                         </View>
                         </>
                     )}
-                    data={feedHomeData}
+                    data={posts}
                     renderItem={renderItem}
                     keyExtractor={flatListKeyExtractor}
                     style={{ height: '100%', width: '100%' }}

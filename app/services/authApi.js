@@ -19,12 +19,10 @@ async function login(email, password) {
         .then(response => {
             // Handle success.
             storeData("authToken", response.data.jwt)
-            //axios.defaults.headers["Authorization"] = "Bearer " + response.data.jwt
             return response
         })
         .catch(error => {
             // Handle error.
-            // console.log('ERR LOGIN ==', error.response);
             return error.response
         });
 }
