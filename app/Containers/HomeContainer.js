@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal } from 'react-native';
 import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 import postApi from '../services/postApi';
 import { colors } from '../utils/colors';
 import styles, { sharedStyles } from '../utils/styles';
 import moment from 'moment';
+import FilterComponent from '../Components/FilterComponent';
 
 const deviceWidth = Dimensions.get('screen').width
 
@@ -17,6 +18,7 @@ export default function HomeContainer({ navigation }) {
     const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
     const [slideIndex, setSlideIndex] = useState(0);
     const [posts, setPosts] = useState([])
+    const [modalVisible, setModalVisible] = useState(false);
 
     React.useEffect(() => {
         getPosts()
@@ -40,7 +42,7 @@ export default function HomeContainer({ navigation }) {
                     <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, paddingTop: 10 }}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black, textTransform: 'uppercase', fontWeight: '400' }}>{item.attributes.id_category.data.attributes.name}</Text>
                         <Text style={{ width:245, height: 30, fontSize: 25, fontWeight: 'bold', color: colors.black }}>{item.attributes.title}</Text>
-                        <Text style={{ marginTop:10, fontSize: 12, fontWeight: 'bold', color: colors.black }}>{moment(Date(item.attributes.date)).format('DD/MM/YYYY')+' - '+(item.attributes.address) }</Text>
+                        <Text style={{ marginTop:10, fontSize: 12, fontWeight: 'bold', color: colors.black }}>{moment(Date(item.attributes.date)).format('DD/MM/YYYY')+' - '+(item.attributes.address)+(item.attributes.isSearch === false ? ' - '+(item.attributes.seats)+' places' : '') }</Text>
                         <Text style={{ marginTop: 10, fontSize: 12, fontWeight: 'normal', color: colors.black }}>{item.attributes.description}</Text>
                     </View>
                 </View>
@@ -84,7 +86,8 @@ export default function HomeContainer({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{height:'100%', width:'100%'}}>
+            <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
                 <FlatList
                 ListHeaderComponentStyle={{backgroundColor:'white'}}
                     ListHeaderComponent={(
@@ -105,6 +108,13 @@ export default function HomeContainer({ navigation }) {
                     style={{ height: '100%', width: '100%' }}
                     stickyHeaderIndices={[0]}
                 />
-        </SafeAreaView>
+                <TouchableOpacity style={{position: 'absolute', bottom: 50, right: 20}} onPress={()=> setModalVisible(true)}>
+                    <Image style={{width: 75, height: 75}} source={require('../assets/filterButton.png')}></Image>
+                </TouchableOpacity>
+            </SafeAreaView>
+            <Modal animationType='fade' transparent={modalVisible} visible={modalVisible}>
+                <FilterComponent setModalVisible={()=> setModalVisible(false)}></FilterComponent>
+            </Modal>
+        </View>
     );
 }

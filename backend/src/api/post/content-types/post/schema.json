@@ -41,6 +41,11 @@
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "posts"
+    },
+    "seats": {
+      "type": "integer",
+      "required": false,
+      "unique": false
     }
   }
 }
