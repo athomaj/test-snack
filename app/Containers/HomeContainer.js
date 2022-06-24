@@ -42,7 +42,7 @@ export default function HomeContainer({ navigation }) {
                     <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, paddingTop: 10 }}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black, textTransform: 'uppercase', fontWeight: '400' }}>{item.attributes.id_category.data.attributes.name}</Text>
                         <Text style={{ width:245, height: 30, fontSize: 25, fontWeight: 'bold', color: colors.black }}>{item.attributes.title}</Text>
-                        <Text style={{ marginTop:10, fontSize: 12, fontWeight: 'bold', color: colors.black }}>{moment(Date(item.attributes.date)).format('DD/MM/YYYY')+' - '+(item.attributes.address)+(item.attributes.isSearch === false ? ' - '+(item.attributes.seats)+' places' : '') }</Text>
+                        <Text style={{ marginTop:10, fontSize: 12, fontWeight: 'bold', color: colors.black }}>{moment((item.attributes.date)).format('DD/MM/YYYY')+' - '+(item.attributes.address)+(item.attributes.isSearch === false ? ' - '+(item.attributes.seats)+' places' : '') }</Text>
                         <Text style={{ marginTop: 10, fontSize: 12, fontWeight: 'normal', color: colors.black }}>{item.attributes.description}</Text>
                     </View>
                 </View>

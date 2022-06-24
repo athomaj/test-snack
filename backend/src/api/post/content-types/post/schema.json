@@ -18,9 +18,6 @@
     "address": {
       "type": "string"
     },
-    "date": {
-      "type": "datetime"
-    },
     "district": {
       "type": "integer"
     },
@@ -46,6 +43,12 @@
       "type": "integer",
       "required": false,
       "unique": false
+    },
+    "date": {
+      "type": "date"
+    },
+    "time": {
+      "type": "time"
     }
   }
 }
