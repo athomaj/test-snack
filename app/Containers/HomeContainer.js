@@ -14,11 +14,13 @@ export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
+
     const [leftValue, setLeftValue] = useState(new Animated.Value(0))
     const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
-    const [slideIndex, setSlideIndex] = useState(0);
+    const [slideIndex, setSlideIndex] = useState(0)
     const [posts, setPosts] = useState([])
-    const [modalVisible, setModalVisible] = useState(false);
+    const [filterPosts, setFilterPosts] = useState([])
+    const [modalVisible, setModalVisible] = useState(false)
 
     React.useEffect(() => {
         getPosts()
@@ -28,6 +30,7 @@ export default function HomeContainer({ navigation }) {
     async function getPosts(){
         const data = await postApi.display()
         setPosts(data)
+        setFilterPosts(data)
         console.log(data)
     }
 
@@ -52,6 +55,7 @@ export default function HomeContainer({ navigation }) {
 
     function movableButton(index){
         if(index !== slideIndex){
+            let data = [...posts]
             setSlideIndex(index)
 
             let width = 0.15
@@ -60,15 +64,19 @@ export default function HomeContainer({ navigation }) {
             if(index === 1){
                 width = 0.30
                 left = 0.15
+                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'évenement')
             }
             if(index === 2){
                 width = 0.25
                 left = 0.45
+                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'atelier')
             }
             if(index === 3){
                 width = 0.30
                 left = 0.70
+                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'bon plan')
             }
+            setFilterPosts(data)
 
             Animated.parallel([
                 Animated.timing(leftValue, {
@@ -102,7 +110,7 @@ export default function HomeContainer({ navigation }) {
                         </View>
                         </>
                     )}
-                    data={posts}
+                    data={filterPosts}
                     renderItem={renderItem}
                     keyExtractor={flatListKeyExtractor}
                     style={{ height: '100%', width: '100%' }}
