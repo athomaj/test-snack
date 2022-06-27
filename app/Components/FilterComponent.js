@@ -4,7 +4,7 @@ import { colors } from "../utils/colors";
 import Checkbox from 'expo-checkbox';
 import { districtDisplayData } from "../fakeData/districtDisplay";
 
-export default function FilterComponent ({setModalVisible, setThisWeek, setNextWeek, setNextMonth, setSearch, setProposal}){
+export default function FilterComponent ({setModalVisible, filter}){
     const [districtArray, setDistrictArray] = useState([]);
 
     const [isCheckedWeek, setCheckedWeek] = useState(false);
@@ -30,49 +30,17 @@ export default function FilterComponent ({setModalVisible, setThisWeek, setNextW
     }
 
     function display(){
-        if(isCheckedSearch === isCheckedProposal){
-            setSearch(false)
-            setProposal(false)
+        if(isCheckedSearch != isCheckedProposal){
+            filter({
+                search: isCheckedSearch,
+                proposal : isCheckedProposal
+            })
         }
-        else{
-            if(isCheckedSearch === true){
-                setSearch(true)
-            }
-            else{
-                setSearch(false)
-            }
-            if(isCheckedProposal === true){
-                setProposal(true)
-            }
-            else{
-                setProposal(false)
-            }
-        }
-        if(isCheckedWeek === isCheckedNextWeek && isCheckedNextWeek === isCheckedMonth){
-            setThisWeek(false)
-            setNextWeek(false)
-            setNextMonth(false)
-        }
-        else{
-            if(isCheckedWeek === true){
-                setThisWeek(true)
-            }
-            else{
-                setThisWeek(false)
-            }
-            if(isCheckedNextWeek === true){
-                setNextWeek(true)
-            }
-            else{
-                setNextWeek(false)
-            }
-            if(isCheckedMonth === true){
-                setNextMonth(true)
-            }
-            else{
-                setNextMonth(false)
-            }
-        }
+        filter({
+            thisWeek: isCheckedWeek,
+            nextWeek: isCheckedNextWeek,
+            nextMonth: isCheckedMonth
+        })
         setModalVisible(false)
     }
 

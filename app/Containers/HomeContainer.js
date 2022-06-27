@@ -7,7 +7,6 @@ import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 import moment from 'moment';
 import FilterComponent from '../Components/FilterComponent';
-import { sharedStyles } from '../utils/styles';
 
 const deviceWidth = Dimensions.get('screen').width
 
@@ -22,13 +21,7 @@ export default function HomeContainer({ navigation }) {
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
-    const [thisWeek, setThisWeek] = useState(false)
-    const [nextWeek, setNextWeek] = useState(false)
-    const [nextMonth, setNextMonth] = useState(false)
-    const [proposal, setProposal] = useState(false)
-    const [search, setSearch] = useState(false)
-
-    var currentWeekNumber = require('current-week-number');
+    const [filterData, setFilterData] = useState(null)
 
     React.useEffect(() => {
         getPosts()
@@ -59,10 +52,72 @@ export default function HomeContainer({ navigation }) {
         []
     );
 
+    function filterEvent(data, event){
+        return data.filter(item => item.attributes.id_category.data.attributes.name === event)
+    }
+
+    function filterTime(type, plus, data){
+        if(type === 'w'){
+            const today = moment().week()
+            return data.filter(item => {
+                const dateItem = moment(item.attributes.date).week()
+                return dateItem  === today + plus
+            })
+        }
+        if(type === 'm'){
+            const today = moment().month()
+            return data.filter(item => {
+                const dateItem = moment(item.attributes.date).month()
+                return dateItem  === today + plus
+            })
+        }
+    }
+
+    function filterComp(index, filterData){
+        let data = [...posts]
+        if(index === 1){
+            data = filterEvent(data, 'évenement')
+        }
+        if(index === 2){
+            data = filterEvent(data, 'atelier')
+        }
+        if(index === 3){
+            data = filterEvent(data, 'bon plan')
+        }
+        if(filterData){
+            if(filterData.search === true){
+                data = data.filter(item => item.attributes.isSearch === true)
+            }
+            if(filterData.proposal === true){
+                data = data.filter(item => item.attributes.isSearch === false)
+            }
+            // if(filterData.districts.length > 0){
+            //     data = data.filter(item => filterData.districts.includes(item.attributes.district))
+            // }
+            let dataWeeks = []
+            if(filterData.thisWeek === true || filterData.nextWeek === true || filterData.nextMonth === true){
+                if(filterData.thisWeek === true){
+                    const filteredData = filterTime('w', 0, data) 
+                    dataWeeks = dataWeeks.concat(filteredData)
+                }
+                if(filterData.nextWeek === true){
+                    const filteredData = filterTime('w', 1, data) 
+                    dataWeeks = dataWeeks.concat(filteredData)
+                }
+                if(filterData.nextMonth === true){
+                    const filteredData = filterTime('m', 1, data) 
+                    dataWeeks = dataWeeks.concat(filteredData)
+                }
+                data = dataWeeks
+            }
+        }
+        setFilterPosts(data)
+    }
+
     function movableButton(index){
         if(index !== slideIndex){
-            let data = [...posts]
             setSlideIndex(index)
+            filterComp(index)
 
             let width = 0.15
             let left = 0
@@ -70,32 +125,15 @@ export default function HomeContainer({ navigation }) {
             if(index === 1){
                 width = 0.30
                 left = 0.15
-                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'évenement')
             }
             if(index === 2){
                 width = 0.25
                 left = 0.45
-                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'atelier')
             }
             if(index === 3){
                 width = 0.30
                 left = 0.70
-                data = data.filter(item => item.attributes.id_category.data.attributes.name === 'bon plan')
             }
-            if(search === true){
-                data = data.filter(item => item.attributes.isSearch === true)
-            }
-            if(proposal === true){
-                data = data.filter(item => item.attributes.isSearch === false)
-            }
-            if(thisWeek === true){
-                const today = moment().week()
-                data = data.filter(item => {
-                    const dateItem = moment(item.attributes.date).week()
-                    return dateItem === today
-                })
-            }
-            setFilterPosts(data)
 
             Animated.parallel([
                 Animated.timing(leftValue, {
@@ -140,7 +178,7 @@ export default function HomeContainer({ navigation }) {
                 </TouchableOpacity>
             </SafeAreaView>
             <Modal animationType='fade' transparent={modalVisible} visible={modalVisible}>
-                <FilterComponent setModalVisible={()=> setModalVisible(false)} setSearch={setSearch} setProposal={setProposal} setThisWeek={setThisWeek} setNextWeek={setNextWeek} setNextMonth={setNextMonth}></FilterComponent>
+                <FilterComponent setModalVisible={()=> setModalVisible(false)} filter={(data)=> filterComp(slideIndex, data)}></FilterComponent>
             </Modal>
         </View>
     );
