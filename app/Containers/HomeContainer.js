@@ -21,17 +21,20 @@ export default function HomeContainer({ navigation }) {
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
+    const [thisWeek, setThisWeek] = useState(true)
+    const [nextWeek, setNextWeek] = useState(true)
+    const [nextMonth, setNextMonth] = useState(true)
+    const [proposal, setProposal] = useState(true)
+    const [search, setSearch] = useState(true)
 
     React.useEffect(() => {
         getPosts()
-        //console.log('Main', userContext)
     }, [])
 
     async function getPosts(){
         const data = await postApi.display()
         setPosts(data)
         setFilterPosts(data)
-        console.log(data)
     }
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
@@ -75,6 +78,12 @@ export default function HomeContainer({ navigation }) {
                 width = 0.30
                 left = 0.70
                 data = data.filter(item => item.attributes.id_category.data.attributes.name === 'bon plan')
+            }
+            if(search === false){
+                data = data.filter(item => item.attributes.isSearch === false)
+            }
+            if(proposal === false){
+                data = data.filter(item => item.attributes.isSearch === true)
             }
             setFilterPosts(data)
 
@@ -121,7 +130,7 @@ export default function HomeContainer({ navigation }) {
                 </TouchableOpacity>
             </SafeAreaView>
             <Modal animationType='fade' transparent={modalVisible} visible={modalVisible}>
-                <FilterComponent setModalVisible={()=> setModalVisible(false)}></FilterComponent>
+                <FilterComponent setModalVisible={()=> setModalVisible(false)} setSearch={setSearch} setProposal={setProposal}></FilterComponent>
             </Modal>
         </View>
     );
