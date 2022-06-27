@@ -31,23 +31,47 @@ export default function FilterComponent ({setModalVisible, setThisWeek, setNextW
 
     function display(){
         if(isCheckedSearch === isCheckedProposal){
-            setSearch(true)
-            setProposal(true)
-            setModalVisible(false)
-            return
-        }
-        if(isCheckedSearch === true){
-            setSearch(true)
-            console.log('testtttt')
-        }
-        else{
             setSearch(false)
-        }
-        if(isCheckedProposal === true){
-            setProposal(true)
+            setProposal(false)
         }
         else{
-            setProposal(false)
+            if(isCheckedSearch === true){
+                setSearch(true)
+            }
+            else{
+                setSearch(false)
+            }
+            if(isCheckedProposal === true){
+                setProposal(true)
+            }
+            else{
+                setProposal(false)
+            }
+        }
+        if(isCheckedWeek === isCheckedNextWeek && isCheckedNextWeek === isCheckedMonth){
+            setThisWeek(false)
+            setNextWeek(false)
+            setNextMonth(false)
+        }
+        else{
+            if(isCheckedWeek === true){
+                setThisWeek(true)
+            }
+            else{
+                setThisWeek(false)
+            }
+            if(isCheckedNextWeek === true){
+                setNextWeek(true)
+            }
+            else{
+                setNextWeek(false)
+            }
+            if(isCheckedMonth === true){
+                setNextMonth(true)
+            }
+            else{
+                setNextMonth(false)
+            }
         }
         setModalVisible(false)
     }

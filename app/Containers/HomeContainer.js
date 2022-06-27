@@ -21,11 +21,13 @@ export default function HomeContainer({ navigation }) {
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
-    const [thisWeek, setThisWeek] = useState(true)
-    const [nextWeek, setNextWeek] = useState(true)
-    const [nextMonth, setNextMonth] = useState(true)
-    const [proposal, setProposal] = useState(true)
-    const [search, setSearch] = useState(true)
+    const [thisWeek, setThisWeek] = useState(false)
+    const [nextWeek, setNextWeek] = useState(false)
+    const [nextMonth, setNextMonth] = useState(false)
+    const [proposal, setProposal] = useState(false)
+    const [search, setSearch] = useState(false)
+
+    var currentWeekNumber = require('current-week-number');
 
     React.useEffect(() => {
         getPosts()
@@ -79,11 +81,18 @@ export default function HomeContainer({ navigation }) {
                 left = 0.70
                 data = data.filter(item => item.attributes.id_category.data.attributes.name === 'bon plan')
             }
-            if(search === false){
+            if(search === true){
+                data = data.filter(item => item.attributes.isSearch === true)
+            }
+            if(proposal === true){
                 data = data.filter(item => item.attributes.isSearch === false)
             }
-            if(proposal === false){
-                data = data.filter(item => item.attributes.isSearch === true)
+            if(thisWeek === true){
+                const today = moment().week()
+                data = data.filter(item => {
+                    const dateItem = moment(item.attributes.date).week()
+                    return dateItem === today
+                })
             }
             setFilterPosts(data)
 
@@ -130,7 +139,7 @@ export default function HomeContainer({ navigation }) {
                 </TouchableOpacity>
             </SafeAreaView>
             <Modal animationType='fade' transparent={modalVisible} visible={modalVisible}>
-                <FilterComponent setModalVisible={()=> setModalVisible(false)} setSearch={setSearch} setProposal={setProposal}></FilterComponent>
+                <FilterComponent setModalVisible={()=> setModalVisible(false)} setSearch={setSearch} setProposal={setProposal} setThisWeek={setThisWeek} setNextWeek={setNextWeek} setNextMonth={setNextMonth}></FilterComponent>
             </Modal>
         </View>
     );
