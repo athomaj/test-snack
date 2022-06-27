@@ -1,35 +1,59 @@
 import React from 'react';
-import { View, TouchableOpacity, SafeAreaView, Text, TextInput, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Text, TextInput, Image, ActivityIndicator } from 'react-native';
 
 import { colors } from '../utils/colors';
-import { isIphoneX } from '../utils/isIphoneX';
+import { displayAlert } from '../utils/displayAlert';
 import { sharedStyles } from '../utils/styles';
+import validateEmail from './Utils/RegexValidation';
 
-export default function LoginComponent ({ error, loading, requestLogin, loginStatus }){
+export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
+    const [email, setEmail] = React.useState("js.luciani@outlook.fr")
+    const [pass, setPass] = React.useState("123456")
+    const [disabledButton, setDisabledButton] = React.useState(false)
 
-    const [email, setEmail] = React.useState("")
-    const [pass, setPass] = React.useState("")
+    function sendLogin() {
+        if (email.length > 0 && pass.length > 0) {
+            if (validateEmail(email)) {
+                requestLogin(email, pass)
+            } else {
+                displayAlert("Oups...", 'Il semble que votre email ne soit pas valide')
+            }
+            return
+        }
+        displayAlert("Oups...", 'Veuillez renseigner les champs')
+    }
 
-    function sendLogin(){
-        requestLogin(email, pass)
+    function changeText(text, index) {
+        if (index === 0) {
+            setEmail(text)
+        } else {
+            setPass(text)
+        }
     }
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <TextInput autoCapitalize='none' autoComplete='email' keyboardType='email-address'value={email} onChangeText={(text) => setEmail(text)} placeholder='Email' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
-            <TextInput secureTextEntry={true} value={pass} onChangeText={(text) => setPass(text)} placeholder='Mot de passe' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
-            <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
-
-            <View style={{ position: 'absolute', bottom: isIphoneX() ? 30 : 20, alignItems: 'center', width: '100%' }}>
-                <TouchableOpacity onPress={loginStatus} style={{ marginBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Vous n'avez pas de compte ? Cliquez-ici !</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator style={{position: 'absolute', right: 15}} animating={loading} color={'black'}></ActivityIndicator>
-                    <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Connexion</Text>
-                </TouchableOpacity>
+        <View style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
+            <View style={{ height: '20%', width: '60%', justifyContent: 'flex-end' }}>
+                <Image style={{ height: '80%', width: '100%', resizeMode: 'contain' }} source={require('../assets/logo_typo.png')}></Image>
             </View>
-        </SafeAreaView>
+            <View style={{ height: '60%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <TextInput autoCorrect={false} autoCapitalize='none' autoComplete='email' keyboardType='email-address' value={email} onChangeText={(text) => changeText(text, 0)} placeholder='Email*' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                <TextInput secureTextEntry={true} value={pass} onChangeText={(text) => changeText(text, 1)} placeholder='Mot de passe*' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
+                <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
+            </View>
+
+            <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
+                <TouchableOpacity disabled={disabledButton} onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: disabledButton ? colors.primaryYellowDisable : colors.primaryYellow, marginBottom: 10 }}>
+                    <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Connexion</Text>
+                    <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={loginStatus} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Pas encore membre ? <Text style={{ fontWeight: 'bold' }}>S'inscrire</Text></Text>
+                </TouchableOpacity>
+
+            </View>
+        </View>
     );
 }

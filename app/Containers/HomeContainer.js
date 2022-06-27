@@ -3,22 +3,19 @@ import { SafeAreaView, Text, FlatList, Image, View } from 'react-native';
 import { useUserContext } from '../context/UserContext';
 import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
+import { getData } from '../utils/storage';
 import { sharedStyles } from '../utils/styles';
 
 export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
-    React.useEffect(() => {
-        console.log('Main', userContext)
-    }, [])
-
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderItem = React.useCallback(
         ({ item, index }) =>
             <View style={{ paddingHorizontal: 20 }}>
-                <View style={{ ...sharedStyles.shadow, height: 160, width: '100%', backgroundColor: 'white', marginBottom: 20, borderRadius: 10 }}>
+                <View style={{ ...sharedStyles.shadow, height: 160, width: '100%', backgroundColor: 'white', marginTop: index === 0 ? 20 : 0, marginBottom: 20, borderRadius: 10 }}>
                     <Image style={{ height: 100, width: '100%', resizeMode: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} source={require('../assets/paysage.jpeg')}></Image>
                     <View style={{ height: 60, width: '100%', paddingHorizontal: 10, paddingTop: 10 }}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }}>{item.title}</Text>
@@ -32,6 +29,7 @@ export default function HomeContainer({ navigation }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
             <FlatList
+                ListHeaderComponentStyle={{ backgroundColor: 'white' }}
                 ListHeaderComponent={(
                     <View style={{ height: 80, backgroundColor: colors.white, paddingLeft: 20, justifyContent: 'center' }}>
                         <Text style={{ fontSize: 26, fontWeight: 'bold', color: "black" }}>Page d'accueil</Text>

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "family",
     "pluralName": "families",
-    "displayName": "Family"
+    "displayName": "Family",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,6 +13,9 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
+      "type": "string"
+    },
+    "color": {
       "type": "string"
     }
   }
