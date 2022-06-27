@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
-import { useUserContext } from '../context/UserContext';
 
+import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 
 export default function AccountContainer({ navigation }) {
@@ -9,14 +9,10 @@ export default function AccountContainer({ navigation }) {
     const userContext = useUserContext();
 
     React.useEffect(() => {
-        console.log('Account')
-    }, [])
-
-    React.useEffect(() => {
         if (!userContext.authState.isConnected) {
-            navigation.navigate('AuthStack')
+            navigation.replace('AuthStack')
         }
-    }, [userContext.authState.isConnected, userContext.authState.errorMessage])
+    }, [userContext.authState.isConnected])
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>

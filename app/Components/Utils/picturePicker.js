@@ -2,8 +2,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ImagePickerExample({setParamImage}) {
-  const [image, setImage] = React.useState(null);
+export default function ImagePickerExample({ image, setParamImage }) {
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -15,8 +14,7 @@ export default function ImagePickerExample({setParamImage}) {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
-      setParamImage(image);
+      setParamImage(result);
     }
   };
   return (

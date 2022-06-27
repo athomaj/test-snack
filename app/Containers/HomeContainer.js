@@ -4,9 +4,10 @@ import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 import postApi from '../services/postApi';
 import { colors } from '../utils/colors';
-import styles, { sharedStyles } from '../utils/styles';
+import { sharedStyles } from '../utils/styles';
 import moment from 'moment';
 import FilterComponent from '../Components/FilterComponent';
+import { sharedStyles } from '../utils/styles';
 
 const deviceWidth = Dimensions.get('screen').width
 

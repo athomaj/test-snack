@@ -1,6 +1,10 @@
 import React from 'react';
+import { Platform } from 'react-native';
+import { BASE_URL } from '../config/config';
 import authApi from '../services/authApi';
+import uploadApi from '../services/uploadApi';
 import userApi from '../services/userApi';
+import { randomId } from '../utils/sharedFunctions';
 
 const UserContext = React.createContext();
 
@@ -15,7 +19,7 @@ const initialState = {
         username: "",
         id: "",
         plate: "",
-        famillyGame:""
+        famillyGame: ""
     }
 }
 
@@ -33,18 +37,19 @@ const UserProvider = ({ children }) => {
         })
 
         const response = await userApi.getMe()
-        if (!response || response.data.error) {
+        if (!response) {
             setAuthState({
                 ...authState,
                 isLoading: false,
-                isInitialized: true
+                isInitialized: true,
             })
         } else {
             setAuthState({
                 ...authState,
                 isLoading: false,
                 isInitialized: true,
-                user: response.data.user
+                isConnected: true,
+                user: response.data
             })
         }
 
@@ -56,7 +61,8 @@ const UserProvider = ({ children }) => {
             isLoading: true
         })
         const response = await authApi.login(email, password)
-        if(response.data.error){
+
+        if (response.data.error) {
             setAuthState({
                 ...authState,
                 error: true,
@@ -64,7 +70,7 @@ const UserProvider = ({ children }) => {
             })
             return
         }
-        if(response.data.user){
+        if (response.data.user) {
             setAuthState({
                 ...authState,
                 isConnected: true,
@@ -75,13 +81,33 @@ const UserProvider = ({ children }) => {
         }
     };
 
-    const register = async (firstname, email, password) => {
+    const register = async (data) => {
         setAuthState({
             ...authState,
             isLoading: true
         })
-        const response = await authApi.register(firstname, email, password)
-        if(response.data.error){
+
+        if (data.picture) {
+            const formData = new FormData()
+            let uri = data.picture
+            const imageId = randomId(20)
+
+            formData.append('files', {
+                name: `${imageId}.jpg`,
+                type: 'image/jpeg',
+                uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+            });
+
+            const uploadResponse = await uploadApi.uploadPicture(formData)
+            console.log("UPLOAD IMAGE RES ====", uploadResponse)
+            if (uploadResponse[0]?.url) {
+                data.user.avatarUrl = BASE_URL + uploadResponse[0].url
+            }
+        }
+
+        const response = await authApi.register(data.user)
+
+        if (response.data.error) {
             setAuthState({
                 ...authState,
                 error: true,
@@ -119,7 +145,7 @@ const UserProvider = ({ children }) => {
                 username: "",
                 id: "",
                 plate: "",
-                famillyGame:""
+                famillyGame: ""
             }
         })
     };
