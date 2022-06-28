@@ -4,22 +4,29 @@ import { colors } from "../utils/colors";
 import Checkbox from 'expo-checkbox';
 import { districtDisplayData } from "../fakeData/districtDisplay";
 
-export default function FilterComponent ({setModalVisible, filter}){
+export default function FilterComponent ({filterData, closeModal, filter}){
     const [districtArray, setDistrictArray] = useState([]);
-
-    const [isCheckedWeek, setCheckedWeek] = useState(false);
-    const [isCheckedNextWeek, setCheckedNextWeek] = useState(false);
-    const [isCheckedMonth, setCheckedMonth] = useState(false);
-    const [isCheckedSearch, setCheckedSearch] = useState(false);
-    const [isCheckedProposal, setCheckedProposal] = useState(false);
+    const [isCheckedWeek, setCheckedWeek] = useState(filterData.thisWeek);
+    const [isCheckedNextWeek, setCheckedNextWeek] = useState(filterData.nextWeek);
+    const [isCheckedMonth, setCheckedMonth] = useState(filterData.nextMonth);
+    const [isCheckedSearch, setCheckedSearch] = useState(filterData.search);
+    const [isCheckedProposal, setCheckedProposal] = useState(filterData.proposal);
 
     React.useEffect(() => {
+        if(filterData.districts){
+            setDistrictArray(filterData.districts)
+            return
+        }
+        createDistrictArray()
+    }, [])
+
+    function createDistrictArray(){
         const district = districtDisplayData.map(data => {
             data["isChecked"] = false
             return data
         })
         setDistrictArray(district)
-    }, [])
+    }
 
     function deleteAll(){
         setCheckedWeek(false)
@@ -27,21 +34,31 @@ export default function FilterComponent ({setModalVisible, filter}){
         setCheckedMonth(false)
         setCheckedSearch(false)
         setCheckedProposal(false)
+        createDistrictArray()
     }
 
     function display(){
+        var theSearch = false
+        var theProposal = false
         if(isCheckedSearch != isCheckedProposal){
-            filter({
-                search: isCheckedSearch,
-                proposal : isCheckedProposal
-            })
+            theSearch = isCheckedSearch
+            theProposal = isCheckedProposal
         }
         filter({
             thisWeek: isCheckedWeek,
             nextWeek: isCheckedNextWeek,
-            nextMonth: isCheckedMonth
+            nextMonth: isCheckedMonth,
+            search : theSearch,
+            proposal : theProposal,
+            districts : districtArray
         })
-        setModalVisible(false)
+        closeModal()
+    }
+
+    function districtCheckbox(index){
+        const data = [...districtArray]
+        data[index].isChecked = !data[index].isChecked
+        setDistrictArray(data)
     }
 
     return (
@@ -49,25 +66,53 @@ export default function FilterComponent ({setModalVisible, filter}){
             <View style={{backgroundColor: colors.grey, width:'94%', height:'94%', borderRadius:20}}>
                 <View style={{ zIndex: 1, position: 'absolute', top: 0, height: 50, width: '100%', justifyContent: 'center', alignItems: 'center',  borderBottomColor: colors.black, borderBottomWidth: StyleSheet.hairlineWidth, backgroundColor: 'white', borderTopLeftRadius: 20, borderTopRightRadius: 20}}>
                     <Text style={{width:'100%', textAlign:'center', fontSize:16, fontWeight:'600'}}>Filtres</Text>
-                    <TouchableOpacity style={{position: 'absolute', left: 20}} onPress={setModalVisible}>
+                    <TouchableOpacity style={{position: 'absolute', left: 20}} onPress={closeModal}>
                         <Image style={{width: 20, height: 20, resizeMode: 'contain'}} source={require('../assets/exitModal.png')}></Image>
                     </TouchableOpacity>
                 </View>
-                <ScrollView style={{width: '100%', height: '100%', paddingTop: 50}} contentContainerStyle={{paddingLeft: 20, paddingRight: 20}}>
-                    <View style={{height: 200}}>
-                        <Text style={{fontSize:16, fontWeight:'500', marginTop: 20}}>Où?</Text>
-                        {/* <View style={{top: 40, left: 12}}>
-                            <View style={{flexDirection:'row'}}>
-                                <Text style={{marginRight:10, fontSize:12}}>13001</Text>
-                                <Checkbox style={{marginRight:10, marginBottom:10}} value={isChecked} onValueChange={setChecked}/>
-                                <Text style={{marginRight:10, fontSize:12}}>13002</Text>
-                                <Checkbox style={{marginRight:10}} value={isChecked} onValueChange={setChecked}/>
-                                <Text style={{marginRight:10, fontSize:12}}>13003</Text>
-                                <Checkbox style={{marginRight:10}} value={isChecked} onValueChange={setChecked}/>
-                                <Text style={{marginRight:10, fontSize:12}}>13004</Text>
-                                <Checkbox style={{marginRight:10}} value={isChecked} onValueChange={setChecked}/>
-                            </View>
-                        </View> */}
+                <ScrollView style={{width: '100%', height: '100%'}} contentContainerStyle={{paddingTop: 50, paddingBottom: 20, paddingLeft: 20, paddingRight: 20}}>
+                    <View style={{marginTop: 30}}>
+                        <Text style={{fontSize:16, fontWeight:'500', marginBottom: 40}}>Où?</Text>
+                        <View style={{marginLeft: 20, flexDirection: 'row'}}>
+                            {districtArray.map((item, index) => {
+                                if(index < 4){
+                                    return (<View style={{flexDirection:'row'}}>
+                                        <Text style={{marginBottom: 30, fontSize: 12, width: 40}}>{districtArray[index].district}</Text>
+                                        <Checkbox style={{marginRight: 10}} value={districtArray[index].isChecked} onValueChange={() => districtCheckbox(index)} color={colors.lightPink}/>
+                                    </View>)
+                                }
+                            })}
+                        </View>
+                        <View style={{marginLeft: 20, flexDirection: 'row'}}>
+                            {districtArray.map((item, index) => {
+                                if(3 < index && index < 8){
+                                    return (<View style={{flexDirection:'row'}}>
+                                        <Text style={{marginBottom: 30, fontSize: 12, width: 40}}>{districtArray[index].district}</Text>
+                                        <Checkbox style={{marginRight: 10}} value={districtArray[index].isChecked} onValueChange={() => districtCheckbox(index)} color={colors.lightPink}/>
+                                    </View>)
+                                }
+                            })}
+                        </View>
+                        <View style={{marginLeft: 20, flexDirection: 'row'}}>
+                            {districtArray.map((item, index) => {
+                                if(7 < index && index < 12){
+                                    return (<View style={{flexDirection:'row'}}>
+                                        <Text style={{marginBottom: 30, fontSize: 12, width: 40}}>{districtArray[index].district}</Text>
+                                        <Checkbox style={{marginRight: 10}} value={districtArray[index].isChecked} onValueChange={() => districtCheckbox(index)} color={colors.lightPink}/>
+                                    </View>)
+                                }
+                            })}
+                        </View>
+                        <View style={{marginLeft: 20, flexDirection: 'row'}}>
+                            {districtArray.map((item, index) => {
+                                if(11 < index && index < 16){
+                                    return (<View style={{flexDirection:'row'}}>
+                                        <Text style={{marginBottom: 30, fontSize: 12, width: 40}}>{districtArray[index].district}</Text>
+                                        <Checkbox style={{marginRight: 10}} value={districtArray[index].isChecked} onValueChange={() => districtCheckbox(index)} color={colors.lightPink}/>
+                                    </View>)
+                                }
+                            })}
+                        </View>
                     </View>
                     <View style={{alignItems: 'center'}}>
                         <View style={{ borderBottomColor: colors.black, borderBottomWidth: StyleSheet.hairlineWidth, width:'100%'}} opacity= {0.5}/>

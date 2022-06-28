@@ -14,6 +14,14 @@ export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
+    const filter = {
+        search: false,
+        proposal : false,
+        thisWeek: false,
+        nextWeek: false,
+        nextMonth: false,
+        districts: null
+    }
 
     const [leftValue, setLeftValue] = useState(new Animated.Value(0))
     const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
@@ -21,7 +29,7 @@ export default function HomeContainer({ navigation }) {
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
-    const [filterData, setFilterData] = useState(null)
+    const [filterData, setFilterData] = useState([filter])
 
     React.useEffect(() => {
         getPosts()
@@ -91,22 +99,33 @@ export default function HomeContainer({ navigation }) {
             if(filterData.proposal === true){
                 data = data.filter(item => item.attributes.isSearch === false)
             }
-            // if(filterData.districts.length > 0){
-            //     data = data.filter(item => filterData.districts.includes(item.attributes.district))
-            // }
+            if(filterData.districts.length > 0){
+                data = data.filter((item) => {
+                    const filteredData = filterData.districts.filter((item2) => item2.isChecked === true && item2.district == item.attributes.district)
+                    filteredData.length > 0 ? true : false
+                })
+            }
             let dataWeeks = []
             if(filterData.thisWeek === true || filterData.nextWeek === true || filterData.nextMonth === true){
                 if(filterData.thisWeek === true){
-                    const filteredData = filterTime('w', 0, data) 
+                    const filteredData = filterTime('w', 0, data)
                     dataWeeks = dataWeeks.concat(filteredData)
                 }
                 if(filterData.nextWeek === true){
-                    const filteredData = filterTime('w', 1, data) 
+                    const filteredData = filterTime('w', 1, data)
                     dataWeeks = dataWeeks.concat(filteredData)
                 }
                 if(filterData.nextMonth === true){
-                    const filteredData = filterTime('m', 1, data) 
-                    dataWeeks = dataWeeks.concat(filteredData)
+                    const filteredData = filterTime('m', 1, data)
+                    if(dataWeeks.length > 0){
+                        for(let i=0;i<dataWeeks.length;i++){
+                            if(filteredData.indexOf(dataWeeks[i]) === -1)
+                                filteredData.push(dataWeeks[i])
+                        }
+                    }
+                    else{
+                        dataWeeks = dataWeeks.concat(filteredData)
+                    }
                 }
                 data = dataWeeks
             }
@@ -117,7 +136,7 @@ export default function HomeContainer({ navigation }) {
     function movableButton(index){
         if(index !== slideIndex){
             setSlideIndex(index)
-            filterComp(index)
+            filterComp(index, filterData)
 
             let width = 0.15
             let left = 0
@@ -177,8 +196,8 @@ export default function HomeContainer({ navigation }) {
                     <Image style={{width: 75, height: 75}} source={require('../assets/filterButton.png')}></Image>
                 </TouchableOpacity>
             </SafeAreaView>
-            <Modal animationType='fade' transparent={modalVisible} visible={modalVisible}>
-                <FilterComponent setModalVisible={()=> setModalVisible(false)} filter={(data)=> filterComp(slideIndex, data)}></FilterComponent>
+            <Modal animationType='fade' transparent={true} visible={modalVisible}>
+                <FilterComponent filterData={filterData} closeModal={()=> setModalVisible(false)} filter={(data)=> {filterComp(slideIndex, data); setFilterData(data)}}></FilterComponent>
             </Modal>
         </View>
     );
