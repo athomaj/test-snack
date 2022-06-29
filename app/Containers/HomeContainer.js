@@ -3,7 +3,6 @@ import { SafeAreaView, Text, FlatList, Image, View } from 'react-native';
 import { useUserContext } from '../context/UserContext';
 import { feedHomeData } from '../fakeData/feedHome';
 import { colors } from '../utils/colors';
-import { getData } from '../utils/storage';
 import { sharedStyles } from '../utils/styles';
 
 export default function HomeContainer({ navigation }) {
