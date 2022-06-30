@@ -3,7 +3,7 @@ export const feedHomeData = [
     {
         "id": "1",
         "title": "Hello React Native",
-        "description": "This is a Flat List"
+        "description": "This is the first Flat List"
     },
     {
         "id": "2",

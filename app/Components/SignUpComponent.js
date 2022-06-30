@@ -1,8 +1,6 @@
 import React from 'react';
 import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image, Switch } from 'react-native';
-
 import { colors } from '../utils/colors';
-
 import SevenFamillycheckBox from './Utils/sevenFamilyCheckbox';
 import ImagePickerExample from './Utils/picturePicker';
 import validateEmail from './Utils/RegexValidation';
@@ -10,6 +8,12 @@ import HeaderChapter from './Utils/HeaderChapter';
 import { sharedStyles } from '../utils/styles';
 import { sevenFamilies, sevenFamiliesSecond } from '../utils/const';
 
+
+ //Constante de propriétés pour les composants annexe
+const propsSevenFamily = [
+    [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
+    [['#FB10C7', 'World fusion'], ['#A29B3F', 'Tradition'], ['#FC941A', 'El Buli']]
+]
 //Importation dim'age de validation
 const validateEmailicon = require('../assets/icon/validated_color.png');
 const forbidenEmail = require('../assets/icon/forbiden_color.png');
