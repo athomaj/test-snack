@@ -15,6 +15,12 @@ export const sharedStyles = StyleSheet.create({
         borderRadius: 20,
         borderStyle: 'solid'
     },
+    borderPublish: {
+        borderWidth: 1,
+        borderColor: colors.primaryYellow,
+        borderRadius: 20,
+        borderStyle: 'solid'
+    },
     titleH1: {
         fontWeight: 'bold',
         fontSize: 18
@@ -35,5 +41,10 @@ export const sharedStyles = StyleSheet.create({
         backgroundColor: colors.primaryYellow,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    textPublish: {
+        fontSize: 14,
+        marginBottom: 10,
+        fontWeight: '500'
     }
 })

@@ -5,5 +5,7 @@ export const colors = {
     primaryYellow: "#F9BC0A",
     primaryYellowDisable: "#F9BC0A99",
     lightPink: "#FB87EF",
-    pink: "#FB10C7"
+    pink: "#FB10C7",
+    grey2: "#5E5E5E",
+    greyImage: "#D9D9D9"
 }
