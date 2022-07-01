@@ -118,7 +118,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                     password: pass,
                     favoriteDish: mealPref,
                     favoritePlace: shopPref,
-                    food_families: sevenFamilies,
+                    food_families: sevenFamily,
                     avatarUrl: ""
                 },
                 picture: image?.uri

@@ -13,16 +13,18 @@ const initialState = {
     error: false,
     errorMessage: "",
     isInitialized: false,
-    user: {
-        email: "",
-        username: "",
-        id: "",
-        plate: "",
-        famillyGame: ""
+    post: {
+        titre: "",
+        date: "",
+        time: "",
+        seats: "",
+        description: "",
+        isSearch: "",
+        user: ""
     }
 }
 
-const UserProvider = ({ children }) => {
+const PostProvider = ({ children }) => {
     const [postState, setPostState] = React.useState(initialState)
 
     React.useEffect(() => {
@@ -87,4 +89,4 @@ const usePostContext = () => {
     return React.useContext(PostContext);
 };
 
-export { UserProvider, usePostContext };
+export { PostProvider, usePostContext };

@@ -17,13 +17,16 @@ export default function PublishContainer({ navigation }){
     const [leftValue, setLeftValue] = useState(new Animated.Value(0))
     const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.333))
     const [slideIndex, setSlideIndex] = useState(0)
-    const [disabledButton, setDisabledButton] = React.useState(true)
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
     const [datetime, setDateTime] = useState(new Date())
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('date')
+    const [show, setShow] = useState(false)
     const [image, setImage] = React.useState(null)
+    const [title, setTitle] = React.useState('')
+    const [seats, setSeats] = React.useState()
+    const [description, setDescription] = React.useState()
+    const [isSearch, setIsSearch] = React.useState(true)
 
     React.useEffect(() => {
         if (!userContext.authState.isConnected) {
@@ -96,6 +99,24 @@ export default function PublishContainer({ navigation }){
         showMode('time');
     };
 
+    function sendData(){
+        const data = {
+            post: {
+                titre: title,
+                date: "",
+                time: "",
+                seats: seats,
+                description: description,
+                isSearch: !isSearch
+            },
+            picture: image?.uri
+        }
+    }
+
+    function onChangeText(text, inputText){
+        
+    }
+
     return (
         <View style={{height:'100%', width:'100%'}}>
             <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
@@ -115,15 +136,15 @@ export default function PublishContainer({ navigation }){
                             trackColor={{ false: "#767577", true: colors.primaryYellow }}
                             thumbColor={colors.white}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={(value) => setDisabledButton(!value)}
-                            value={!disabledButton}
+                            onValueChange={(value) => setIsSearch(!value)}
+                            value={!isSearch}
                             style={{ margin: 10 }}
                         />
                         <Text>Je recherche</Text>
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Titre de l'évenement <Text style={{color: colors.red}}>*</Text></Text>
-                        <TextInput style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                        <TextInput value={title} onValueChange={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                     <Text style={{...sharedStyles.textPublish}}>Date <Text style={{color: colors.red}}>*</Text></Text>
