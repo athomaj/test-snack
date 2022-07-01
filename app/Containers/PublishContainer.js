@@ -23,7 +23,7 @@ export default function PublishContainer({ navigation }){
     const [mode, setMode] = useState('date')
     const [show, setShow] = useState(false)
     const [image, setImage] = React.useState(null)
-    const [title, setTitle] = React.useState('')
+    const [title, setTitle] = React.useState("")
     const [seats, setSeats] = React.useState()
     const [description, setDescription] = React.useState()
     const [isSearch, setIsSearch] = React.useState(true)
@@ -92,10 +92,12 @@ export default function PublishContainer({ navigation }){
     };
 
     const showDatePicker = () => {
+        console.log(date)
         showMode('date');
     };
 
     const showTimePicker = () => {
+        console.log(time)
         showMode('time');
     };
 
@@ -111,10 +113,6 @@ export default function PublishContainer({ navigation }){
             },
             picture: image?.uri
         }
-    }
-
-    function onChangeText(text, inputText){
-        
     }
 
     return (
@@ -144,7 +142,7 @@ export default function PublishContainer({ navigation }){
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Titre de l'évenement <Text style={{color: colors.red}}>*</Text></Text>
-                        <TextInput value={title} onValueChange={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                        <TextInput value={title} onChangeText={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                     <Text style={{...sharedStyles.textPublish}}>Date <Text style={{color: colors.red}}>*</Text></Text>
@@ -198,11 +196,11 @@ export default function PublishContainer({ navigation }){
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Nombre de places <Text style={{color: colors.red}}>*</Text></Text>
-                        <TextInput style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
+                        <TextInput value={seats} onChangeText={(text) => setSeats(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
                     </View>
                     <View style={{width: '100%', marginLeft: '5%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Descriptif de l'événement</Text>
-                        <TextInput style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
+                        <TextInput value={description} onChangeText={(text) => setDescription(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
                         <View opacity={0.7}>
                             <Text style={{ marginBottom: 20, marginLeft: 10, fontStyle: 'italic', fontSize: 14, color: colors.grey2}}>Donnez envie à la communauté de participer !</Text>
                         </View>

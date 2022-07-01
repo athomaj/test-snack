@@ -14,6 +14,7 @@ export default function ImagePickerExample({ image, setParamImage }) {
     });
 
     if (!result.cancelled) {
+      console.log(result);
       setParamImage(result);
     }
   };
