@@ -93,7 +93,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::post.post",
-      "mappedBy": "id_user"
+      "mappedBy": "user"
     }
   }
 }

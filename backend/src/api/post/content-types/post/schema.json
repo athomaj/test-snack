@@ -4,7 +4,8 @@
   "info": {
     "singularName": "post",
     "pluralName": "posts",
-    "displayName": "Post"
+    "displayName": "Post",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -20,7 +21,7 @@
     "district": {
       "type": "integer"
     },
-    "id_user": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
@@ -32,20 +33,22 @@
     "isSearch": {
       "type": "boolean"
     },
-    "id_category": {
+    "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "posts"
     },
     "seats": {
-      "type": "integer"
+      "type": "integer",
+      "required": false,
+      "unique": false
     },
-    "date": {
-      "type": "date"
+    "datetime": {
+      "type": "datetime"
     },
-    "time": {
-      "type": "time"
+    "avatarUrl": {
+      "type": "string"
     }
   }
 }

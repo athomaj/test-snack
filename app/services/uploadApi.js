@@ -7,8 +7,6 @@ async function uploadPicture(data) {
     // if (!token) {
     //     return null
     // } else {
-        console.log(data);
-        console.log(`${API_URL}/upload`);
         return axios.post(`${API_URL}/upload`, data, {headers: {"Content-Type": "multipart/form-data"}}).then(response => {
             return response.data
         }).catch(error => {
