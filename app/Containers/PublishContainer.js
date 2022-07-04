@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { Platform } from 'react-native';
 import ImagePickerExample from '../Components/Utils/imagePicker';
+import { PostContext } from '../context/PostContext';
 const deviceWidth = Dimensions.get('screen').width
 
 export default function PublishContainer({ navigation }){
@@ -105,14 +106,15 @@ export default function PublishContainer({ navigation }){
         const data = {
             post: {
                 titre: title,
-                date: "",
-                time: "",
+                date: date,
+                time: time,
                 seats: seats,
                 description: description,
                 isSearch: !isSearch
             },
             picture: image?.uri
         }
+        PostContext.publish(data)
     }
 
     return (
@@ -209,7 +211,7 @@ export default function PublishContainer({ navigation }){
                         <Text style={{...sharedStyles.textPublish}}>Photo de l'événement</Text>
                         <ImagePickerExample image={image?.uri} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerExample>
                     </View>
-                    <TouchableOpacity style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginTop: 40, marginLeft:'10%' }}>
+                    <TouchableOpacity onPress={sendData} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginTop: 40, marginLeft:'10%' }}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Publier</Text>
                     </TouchableOpacity>
                 </ScrollView>

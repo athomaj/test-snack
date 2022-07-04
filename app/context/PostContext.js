@@ -49,7 +49,6 @@ const PostProvider = ({ children }) => {
             });
 
             const uploadResponse = await uploadApi.uploadPicture(formData)
-            console.log("UPLOAD IMAGE RES ====", uploadResponse)
             if (uploadResponse[0]?.url) {
                 data.post.avatarUrl = BASE_URL + uploadResponse[0].url
             }
