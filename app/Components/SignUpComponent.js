@@ -1,8 +1,6 @@
 import React from 'react';
 import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image, Switch } from 'react-native';
-
 import { colors } from '../utils/colors';
-
 import SevenFamillycheckBox from './Utils/sevenFamilyCheckbox';
 import ImagePickerExample from './Utils/picturePicker';
 import validateEmail from './Utils/RegexValidation';
@@ -118,13 +116,11 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                     password: pass,
                     favoriteDish: mealPref,
                     favoritePlace: shopPref,
-                    food_families: sevenFamilies,
+                    food_families: sevenFamily,
                     avatarUrl: ""
                 },
                 picture: image?.uri
             }
-            // console.log(data)
-            // return
             requestSignUp(data)
         } else if (stepNumber === 4) {
             console.log("Last Step")
