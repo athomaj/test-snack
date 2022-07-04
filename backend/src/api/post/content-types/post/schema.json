@@ -21,7 +21,7 @@
     "district": {
       "type": "integer"
     },
-    "id_user": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
@@ -33,11 +33,10 @@
     "isSearch": {
       "type": "boolean"
     },
-    "id_category": {
+    "category": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::category.category",
-      "inversedBy": "posts"
+      "relation": "oneToOne",
+      "target": "api::category.category"
     },
     "seats": {
       "type": "integer",

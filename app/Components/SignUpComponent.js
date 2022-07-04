@@ -8,12 +8,6 @@ import HeaderChapter from './Utils/HeaderChapter';
 import { sharedStyles } from '../utils/styles';
 import { sevenFamilies, sevenFamiliesSecond } from '../utils/const';
 
-
- //Constante de propriétés pour les composants annexe
-const propsSevenFamily = [
-    [['#F91111', 'Bec sucré'], ['#38BD17', 'Veggie fan'], ['#9747FF', 'Vive le gras'], ['#47C8FF', 'Pasta Lover']],
-    [['#FB10C7', 'World fusion'], ['#A29B3F', 'Tradition'], ['#FC941A', 'El Buli']]
-]
 //Importation dim'age de validation
 const validateEmailicon = require('../assets/icon/validated_color.png');
 const forbidenEmail = require('../assets/icon/forbiden_color.png');
@@ -122,13 +116,11 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                     password: pass,
                     favoriteDish: mealPref,
                     favoritePlace: shopPref,
-                    food_families: sevenFamilies,
+                    food_families: sevenFamily,
                     avatarUrl: ""
                 },
                 picture: image?.uri
             }
-            // console.log(data)
-            // return
             requestSignUp(data)
         } else if (stepNumber === 4) {
             console.log("Last Step")

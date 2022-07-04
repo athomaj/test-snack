@@ -1,25 +1,17 @@
 import axios from "axios";
 import { API_URL } from "../config/config";
 
-async function publish(data) {
-    return await axios.get(`${API_URL}/posts`, data, { headers: { "Content-Type": "application/json" } })
+async function display() {
+    return await axios.get(`${API_URL}/posts?populate=*`)
         .then(response => {
-            console.log('sendingPost ==',response.data.data)
             return response.data.data
         })
         .catch(error => {
-            return error.response
+            console.log("GET POSTS ERR ====", error.response)
+            return null
         });
 }
 
 export default {
-    publish
+    display
 }
-    return await axios.get(`${API_URL}/posts?populate=*`, {})
-        .then(response => {
-            console.log('posts ==',response.data.data)
-            return response.data.data
-        })
-        .catch(error => {
-            return error.response
-        });
