@@ -31,23 +31,7 @@ export default function PublishContainer({ navigation }){
     const [seats, setSeats] = React.useState("")
     const [description, setDescription] = React.useState()
     const [isSearch, setIsSearch] = React.useState(true)
-    const [postState, setPostState] = React.useState(initialState)
-
-    const initialState = {
-        isConnected: false,
-        isLoading: true,
-        error: false,
-        errorMessage: "",
-        isInitialized: false,
-        post: {
-            title: "",
-            date: "",
-            datetime: "",
-            seats: "",
-            description: "",
-            isSearch: ""
-        }
-    }
+    const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
         if (!userContext.authState.isConnected) {
@@ -56,10 +40,7 @@ export default function PublishContainer({ navigation }){
     }, [userContext.authState.isConnected, userContext.authState.errorMessage])
 
     const publish = async (data) => {
-        setPostState({
-            ...postState,
-            isLoading: true
-        })
+        setLoading(true)
 
         if (data.picture) {
             const formData = new FormData()
@@ -77,22 +58,13 @@ export default function PublishContainer({ navigation }){
                 data.post.avatarUrl = BASE_URL + uploadResponse[0].url
             }
         }
+        console.log("PUBLISH")
         const response = await postApi.publish({data: data.post})
 
         if (response.data.error) {
-            setPostState({
-                ...postState,
-                error: true,
-                errorMessage: response.data.error.message
-            })
-            return
+            console.log(response)
         }
-        setPostState({
-            ...postState,
-            isConnected: true,
-            isInitialized: true,
-            isLoading: false,
-        })
+        setLoading(false)
 
     };
 
@@ -187,7 +159,7 @@ export default function PublishContainer({ navigation }){
                         <Animated.View style={{position:'absolute', bottom:0, left: leftValue, zIndex: 1, height:5, width: widthValue, backgroundColor: colors.primaryYellow}}></Animated.View>
                     </View>
                 </View>
-                <ScrollView style={{width: '100%', height: '100%'}} contentContainerStyle={{paddingTop: 170, paddingBottom: 20}}>
+                <ScrollView style={{width: '100%', height: '100%'}} contentContainerStyle={{paddingTop: 170, paddingBottom: 20, alignItems: 'center'}}>
                     <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop: 10}}>
                         <Text>Je propose</Text>
                         <Switch
@@ -200,14 +172,14 @@ export default function PublishContainer({ navigation }){
                         />
                         <Text>Je recherche</Text>
                     </View>
-                    <View style={{width: '100%', marginLeft: '5%'}}>
+                    <View style={{width: '90%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Titre de l'évenement <Text style={{color: colors.red}}>*</Text></Text>
-                        <TextInput value={title} onChangeText={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                        <TextInput value={title} onChangeText={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     </View>
-                    <View style={{width: '100%', marginLeft: '5%'}}>
+                    <View style={{width: '90%'}}>
                     <Text style={{...sharedStyles.textPublish}}>Date <Text style={{color: colors.red}}>*</Text></Text>
                         {Platform.OS === 'ios' ?
-                        <View style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center' }}>
+                        <View style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center' }}>
                             <Text style={{width: 270}}>{moment((datetime)).format('DD/MM/YYYY, H:mm')}</Text>
                             <TouchableOpacity style={{height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center'}} onPress={showDateTimePicker}>
                                 <Image style={{width: 20, height: 20, resizeMode: 'contain'}}source={require('../assets/calendar.png')}></Image>
@@ -222,8 +194,8 @@ export default function PublishContainer({ navigation }){
                                 )}
                         </View>
                         :
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{ ...sharedStyles.borderPublish, height: 50, width: '42.5%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center', marginRight: '5%' }}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <View style={{ ...sharedStyles.borderPublish, height: 50, width: '48%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center'}}>
                                 <Text style={{width: 105}}>{moment((time)).format('DD/MM/YYYY')}</Text>
                                 <TouchableOpacity style={{height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center'}} onPress={showDatePicker}>
                                     <Image style={{width: 20, height: 20, resizeMode: 'contain'}}source={require('../assets/calendar.png')}></Image>
@@ -237,7 +209,7 @@ export default function PublishContainer({ navigation }){
                                         />
                                     )}
                             </View>
-                            <View style={{ ...sharedStyles.borderPublish, height: 50, width: '42.5%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center' }}>
+                            <View style={{ ...sharedStyles.borderPublish, height: 50, width: '48%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, flexDirection:'row', alignItems: 'center' }}>
                                 <Text style={{width: 105}}>{moment((time)).format('H:mm')}</Text>
                                 <TouchableOpacity style={{height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center'}} onPress={showTimePicker}>
                                     <Image style={{width: 20, height: 20, resizeMode: 'contain'}} source={require('../assets/calendar.png')}></Image>
@@ -254,22 +226,22 @@ export default function PublishContainer({ navigation }){
                         </View>
                         }
                     </View>
-                    <View style={{width: '100%', marginLeft: '5%'}}>
+                    <View style={{width: '90%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Nombre de places <Text style={{color: colors.red}}>*</Text></Text>
-                        <TextInput value={seats} onChangeText={(text) => setSeats(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
+                        <TextInput value={seats} onChangeText={(text) => setSeats(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
                     </View>
-                    <View style={{width: '100%', marginLeft: '5%'}}>
+                    <View style={{width: '90%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Descriptif de l'événement</Text>
-                        <TextInput value={description} onChangeText={(text) => setDescription(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '90%', backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
+                        <TextInput value={description} onChangeText={(text) => setDescription(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
                         <View opacity={0.7}>
                             <Text style={{ marginBottom: 20, marginLeft: 10, fontStyle: 'italic', fontSize: 14, color: colors.grey2}}>Donnez envie à la communauté de participer !</Text>
                         </View>
                     </View>
-                    <View style={{width: '100%', marginLeft: '5%'}}>
+                    <View style={{width: '90%'}}>
                         <Text style={{...sharedStyles.textPublish}}>Photo de l'événement</Text>
                         <ImagePickerExample image={image?.uri} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerExample>
                     </View>
-                    <TouchableOpacity onPress={sendData} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginTop: 40, marginLeft:'10%' }}>
+                    <TouchableOpacity onPress={sendData} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginTop: 40, width: '90%' }}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Publier</Text>
                     </TouchableOpacity>
                 </ScrollView>
