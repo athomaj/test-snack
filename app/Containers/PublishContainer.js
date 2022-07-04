@@ -8,7 +8,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { Platform } from 'react-native';
 import ImagePickerExample from '../Components/Utils/imagePicker';
-import { PostContext } from '../context/PostContext';
 import postApi from '../services/postApi';
 import { randomId } from '../utils/sharedFunctions';
 import uploadApi from '../services/uploadApi';
@@ -129,13 +128,11 @@ export default function PublishContainer({ navigation }){
     }
 
     const onChangeTime = (event, selectedDate) => {
-        console.log("time", selectedDate)
         setShow(false);
         setTime(selectedDate);
     };
 
     const onChangeDate = (event, selectedDate) => {
-        console.log("date", selectedDate + "")
         setShow(false);
         setDate(selectedDate);
     };
@@ -155,12 +152,10 @@ export default function PublishContainer({ navigation }){
     };
 
     const showDatePicker = () => {
-        console.log(date)
         showMode('date');
     };
 
     const showTimePicker = () => {
-        console.log(time)
         showMode('time');
     };
 
@@ -169,7 +164,7 @@ export default function PublishContainer({ navigation }){
             post: {
                 title: title,
                 datetime: time,
-                seats: 5,
+                seats: seats,
                 description: description,
                 isSearch: !isSearch,
                 address: "test",
