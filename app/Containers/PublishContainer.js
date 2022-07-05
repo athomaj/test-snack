@@ -24,17 +24,18 @@ export default function PublishContainer({ navigation }) {
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
     const [datetime, setDateTime] = useState(new Date())
-    const [mode, setMode] = useState('date')
-    const [show, setShow] = useState(false)
     const [showDate, setShowDate] = useState(false)
     const [showTime, setShowTime] = useState(false)
     const [image, setImage] = React.useState(null)
     const [title, setTitle] = React.useState("")
     const [seats, setSeats] = React.useState("")
     const [description, setDescription] = React.useState()
+    const [address, setAddress] = React.useState()
     const [isSearch, setIsSearch] = React.useState(true)
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState(false)
+    const [category, setCategory] = React.useState(1)
+    const [district, setDistrict] = React.useState("")
 
     React.useEffect(() => {
         if (!userContext.authState.isConnected) {
@@ -48,12 +49,15 @@ export default function PublishContainer({ navigation }) {
 
             let width = 0.333
             let left = 0
+            setCategory(1)
 
             if (index === 1) {
+                setCategory(2)
                 width = 0.333
                 left = 0.333
             }
             if (index === 2) {
+                setCategory(3)
                 width = 0.333
                 left = 0.667
             }
@@ -102,9 +106,10 @@ export default function PublishContainer({ navigation }) {
                 seats: seats,
                 description: description,
                 isSearch: !isSearch,
-                address: "test",
-                district: 13001,
-                user: {id: userContext.authState.user.id}
+                address: address,
+                district: district,
+                user: {id: userContext.authState.user.id},
+                category: {id: category}
             },
             picture: Platform.OS === 'ios' ? image?.uri.replace('file://', '') : image?.uri,
         }
@@ -164,7 +169,7 @@ export default function PublishContainer({ navigation }) {
                         <Text>Je recherche</Text>
                     </View>
                     <View style={{ width: '90%' }}>
-                        <Text style={{ ...sharedStyles.textPublish }}>Titre de l'évenement <Text style={{ color: colors.red }}>*</Text></Text>
+                        <Text style={{ ...sharedStyles.textPublish }}>Titre de l'évenement<Text style={{ color: colors.red }}> *</Text></Text>
                         <TextInput value={title} onChangeText={(text) => setTitle(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     </View>
                     <View style={{ width: '90%' }}>
@@ -172,11 +177,6 @@ export default function PublishContainer({ navigation }) {
                         {Platform.OS === 'ios' ?
                             <View style={{}}>
                                 <View style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, justifyContent: 'center' }}>
-                                    {/* <Text style={{ backgroundColor: 'yellow' }}>{moment((datetime)).format('DD/MM/YYYY, H:mm')}</Text>
-                                    <TouchableOpacity style={{ height: '100%', width: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }} onPress={() => setShow(true)}>
-                                        <Image style={{ width: 20, height: 20, resizeMode: 'contain' }} source={require('../assets/calendar.png')}></Image>
-                                    </TouchableOpacity> */}
-
                                     <DateTimePicker
                                         value={datetime}
                                         mode={"datetime"}
@@ -220,8 +220,16 @@ export default function PublishContainer({ navigation }) {
                         }
                     </View>
                     <View style={{ width: '90%' }}>
-                        <Text style={{ ...sharedStyles.textPublish }}>Nombre de places <Text style={{ color: colors.red }}>*</Text></Text>
+                        <Text style={{ ...sharedStyles.textPublish }}>Nombre de places<Text style={{ color: colors.red }}> *</Text></Text>
                         <TextInput value={seats} onChangeText={(text) => setSeats(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
+                    </View>
+                    <View style={{ width: '90%' }}>
+                        <Text style={{ ...sharedStyles.textPublish }}>Adresse<Text style={{ color: colors.red }}> *</Text></Text>
+                        <TextInput value={address} onChangeText={(text) => setAddress(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    </View>
+                    <View style={{ width: '90%' }}>
+                        <Text style={{ ...sharedStyles.textPublish }}>Arrondissement<Text style={{ color: colors.red }}> *</Text></Text>
+                        <TextInput value={district} onChangeText={(text) => setDistrict(text)} style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }} keyboardType="number-pad"></TextInput>
                     </View>
                     <View style={{ width: '90%' }}>
                         <Text style={{ ...sharedStyles.textPublish }}>Descriptif de l'événement</Text>
@@ -230,11 +238,11 @@ export default function PublishContainer({ navigation }) {
                             <Text style={{ marginBottom: 20, marginLeft: 10, fontStyle: 'italic', fontSize: 14, color: colors.grey2 }}>Donnez envie à la communauté de participer !</Text>
                         </View>
                     </View>
-                    <View style={{ width: '90%',marginBottom: 40 }}>
+                    <View style={{ width: '90%', marginBottom: 40 }}>
                         <Text style={{ ...sharedStyles.textPublish }}>Photo de l'événement</Text>
                         <ImagePickerExample image={image?.uri} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerExample>
                     </View>
-                    <Text>azegrieuzaygrif</Text>
+                    <Text style={{color: 'red'}}>{error}</Text>
                     <TouchableOpacity onPress={sendPostTapped} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, width: '90%' }}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Publier</Text>
                         <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
