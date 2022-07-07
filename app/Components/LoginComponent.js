@@ -8,9 +8,8 @@ import validateEmail from './Utils/RegexValidation';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
-    const [email, setEmail] = React.useState()
-    const [pass, setPass] = React.useState()
-    const [disabledButton, setDisabledButton] = React.useState(false)
+    const [email, setEmail] = React.useState("test@gmail.com")
+    const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
         if (email.length > 0 && pass.length > 0) {
@@ -44,7 +43,7 @@ export default function LoginComponent({ loading, error, requestLogin, loginStat
             </View>
 
             <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                <TouchableOpacity disabled={disabledButton} onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: disabledButton ? colors.primaryYellowDisable : colors.primaryYellow, marginBottom: 10 }}>
+                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
                     <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Connexion</Text>
                     <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
                 </TouchableOpacity>

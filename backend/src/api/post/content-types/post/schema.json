@@ -43,11 +43,11 @@
       "required": false,
       "unique": false
     },
-    "date": {
-      "type": "date"
+    "datetime": {
+      "type": "datetime"
     },
-    "time": {
-      "type": "time"
-    }
+    "avatarUrl": {
+      "type": "string"
+    },
   }
 }
