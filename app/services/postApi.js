@@ -4,10 +4,10 @@ import { API_URL } from "../config/config";
 async function publish(data) {
     return await axios.post(`${API_URL}/posts`, data, { headers: { "Content-Type": "application/json" } })
         .then(response => {
-            console.log(response)
             return response
         })
         .catch(error => {
+            console.log("ERROR PUBLISH ==== ", error)
             return error.response
         });
 }

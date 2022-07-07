@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal, Switch, TextInput, ScrollView, ActivityIndicator } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+import { Platform } from 'react-native';
 import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
-import { Platform } from 'react-native';
 import ImagePickerExample from '../Components/Utils/imagePicker';
 import postApi from '../services/postApi';
 import { randomId } from '../utils/sharedFunctions';
 import uploadApi from '../services/uploadApi';
 import { BASE_URL } from '../config/config';
-const deviceWidth = Dimensions.get('screen').width
+
+const dimWidth = Dimensions.get('screen').width
 
 export default function PublishContainer({ navigation }) {
 
     const userContext = useUserContext();
 
     const [leftValue, setLeftValue] = useState(new Animated.Value(0))
-    const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.333))
+    const [widthValue, setWidthValue] = useState(new Animated.Value(dimWidth * 0.333))
     const [slideIndex, setSlideIndex] = useState(0)
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
@@ -64,12 +65,12 @@ export default function PublishContainer({ navigation }) {
 
             Animated.parallel([
                 Animated.timing(leftValue, {
-                    toValue: deviceWidth * left,
+                    toValue: dimWidth * left,
                     duration: 300,
                     useNativeDriver: false
                 }),
                 Animated.timing(widthValue, {
-                    toValue: deviceWidth * width,
+                    toValue: dimWidth * width,
                     duration: 300,
                     useNativeDriver: false
                 })
@@ -85,10 +86,6 @@ export default function PublishContainer({ navigation }) {
     const onChangeDate = (event, selectedDate) => {
         setShowDate(false);
         setDate(selectedDate);
-    };
-
-    const onChangeDateTime = (event, selectedDate) => {
-        setDateTime(selectedDate);
     };
 
     const sendPostTapped = async () => {
@@ -108,13 +105,11 @@ export default function PublishContainer({ navigation }) {
                 isSearch: !isSearch,
                 address: address,
                 district: district,
-                user: {id: userContext.authState.user.id},
-                category: {id: category}
+                user: { id: userContext.authState.user.id },
+                category: { id: category }
             },
             picture: Platform.OS === 'ios' ? image?.uri.replace('file://', '') : image?.uri,
         }
-
-        console.log("DATA ====", data)
 
         if (data.picture) {
             const formData = new FormData()
@@ -128,14 +123,12 @@ export default function PublishContainer({ navigation }) {
             });
 
             const uploadResponse = await uploadApi.uploadPicture(formData)
-            console.log("UPLOAD IMAGE ====", uploadResponse)
 
             if (uploadResponse[0]?.url) {
                 data.post.avatarUrl = BASE_URL + uploadResponse[0].url
             }
         }
         const response = await postApi.publish({ data: data.post })
-            console.log("POST POST ====", response)
 
         if (response.data.error) {
             console.log(response)
@@ -176,13 +169,13 @@ export default function PublishContainer({ navigation }) {
                         <Text style={{ ...sharedStyles.textPublish }}>Date <Text style={{ color: colors.red }}>*</Text></Text>
                         {Platform.OS === 'ios' ?
                             <View style={{}}>
-                                <View style={{ ...sharedStyles.borderPublish, height: 50, width: '100%', backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20, justifyContent: 'center' }}>
+                                <View style={{ backgroundColor: colors.white, marginBottom: 20 }}>
                                     <DateTimePicker
                                         value={datetime}
                                         mode={"datetime"}
                                         is24Hour={true}
-                                        onChange={onChangeDateTime}
-                                        style={{ width: 215 }}
+                                        onChange={(event, date) => setDateTime(date)}
+                                        style={{ width: 210 }}
                                     />
                                 </View>
                             </View>
@@ -242,7 +235,7 @@ export default function PublishContainer({ navigation }) {
                         <Text style={{ ...sharedStyles.textPublish }}>Photo de l'événement</Text>
                         <ImagePickerExample image={image?.uri} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerExample>
                     </View>
-                    <Text style={{color: 'red'}}>{error}</Text>
+                    <Text style={{ color: 'red' }}>{error}</Text>
                     <TouchableOpacity onPress={sendPostTapped} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, width: '90%' }}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Publier</Text>
                         <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
