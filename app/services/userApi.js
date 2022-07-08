@@ -49,10 +49,9 @@ async function getMe() {
 
 async function updateUser(data, id) {
     return axios.put(`${API_URL}/users/${id}`, data).then(response => {
-        console.log(response.data)
-        return response.data
+        return response
     }).catch(error => {
-        console.log("ERR UPDATE USER ====", error)
+        console.log("ERR UPDATE USER ====", error.response)
         return error.response
     })
 }

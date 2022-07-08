@@ -99,7 +99,6 @@ const UserProvider = ({ children }) => {
             });
 
             const uploadResponse = await uploadApi.uploadPicture(formData)
-            console.log("UPLOAD IMAGE RES ====", uploadResponse)
             if (uploadResponse[0]?.url) {
                 data.user.avatarUrl = BASE_URL + uploadResponse[0].url
             }
