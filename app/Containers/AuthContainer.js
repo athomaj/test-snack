@@ -26,7 +26,7 @@ export default function AuthContainer({ navigation, route }) {
 
     function searchContact(search) {
         if (search) {
-            console.log("SEARCH")
+            navigation.navigate('SearchContact')
         } else {
             navigation.replace('MainStack')
         }

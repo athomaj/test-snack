@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image, Switch } from 'react-native';
+import { SafeAreaView, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Image, Switch, StyleSheet, Modal, Alert } from 'react-native';
 import { colors } from '../utils/colors';
 import SevenFamillycheckBox from './Utils/sevenFamilyCheckbox';
 import ImagePickerExample from './Utils/picturePicker';
@@ -7,6 +7,8 @@ import validateEmail from './Utils/RegexValidation';
 import HeaderChapter from './Utils/HeaderChapter';
 import { sharedStyles } from '../utils/styles';
 import { sevenFamilies, sevenFamiliesSecond } from '../utils/const';
+import SearchContactContainer from '../Containers/SearchContactContainer';
+
 
 //Importation dim'age de validation
 const validateEmailicon = require('../assets/icon/validated_color.png');
@@ -22,10 +24,27 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
     const [shopPref, setShopPref] = React.useState("")
     const [sevenFamily, setSevenFamily] = React.useState([])
     const [isvalidEmail, setValideEmail] = React.useState(false)
+    const [modalVisible, setModalVisible] = React.useState(false);
 
     // Hooks comportement de page
     const [stepNumber, setStep] = React.useState(0)
     const [disabledButton, setDisabledButton] = React.useState(true)
+    const showAlert = () =>
+        Alert.alert(
+        '🥳 Félicitation',
+        'Vos demandes de parrainage ont bien été envoyé',
+        [
+            {
+            text: 'Cancel',
+            style: 'cancel',
+            },
+        ],
+        {
+            cancelable: true,
+            onDismiss: () => searchContact(false)
+            ,
+        }
+    );
 
     React.useEffect(() => {
         if (userContext.authState.isConnected) {
@@ -126,6 +145,15 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
             console.log("Last Step")
         } else {
             incremmentStep(1)
+        }
+    }
+
+    function askSponsorCompleted(state)
+    {
+        setModalVisible(false)
+        if(state === true)
+        {
+            showAlert()
         }
     }
 
@@ -234,15 +262,76 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => searchContact(true)} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
+                        <TouchableOpacity onPress={() => setModalVisible(true)} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
                             <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Chercher dans vos contacts</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => searchContact(false)} style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>Continuer sans parrain</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                            Alert.alert('Modal has been closed.');
+                            setModalVisible(!modalVisible);
+                            }}>
+                                <SearchContactContainer closeModal={(isdite) => askSponsorCompleted(isdite)} ></SearchContactContainer>
+                        </Modal>
+                    </View>
                 </View>
             }
         </SafeAreaView>
     );
 }
+
+
+const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      width: '100%',
+      height: '90%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 10
+    },
+    modalView: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    // button: {
+    //   borderRadius: 20,
+    //   padding: 10,
+    //   elevation: 2,
+    // },
+    // buttonOpen: {
+    //   backgroundColor: '#F194FF',
+    // },
+    // buttonClose: {
+    //   backgroundColor: '#2196F3',
+    // },
+    // textStyle: {
+    //   color: 'white',
+    //   fontWeight: 'bold',
+    //   textAlign: 'center',
+    // },
+    // modalText: {
+    //   marginBottom: 15,
+    //   textAlign: 'center',
+    // },
+  });
+  
