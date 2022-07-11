@@ -13,6 +13,7 @@ import PublishContainer from './Containers/PublishContainer';
 import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
+import OnboardingContainer from './Containers/onboardingContainer';
 import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
 
@@ -35,6 +36,7 @@ function AuthStackScreen() {
   return (
     <LoginStack.Navigator initialRouteName={"Splash"} screenOptions={{ headerTransparent: true }}>
       <LoginStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }} />
+      <LoginStack.Screen name="onboarding" component={OnboardingContainer} options={{ headerShown: false, gestureEnabled: false }} />
       <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
       <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
     </LoginStack.Navigator>

@@ -3,6 +3,7 @@ import { SafeAreaView, View } from 'react-native';
 import LoginComponent from '../Components/LoginComponent';
 import SignUpComponent from '../Components/SignUpComponent';
 import { useUserContext } from '../context/UserContext';
+import { getData, storeData } from '../utils/storage';
 
 export default function AuthContainer({ navigation, route }) {
 
@@ -12,7 +13,11 @@ export default function AuthContainer({ navigation, route }) {
     const [errorMessage, setErrorMessage] = React.useState("")
 
     React.useEffect(() => {
-        if (userContext.authState.isConnected && isLogin) {
+        if(!getData('alreadyConnected')){
+            storeData('alreadyConnected', true)
+            navigate.replace('')
+        }
+        else if (userContext.authState.isConnected && isLogin) {
             navigation.replace('MainStack')
         }
         if (userContext.authState.errorMessage) {
