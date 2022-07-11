@@ -14,6 +14,21 @@ async function getUsers() {
         .then(res => { return res.data }).catch(err => { return err })
 }
 
+async function getUsersContactPhone() {
+    return axios.get(`${API_URL}/users?fields[0]=username&fields[1]=numberPhone&fields[3]=avatarUrl&populate[pendings][fields][0]=id`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
+async function getPendingsOfSponsor(idSponsor) {
+    return axios.get(`${API_URL}/users/${idSponsor}?fields=id&populate[pendings][fields][0]=id`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
+async function getMePopulate(idUser) {
+    return axios.get(`${API_URL}/users/${idUser}?fields=id&populate[pendings][fields][0]=username&populate[pendings][fields][1]=avatarUrl`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
 async function getMe() {
     const token = await getData("authToken")
 
@@ -41,9 +56,13 @@ async function updateUser(data, id) {
     })
 }
 
+
 export default {
     getUser,
     getUsers,
     getMe,
-    updateUser
+    updateUser,
+    getUsersContactPhone,
+    getPendingsOfSponsor,
+    getMePopulate
 }
