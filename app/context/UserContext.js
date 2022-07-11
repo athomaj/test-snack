@@ -114,13 +114,15 @@ const UserProvider = ({ children }) => {
             })
             return
         }
-        setAuthState({
-            ...authState,
-            isConnected: true,
-            isInitialized: true,
-            isLoading: false,
-            user: response.data.user
-        })
+        getCurrentUser()
+        // const user = await userApi.getMe()
+        // setAuthState({
+        //     ...authState,
+        //     isConnected: true,
+        //     isInitialized: true,
+        //     isLoading: false,
+        //     user: response.data.user
+        // })
 
     };
 

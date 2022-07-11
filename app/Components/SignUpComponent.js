@@ -152,7 +152,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                         <Text style={{ ...sharedStyles.titleH1, marginBottom: 20 }}>Hello fou de food!</Text>
                         <Text>Ici vous allez pouvoir partager votre passion de la cuisine avec vos voisins de quartier. Ateliers thématiques, dîners partagés, prêt de matériel, bons plans circuits courts, défi de Chef, vous êtes entre passionés et en confiance.{'\n'}{'\n'}Nous avons tout prévu pour que tout se passe bien, nous comptons aussi sur vous pour qu’une atmosphère de bienveillance et de partage règne!</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', alignContent: 'center' }}>
+                    {/* <View style={{ flexDirection: 'row', alignContent: 'center' }}>
                         <Switch
                             trackColor={{ false: "#767577", true: colors.primaryYellow }}
                             ios_backgroundColor="#3e3e3e"
@@ -165,11 +165,11 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                             {'\n'}et la
                             <Text style={{ fontWeight: 'bold' }}> politique de confidentialité</Text>
                         </Text>
-                    </View>
+                    </View> */}
 
                     <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                        <TouchableOpacity disabled={disabledButton} onPress={() => incremmentStep(1)} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: disabledButton ? colors.primaryYellowDisable : colors.primaryYellow, marginBottom: 10 }}>
-                            <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Je m'inscris</Text>
+                        <TouchableOpacity onPress={() => incremmentStep(1)} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
+                            <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>C'est parti !</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={loginStatus} style={{ justifyContent: 'center', alignItems: 'center' }}>

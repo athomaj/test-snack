@@ -1,8 +1,9 @@
 import axios from "axios";
 import { API_URL } from "../config/config";
+import { getData } from "../utils/storage";
 
 async function uploadPicture(data) {
-    const token = await getData("authToken")
+    // const token = await getData("authToken")
 
     // if (!token) {
     //     return null
