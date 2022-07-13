@@ -3,6 +3,7 @@ import { SafeAreaView, View, Image, TouchableOpacity, Text, FlatList, Dimensions
 import LoginComponent from '../Components/LoginComponent';
 import SignUpComponent from '../Components/SignUpComponent';
 import { useUserContext } from '../context/UserContext';
+import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 
 const DATA = [
@@ -94,6 +95,7 @@ export default function OnboardingContainer({ navigation, route }) {
                     horizontalScrollIndicator={false}
                     keyExtractor={item => item.id}
                     onMomentumScrollEnd={(event) => selectedDot(event.nativeEvent.contentOffset.x)}
+                    scrollEnabled={true}
                 
                 />
 
@@ -102,10 +104,10 @@ export default function OnboardingContainer({ navigation, route }) {
                     {dotMap}
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('Login', { isLogin: false })} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
-                        <Text style={{ fontSize: 14, color: 'black', fontWeight: '600' }}>Démarrer</Text>
+                        <Text style={{ fontSize: 14, color: 'white', fontWeight: '600' }}>Démarrer</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('Login', { isLogin: true })} style={{...sharedStyles.secondaryButton, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, fontWeight: '600', color: 'black' }}>Déjà membre ?</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primaryYellow }}>Déjà membre ?</Text>
                     </TouchableOpacity>
                 </View>
             </View>

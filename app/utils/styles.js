@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { color } from "react-native-reanimated";
 import { colors } from '../utils/colors';
 
 export const sharedStyles = StyleSheet.create({
@@ -39,23 +38,23 @@ export const sharedStyles = StyleSheet.create({
         border: 20,
         height: 50,
         width: '80%',
-        borderRadius: 20,
+        borderRadius: 4,
         backgroundColor: colors.primaryYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        color: 'white'
+        color: '#ffffff',
     },
     secondaryButton: {
         border: 20,
         height: 50,
         width: '80%',
-        borderRadius: 20,
+        borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: colors.primaryYellow,
-        color: colors.primaryYellow
+        color: colors.primaryYellow,
     },
     textPublish: {
         fontSize: 14,
