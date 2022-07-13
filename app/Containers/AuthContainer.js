@@ -13,15 +13,16 @@ export default function AuthContainer({ navigation, route }) {
     const [errorMessage, setErrorMessage] = React.useState("")
 
     React.useEffect(() => {
-        if(!getData('alreadyConnected')){
-            storeData('alreadyConnected', true)
-            navigate.replace('')
-        }
-        else if (userContext.authState.isConnected && isLogin) {
+        
+        if (userContext.authState.isConnected && isLogin) {
             navigation.replace('MainStack')
         }
         if (userContext.authState.errorMessage) {
             setErrorMessage(userContext.authState.errorMessage);
+            if(!getData('alreadyConnected')){
+                storeData('alreadyConnected', true)
+                navigate.replace('')
+            }
         }
     }, [userContext.authState.isConnected, userContext.authState.errorMessage, isLogin])
 

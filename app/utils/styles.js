@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { color } from "react-native-reanimated";
 import { colors } from '../utils/colors';
 
 export const sharedStyles = StyleSheet.create({
@@ -22,8 +23,9 @@ export const sharedStyles = StyleSheet.create({
         borderStyle: 'solid'
     },
     titleH1: {
-        fontWeight: 'bold',
-        fontSize: 18
+        fontWeight: '700',
+        fontSize: 41,
+        color: '#005DB2'
     },
     primaryButtonWithoutColor: {
         border: 20,
@@ -40,7 +42,20 @@ export const sharedStyles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: colors.primaryYellow,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        color: 'white'
+    },
+    secondaryButton: {
+        border: 20,
+        height: 50,
+        width: '80%',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: colors.primaryYellow,
+        color: colors.primaryYellow
     },
     textPublish: {
         fontSize: 14,

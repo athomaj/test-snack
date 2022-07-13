@@ -13,9 +13,9 @@ import PublishContainer from './Containers/PublishContainer';
 import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
-import OnboardingContainer from './Containers/onboardingContainer';
 import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
+import OnboardingContainer from './Containers/OnboardingContainer';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
