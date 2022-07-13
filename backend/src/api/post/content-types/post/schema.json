@@ -33,11 +33,6 @@
     "isSearch": {
       "type": "boolean"
     },
-    "category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category"
-    },
     "seats": {
       "type": "integer",
       "required": false,
@@ -48,6 +43,18 @@
     },
     "avatarUrl": {
       "type": "string"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "posts"
+    },
+    "kitchen": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::kitchen.kitchen",
+      "inversedBy": "posts"
     }
   }
 }

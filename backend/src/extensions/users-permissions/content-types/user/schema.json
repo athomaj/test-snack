@@ -102,6 +102,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
+    },
+    "kitchen_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::kitchen-level.kitchen-level",
+      "inversedBy": "users"
     }
   }
 }
