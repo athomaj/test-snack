@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal } from 'react-native';
+import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal, StyleSheet, TextInput } from 'react-native';
 import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 
@@ -114,42 +114,6 @@ export default function HomeContainer({ navigation }) {
         setFilterPosts(data)
     }
 
-    function movableButton(index) {
-        if (index !== slideIndex) {
-            let width = 0.15
-            let left = 0
-
-            if (index === 1) {
-                width = 0.30
-                left = 0.15
-            }
-            if (index === 2) {
-                width = 0.25
-                left = 0.45
-            }
-            if (index === 3) {
-                width = 0.30
-                left = 0.70
-            }
-
-            Animated.parallel([
-                Animated.timing(leftValue, {
-                    toValue: deviceWidth * left,
-                    duration: 300,
-                    useNativeDriver: false
-                }),
-                Animated.timing(widthValue, {
-                    toValue: deviceWidth * width,
-                    duration: 300,
-                    useNativeDriver: false
-                })
-            ]).start()
-
-            setSlideIndex(index)
-            filtersPosts(index, filters)
-        }
-    }
-
     function updateFilters(data) {
         setFilters(data)
         filtersPosts(slideIndex, data)
@@ -165,18 +129,20 @@ export default function HomeContainer({ navigation }) {
 
     return (
         <View style={{ height: '100%', width: '100%' }}>
-            <SafeAreaView style={{ height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+            <SafeAreaView style={ styles.container }>
                 <FlatList
                     ListHeaderComponentStyle={{ backgroundColor: 'white' }}
                     ListHeaderComponent={(
                         <>
-                            <HeaderChapter text={'Bonjour ' + userContext.authState.user.username}></HeaderChapter>
-                            <View style={{ flexDirection: "row", width: '100%', height: 50, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: colors.primaryYellow }}>
-                                <TouchableOpacity onPress={() => movableButton(0)} style={{ width: '15%', alignItems: 'center' }}><Text>Tout</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={() => movableButton(1)} style={{ width: '30%', alignItems: 'center' }}><Text>Événements</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={() => movableButton(2)} style={{ width: '25%', alignItems: 'center' }}><Text>Ateliers</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={() => movableButton(3)} style={{ width: '30%', alignItems: 'center' }}><Text>Bons Plans</Text></TouchableOpacity>
-                                <Animated.View style={{ position: 'absolute', bottom: 0, left: leftValue, zIndex: 1, height: 5, width: widthValue, backgroundColor: colors.primaryYellow }}></Animated.View>
+                            <View style={styles.header}>
+                                <Image style={styles.imageHeader} source={require('../assets/icon/defaultImage.png')}/>
+                                <View style={styles.titleSize}>
+                                    <Text style={styles.title}>{'Bonjour ' + userContext.authState.user.username}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.searchBar} onPress={() => setModalVisible(true)}>
+                                    <Image style={styles.searchPicture} source={require('../assets/icon/search.png')}/>
+                                    <Text style={styles.searchInput}>Que recherchez-vous ?</Text>
+                                </TouchableOpacity>
                             </View>
                             {filterPosts.length === 0 &&
                                 <View style={{ height: deviceHeight * 0.6, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -191,9 +157,6 @@ export default function HomeContainer({ navigation }) {
                     style={{ height: '100%', width: '100%' }}
                     stickyHeaderIndices={[0]}
                 />
-                <TouchableOpacity style={{ position: 'absolute', bottom: 15, right: 15 }} onPress={() => setModalVisible(true)}>
-                    <Image style={{ width: 75, height: 75 }} source={require('../assets/filterButton.png')}></Image>
-                </TouchableOpacity>
             </SafeAreaView>
             {modalVisible &&
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
@@ -203,3 +166,58 @@ export default function HomeContainer({ navigation }) {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+
+    container: {
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        padding: '5%'
+    },
+
+    header: {
+        height: 200,
+        width: '100%',
+        paddingTop: '5%',
+        justifyContent: 'center'
+    },
+
+    title: {
+        fontWeight: '600',
+        fontSize: 30,
+        color: colors.primaryBlue,
+    },
+
+    titleSize: {
+        height: 60,
+        justifyContent: 'center'
+    },
+
+    imageHeader: {
+        width: 46,
+        height: 37
+    },
+
+    searchBar: {
+        backgroundColor: colors.secondaryBlue,
+        height: 44,
+        alignItems: "center",
+        flexDirection: "row",
+        padding: '2%',
+        borderRadius: 4,
+    },
+
+    searchPicture: {
+        width: 19,
+        height: 19,
+    },
+
+    searchInput: {
+        left: 10,
+        width: '90%',
+        color: colors.primaryBlue,
+    },
+})
