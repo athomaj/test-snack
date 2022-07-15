@@ -13,6 +13,6 @@ export const levelData = [
     {
         "id": "3",
         "title": "Chef",
-        "status": true
+        "status": false
     },
 ]

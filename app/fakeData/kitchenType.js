@@ -8,7 +8,7 @@ export const kitchenTypeData = [
     {
         "id": "2",
         "title": "Asiatique",
-        "status": true,
+        "status": false,
     },
     {
         "id": "3",
@@ -18,7 +18,7 @@ export const kitchenTypeData = [
     {
         "id": "4",
         "title": "Cuisine des Iles",
-        "status": true,
+        "status": false,
     },
     {
         "id": "5",

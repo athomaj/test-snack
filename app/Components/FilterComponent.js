@@ -7,7 +7,6 @@ import moment from "moment";
 import { kitchenTypeData } from "../fakeData/kitchenType";
 import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
-import { districtDisplayData } from "../fakeData/districtDisplay";
 import SelectDropdown from 'react-native-select-dropdown';
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
@@ -16,11 +15,17 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const [show, setShow] = React.useState(false)
     const [dateValue, setDateValue] = React.useState(null)
     const [district, setDistrict] = React.useState(null)
+    const [kitchen, setKitchen] = React.useState([])
+    const [diet, setDiet] = React.useState([])
+    const [level, setLevel] = React.useState([])
 
     const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008",
                         "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
 
     React.useEffect(() => {
+        createKitchen()
+        createDiet()
+        createLevel()
     }, [])
 
     const onChange = (event, selectedDate) => {
@@ -34,8 +39,17 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         setShow(true);
     };
 
-    const renderKitchenType = ({ item }) => (
-        <TouchableOpacity style={styles.renderKitchenType}>
+    function createKitchen(){
+        const cKitchen = kitchenTypeData.map((data, index) => {
+            data["status"] = false
+            data['id'] = index
+            return data
+        })
+        setKitchen(cKitchen)
+    }
+
+    const renderKitchenType = ({ item, index }) => (
+        <TouchableOpacity style={styles.renderKitchenType} onPress={() => kitchenTypeChange(index)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
             {item.status === true ?
                 <Image style={styles.checkImage} source={require('../assets/icon/check.png')}/>
@@ -44,8 +58,24 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         </TouchableOpacity>
     );
 
-    const renderLevel = ({ item }) => (
-        <TouchableOpacity style={styles.renderKitchenType}>
+    function kitchenTypeChange(index){
+        const data = [...kitchenTypeData]
+        data[index].status = !data[index].status
+        setKitchen(data)
+    }
+
+
+    function createLevel(){
+        const cLevel = levelData.map((data, index) => {
+            data["status"] = false
+            data['id'] = index
+            return data
+        })
+        setLevel(cLevel)
+    }
+
+    const renderLevel = ({ item, index }) => (
+        <TouchableOpacity style={styles.renderKitchenType} onPress={() => levelChange(index)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
             {item.status === true ?
                 <Image style={styles.checkImage} source={require('../assets/icon/check.png')}/>
@@ -54,8 +84,24 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         </TouchableOpacity>
     );
 
-    const renderDiet = ({ item }) => (
-        <TouchableOpacity style={styles.renderDiet}>
+    function levelChange(index){
+        const data = [...levelData]
+        data[index].status = !data[index].status
+        setLevel(data)
+    }
+
+
+    function createDiet(){
+        const cDiet = dietData.map((data, index) => {
+            data["status"] = false
+            data['id'] = index
+            return data
+        })
+        setDiet(cDiet)
+    }
+
+    const renderDiet = ({ item, index }) => (
+        <TouchableOpacity style={styles.renderDiet} onPress={() => dietChange(index)}>
             {item.status === true ?
             <View style={styles.viewDietTrue}>
                 <Image style={styles.imageDiet} source={require('../assets/icon/whiteCarrot.png')}/>
@@ -70,6 +116,18 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         </TouchableOpacity>
     );
 
+    function dietChange(index){
+        const data = [...dietData]
+        data[index].status = !data[index].status
+        setDiet(data)
+    }
+
+
+    function deleteAll(){
+        createKitchen()
+        createDiet()
+        createLevel()
+    }
 
     return (
         <View style={styles.container}>
@@ -119,7 +177,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                     <Text style={styles.titles}>Un régime alimentaire en particulier ?</Text>
                     <FlatList
                         scrollEnabled={false}
-                        data={dietData}
+                        data={diet}
                         numColumns={3}
                         renderItem={renderDiet}
                         keyExtractor={item => item.id}
@@ -154,13 +212,13 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                     <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
                     <FlatList
                         scrollEnabled={false}
-                        data={levelData}
+                        data={level}
                         renderItem={renderLevel}
                         keyExtractor={item => item.id}
                     />
                 </View>
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.deleteAll}>
+                    <TouchableOpacity style={styles.deleteAll} onPress={deleteAll}>
                         <Text style={styles.textDelete}>Tout effacer</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.searchAll}>

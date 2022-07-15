@@ -23,7 +23,7 @@ export const dietData = [
     {
         "id": "5",
         "title": "Sans Sucre",
-        "status": true
+        "status": false
     },
     {
         "id": "6",
@@ -33,12 +33,12 @@ export const dietData = [
     {
         "id": "7",
         "title": "Hallal",
-        "status": true
+        "status": false
     },
     {
         "id": "8",
         "title": "Casher",
-        "status": true
+        "status": false
     },
     {
         "id": "9",
