@@ -1,23 +1,32 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import moment from 'moment';
-
 import { colors } from '../utils/colors';
-import { sharedStyles } from '../utils/styles';
+import postApi from '../services/postApi';
 
 export function PostDetailComponent({ navigation, route }) {
 
-    const index = route.params.index
+    const [post, setPost] = React.useState(null)
+
+    async function fetchData(id){
+        const response = await postApi.getOne(id)
+        setPost(response)
+        return response
+    }
+
+    React.useEffect(() => {
+        fetchData(route.params.index)
+    })
 
     return (
         <ScrollView style={styles.container}>
             <View style={styles.top}>
+                <Image style={{width:'100%', height: '100%'}} source={{uri : post?.attributes.avatarUrl}}/>
                 <TouchableOpacity style={styles.backBox}>
                     <Text style={styles.back}>{'<'}</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.body}>
-                <Text style={styles.title}>{}</Text>
+                <Text style={styles.title}>{post?.attributes.title}</Text>
             </View>
         </ScrollView>
     )
@@ -43,6 +52,8 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         alignItems: 'center',
+        backgroundColor: colors.white,
+        borderRadius: 40
     },
 
     top: {

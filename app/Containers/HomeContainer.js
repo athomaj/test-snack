@@ -158,7 +158,7 @@ export default function HomeContainer({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: index})}></PostComponent>,
+        ({ item, index }) => <PostComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: item.id})}></PostComponent>,
         []
     );
 
