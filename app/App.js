@@ -13,6 +13,7 @@ import PublishContainer from './Containers/PublishContainer';
 import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
+import { PostDetailComponent } from './Components/PostDetailComponent';
 import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
 
@@ -58,16 +59,25 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <RootStack.Navigator>
-          <RootStack.Screen
-            name="AuthStack"
-            component={AuthStackScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <RootStack.Screen
-            name="MainStack"
-            component={MainTabStackScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
+          <RootStack.Group>
+            <RootStack.Screen
+              name="AuthStack"
+              component={AuthStackScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+            <RootStack.Screen
+              name="MainStack"
+              component={MainTabStackScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+          </RootStack.Group>
+          <RootStack.Group>
+            <RootStack.Screen
+              name="PostDetail"
+              component={PostDetailComponent}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+          </RootStack.Group>
         </RootStack.Navigator>
       </NavigationContainer>
     </UserProvider>

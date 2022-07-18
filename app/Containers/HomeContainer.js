@@ -4,7 +4,6 @@ import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { useUserContext } from '../context/UserContext';
 
 import { colors } from '../utils/colors';
-import { sharedStyles } from '../utils/styles';
 import moment from 'moment';
 import FilterComponent from '../Components/FilterComponent';
 import postApi from '../services/postApi';
@@ -159,7 +158,7 @@ export default function HomeContainer({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostComponent item={item} index={index}></PostComponent>,
+        ({ item, index }) => <PostComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: index})}></PostComponent>,
         []
     );
 
