@@ -8,6 +8,7 @@ import { kitchenTypeData } from "../fakeData/kitchenType";
 import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
 import SelectDropdown from 'react-native-select-dropdown';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
 
@@ -130,7 +131,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.textHeader}>Recherche d'évènements</Text>
                 <TouchableOpacity style={styles.backTouch} onPress={closeModal}>
@@ -229,7 +230,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }
 
