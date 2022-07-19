@@ -50,6 +50,7 @@ export default function OnboardingContainer({ navigation, route }) {
                 }
             }
     )
+
     
     const renderItem = React.useCallback(
         ({ item, index }) => {
@@ -85,7 +86,6 @@ export default function OnboardingContainer({ navigation, route }) {
                     keyExtractor={item => item.id}
                     onMomentumScrollEnd={(event) => selectedDot(event.nativeEvent.contentOffset.x)}
                     scrollEnabled={true}
-                
                 />
 
                 <View style={{ alignSelf: 'center', width: '80%', position: 'absolute', bottom: 10, alignItems: 'center' }}>

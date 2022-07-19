@@ -5,6 +5,8 @@ import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import Link from '../../Components/Utils/Link';
 import validateEmail from '../../Components/Utils/RegexValidation';
+import { useSignUpContext } from '../../context/SignUpContext';
+
 
 
 
@@ -14,7 +16,7 @@ const forbidenEmail = require('../../assets/icon/forbiden_color.png');
 
 export default function SignUpStep1Container({ navigation }) {
 
-    
+    const SignUpContext = useSignUpContext();
     const [email, setEmail] = React.useState("")
     const [numberPhone, setNumberPhone] = React.useState("")
     const [pass, setPass] = React.useState("")
@@ -29,6 +31,7 @@ export default function SignUpStep1Container({ navigation }) {
         }
         else setValideEmail(false)
     }
+
     React.useEffect(()=>{
         valideInputEmail()
     },[email])
@@ -36,7 +39,7 @@ export default function SignUpStep1Container({ navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 80 }}>
-                <SignupFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep2')}></SignupFooterNav>
+                <SignupFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep2')} updatecontext={() => SignUpContext.updateSignUp1(email,pass,numberPhone)}></SignupFooterNav>
         
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                     <Text style={{...sharedStyles.h2, width: '100%'}}>Créer un compte</Text>

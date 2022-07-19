@@ -5,11 +5,13 @@ import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import Link from '../../Components/Utils/Link';
 import {Picker} from '@react-native-picker/picker';
+import { useSignUpContext } from '../../context/SignUpContext';
 
 
 
 export default function SignUpStep3Container({ navigation }) {
 
+    const SignUpContext = useSignUpContext();
     const [citySelected, setCitySelected] = React.useState(null)
     const CITYS = [
         { 
@@ -104,9 +106,9 @@ export default function SignUpStep3Container({ navigation }) {
             ]
         },
     ]
-    const [selectedLanguage, setSelectedLanguage] = React.useState();
-    const WIDTHCONTAINER = (Dimensions.get('window').width/2)-21;
     const [buttonDisable, setDisabledButton] = React.useState(false)
+    const [selectedAroddissement, setselectedAroddissement] = React.useState();
+    const WIDTHCONTAINER = (Dimensions.get('window').width/2)-21;
     const [selectedcity, setSelectedcity] = React.useState([])
 
     React.useEffect(()=>{
@@ -141,7 +143,7 @@ export default function SignUpStep3Container({ navigation }) {
     //SignUpStep1
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 80 }}>
-                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep4')}></SignupFooterNav>
+                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep4')} updatecontext={() => SignUpContext.updateSignUp3(selectedAroddissement)}></SignupFooterNav>
 
 
                 <ScrollView style={{ width: '100%', height: '100%'}} scrollEnabled={false}>
@@ -162,10 +164,10 @@ export default function SignUpStep3Container({ navigation }) {
                 <>
                 <Text style={{...sharedStyles.h3, marginBottom: 10}}>Quel est ton quartier ?</Text>
                 <Picker style={{...sharedStyles.inputText}}
-                selectedValue={selectedLanguage}
+                selectedValue={selectedAroddissement}
                 itemStyle={{ textAlign:'center'}}
                 onValueChange={(itemValue, itemIndex) =>
-                    setSelectedLanguage(itemValue)
+                    setselectedAroddissement(itemValue)
                 }>
                 {selectedcity}
                 </Picker>

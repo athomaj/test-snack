@@ -22,6 +22,7 @@ import SignUpStep1Container from './Containers/signUp/SignUpStep1Container';
 import SignUpStep2Container from './Containers/signUp/SignUpStep2Container';
 import SignUpStep3Container from './Containers/signUp/SignUpStep3Container';
 import SignUpStep4Container from './Containers/signUp/SignUpStep4Container';
+import { SignUpProvider } from './context/SignUpContext';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -40,16 +41,18 @@ const tabBarOptions = {
 
 function AuthStackScreen() {
   return (
-    <LoginStack.Navigator initialRouteName={"Splash"} screenOptions={{ headerTransparent: true }}>
-      <LoginStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="onboarding" component={OnboardingContainer} options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="SignUpStep1" component={ SignUpStep1Container } options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="SignUpStep2" component={ SignUpStep2Container } options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="SignUpStep3" component={ SignUpStep3Container } options={{ headerShown: false, gestureEnabled: false }} />
-      <LoginStack.Screen name="SignUpStep4" component={ SignUpStep4Container } options={{ headerShown: false, gestureEnabled: false }} />
-    </LoginStack.Navigator>
+    <SignUpProvider>
+      <LoginStack.Navigator initialRouteName={"Splash"} screenOptions={{ headerTransparent: true }}>
+        <LoginStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="onboarding" component={OnboardingContainer} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep1" component={ SignUpStep1Container } options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep2" component={ SignUpStep2Container } options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep3" component={ SignUpStep3Container } options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep4" component={ SignUpStep4Container } options={{ headerShown: false, gestureEnabled: false }} />
+      </LoginStack.Navigator>
+    </SignUpProvider>
   );
 }
 

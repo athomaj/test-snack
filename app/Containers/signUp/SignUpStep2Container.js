@@ -4,11 +4,13 @@ import { colors } from '../../utils/colors';
 import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import Link from '../../Components/Utils/Link';
+import { useSignUpContext } from '../../context/SignUpContext';
 
 
 
 export default function SignUpStep2Container({ navigation }) {
 
+    const SignUpContext = useSignUpContext()
     const [firstName, setFirstName] = React.useState("")
     const [Name, setName] = React.useState("")
     const [buttonDisable, setDisabledButton] = React.useState(false)
@@ -17,7 +19,7 @@ export default function SignUpStep2Container({ navigation }) {
     //SignUpStep1
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 80 }}>
-                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep3')}></SignupFooterNav>
+                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('SignUpStep3')} updatecontext={() => SignUpContext.updateSignUp2(firstName,Name)}></SignupFooterNav>
         
                 <View style={{ width: '100%', height: '100%'}}>
                     <Text style={{...sharedStyles.h2, width: '100%'}}>Quels est ton nom ?</Text>
