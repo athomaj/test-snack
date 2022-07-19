@@ -48,6 +48,12 @@
     },
     "avatarUrl": {
       "type": "string"
+    },
+    "families": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::family.family",
+      "inversedBy": "posts"
     }
   }
 }

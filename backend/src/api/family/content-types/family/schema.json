@@ -17,6 +17,12 @@
     },
     "color": {
       "type": "string"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "families"
     }
   }
 }
