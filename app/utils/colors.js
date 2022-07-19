@@ -9,5 +9,9 @@ export const colors = {
     darkGrey: "#5D5D5D",
     grey: "#F5F5F5",
     grey2: "#5E5E5E",
-    greyImage: "#D9D9D9"
+    greyImage: "#D9D9D9",
+    primaryBlue: "#0A4072",
+    secondaryBlue: "#E6EFF7",
+    thirdBlue: "#005DB2",
+    backBlue: "#A8CBEB"
 }
