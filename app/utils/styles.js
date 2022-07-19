@@ -26,18 +26,28 @@ export const sharedStyles = StyleSheet.create({
         fontSize: 41,
         color: '#005DB2'
     },
+    h2: {
+        fontWeight: '600',
+        fontSize: 30,
+        color: '#005DB2',
+    },
+    h3: {
+        fontWeight: '600',
+        fontSize: 18,
+        color: '#005DB2',
+    },
     primaryButtonWithoutColor: {
-        border: 20,
+        border: 1,
         height: 50,
-        width: '80%',
-        borderRadius: 20,
+        width: '100%',
+        borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center'
     },
     primaryButtonWithColor: {
-        border: 20,
+        border: 1,
         height: 50,
-        width: '80%',
+        width: '100%',
         borderRadius: 4,
         backgroundColor: colors.primaryYellow,
         justifyContent: 'center',
@@ -47,7 +57,7 @@ export const sharedStyles = StyleSheet.create({
     secondaryButton: {
         border: 20,
         height: 50,
-        width: '80%',
+        width: '100%',
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
@@ -57,8 +67,31 @@ export const sharedStyles = StyleSheet.create({
         color: colors.primaryYellow,
     },
     textPublish: {
-        fontSize: 14,
+        fontSize: 1,
         marginBottom: 10,
         fontWeight: '500'
+    },
+    shortText:{
+        fontSize: 15,
+        color: colors.primaryYellow,
+        fontWeight: '500',
+
+    },
+    inputText: {
+        backgroundColor: '#E6EFF7',
+        borderRadius: 4,
+        height: 44,
+        width: '100%',
+        color: colors.primaryYellow,
+        fontSize: 15,
+        fontWeight: '500',
+        paddingHorizontal: 15,
+
+    },
+    label: {
+        fontSize: 13,
+        color: colors.primaryYellow,
+        fontWeight: '500',
+
     }
 })

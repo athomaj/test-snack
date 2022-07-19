@@ -10,7 +10,7 @@ export default function SplashScreen({ navigation }) {
     const userContext = useUserContext();
 
     async function hasConnectedBefore(){
-        navigation.replace('onboarding')
+        navigation.navigate('SignUpStep1')
         return
         const footprint = await getData('alreadyConnected')
         console.log(footprint)
@@ -41,14 +41,10 @@ export default function SplashScreen({ navigation }) {
     );
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center' }}>
-            <View style={{ height: '100%', width: '100%', alignItems: 'center' }}>
-                <Image style={{ height: '20%', width: '70%', resizeMode: 'contain', marginBottom: '5%', marginTop: '5%' }} source={require('../assets/logo_typo.png')}></Image>
-
-                <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => deleteData('alreadyConnected')}><Text>Remove</Text></TouchableOpacity>
-                </View>
-            </View>
+        <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{...sharedStyles.titleH1}}>FoodFood</Text>
+            <Text style={{...sharedStyles.shortText, textAlign: 'center'}}>Texte de baseline ?</Text>
+            <Text style={{...sharedStyles.shortText, textAlign: 'center'}}>(facultatif)</Text>
         </SafeAreaView>
     );
 }

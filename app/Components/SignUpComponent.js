@@ -18,6 +18,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
 
     const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
+    const [numberPhone, setNumberPhone] = React.useState("")
     const [pass, setPass] = React.useState("")
     const [image, setImage] = React.useState(null);
     const [mealPref, setMealPref] = React.useState("")
@@ -27,7 +28,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
     const [modalVisible, setModalVisible] = React.useState(false);
 
     // Hooks comportement de page
-    const [stepNumber, setStep] = React.useState(0)
+    const [stepNumber, setStep] = React.useState(1)
     const [disabledButton, setDisabledButton] = React.useState(true)
     const showAlert = () =>
         Alert.alert(
@@ -59,7 +60,10 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
         } else {
             setDisabledButton(true)
         }
-        setStep(stepNumber + stepIndex)
+        if((stepNumber + stepIndex)!=0)
+        {
+            setStep(stepNumber + stepIndex)
+        }
     }
 
     //condition de dévérouillage du bouton "continué"
@@ -68,7 +72,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
             inputIndex === 0 ? setEmail(text) : setPass(text)
             if (inputIndex === 0) {
                 const validEmail = validateEmail(text)
-                if (validEmail && pass.length > 5) {
+                if (validEmail && pass.length > 5 && numberPhone.length >= 10) {
                     setDisabledButton(false)
                 } else {
                     setDisabledButton(true)
@@ -158,70 +162,40 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
     }
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%' }}>
+        <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 80 }}>
             {stepNumber > 0 && stepNumber < 4 &&
                 <>
-                    <TouchableOpacity style={{ zIndex: 1, position: 'absolute', height: 30, top: 10, left: 20 }} onPress={() => incremmentStep(-1)}>
-                        <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}> retour </Text>
-                    </TouchableOpacity>
-                    <View style={{ zIndex: 1, position: 'absolute', bottom: 10, alignItems: 'center', width: '100%' }}>
+                    
+                    <View style={{ alignSelf:'center', zIndex: 1, position: 'absolute', bottom: 10, flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                        <TouchableOpacity style={{width:44, height:44, borderRadius:22, backgroundColor: '#E6EFF7', alignItems: 'center', justifyContent: 'center'}} onPress={() => incremmentStep(-1)}>
+                        <Image style={{resizeMode: 'contain',width: 20}} source={require('../assets/icon/return_icon.png')}></Image>
+                        </TouchableOpacity>
                         <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
-                        <TouchableOpacity onPress={onPressContinue} disabled={disabledButton} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: disabledButton ? colors.primaryYellowDisable : colors.primaryYellow }}>
-                            <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Continuer</Text>
+                        <TouchableOpacity onPress={onPressContinue} disabled={disabledButton} style={{ width: 118, height: 44, borderRadius: 4, justifyContent:'center', alignItems:'center', backgroundColor: disabledButton ? colors.primaryYellowDisable : colors.primaryYellow }}>
+                            <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Suivant</Text>
                             <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
                         </TouchableOpacity>
                     </View>
                 </>
             }
-            {stepNumber === 0 &&
-                <View style={{ width: '100%', height: '100%', alignItems: 'center' }} >
-                    <Image style={{ height: '20%', width: '50%', resizeMode: 'contain', marginBottom: '5%', marginTop: '5%' }} source={require('../assets/logo_typo.png')}></Image>
-                    <View style={{ height: '50%', width: '80%', justifyContent: "flex-start" }}>
-                        <Text style={{ ...sharedStyles.titleH1, marginBottom: 20 }}>Hello fou de food!</Text>
-                        <Text>Ici vous allez pouvoir partager votre passion de la cuisine avec vos voisins de quartier. Ateliers thématiques, dîners partagés, prêt de matériel, bons plans circuits courts, défi de Chef, vous êtes entre passionés et en confiance.{'\n'}{'\n'}Nous avons tout prévu pour que tout se passe bien, nous comptons aussi sur vous pour qu’une atmosphère de bienveillance et de partage règne!</Text>
-                    </View>
-                    {/* <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-                        <Switch
-                            trackColor={{ false: "#767577", true: colors.primaryYellow }}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={(value) => setDisabledButton(!value)}
-                            value={!disabledButton}
-                            style={{ marginRight: 10 }}
-                        />
-                        <Text>J’accepte
-                            <Text style={{ fontWeight: 'bold' }}> le règlement du site </Text>
-                            {'\n'}et la
-                            <Text style={{ fontWeight: 'bold' }}> politique de confidentialité</Text>
-                        </Text>
-                    </View> */}
-
-                    <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => incremmentStep(1)} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
-                            <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>C'est parti !</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={loginStatus} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Déjà membre ? <Text style={{ fontWeight: 'bold' }}>Se connecter</Text></Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            }
+        
             {stepNumber === 1 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                    <HeaderChapter text={'Créez votre compte'}></HeaderChapter>
-                    <View style={{ height: 50, width: '80%', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                        <TextInput autoComplete='off' autoCapitalize='none' keyboardType='email-address' value={email} onChangeText={(text) => onChangeText(text, 0)} placeholder='Email' style={{ ...sharedStyles.borderBasic, height: 50, width: '100%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
+                    <Text style={{...sharedStyles.h2, width: '100%'}}>Créer un compte</Text>
+                    <Text style={{...sharedStyles.shortText}}>Quelques informations pour faire partie du club...</Text>
+                    <View style={{ height: 44, width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
+                        <TextInput autoComplete='off' autoCapitalize='none' keyboardType='email-address' value={email} onChangeText={(text) => onChangeText(text, 0)} placeholder='Entrer votre email' placeholderTextColor={colors.primaryYellow} style={{ ...sharedStyles.inputText }}></TextInput>
                         {email.length > 0 &&
                             <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15 }} source={isvalidEmail ? validateEmailicon : forbidenEmail}></Image>
                         }
                     </View>
-                    <TextInput textContentType='password' secureTextEntry={true} value={pass} onChangeText={(text) => onChangeText(text, 1)} placeholder='Mot de passe' style={{ ...sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
+                    <TextInput textContentType='password' secureTextEntry={true} value={pass} onChangeText={(text) => onChangeText(text, 1)} placeholder='Créer un mot de passe' placeholderTextColor={colors.primaryYellow} style={{ ...sharedStyles.inputText, marginTop: 15}}></TextInput>
+                    <TextInput textContentType='telephoneNumber' keyboardType="phone-pad" value={numberPhone} onChangeText={(text) => onChangeText(text, 5)} placeholder='Numéto de téléphone' placeholderTextColor={colors.primaryYellow} style={{ ...sharedStyles.inputText, marginTop: 15}}></TextInput>
                 </View>
             }
             {stepNumber === 2 &&
                 <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                    <HeaderChapter text={'Vous êtes?'}></HeaderChapter>
+                    <Text style={{...sharedStyles.h2, width: '100%'}}>Créer un compte</Text>
                     <TextInput value={name} onChangeText={(text) => onChangeText(text, 1)} placeholder='Prénom' style={{ ...sharedStyles.borderBasic, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
                     <View style={{ height: '60%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <ImagePickerExample image={image?.uri} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerExample>

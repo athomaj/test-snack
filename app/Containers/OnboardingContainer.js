@@ -31,15 +31,7 @@ export default function OnboardingContainer({ navigation, route }) {
 
 
     const [ indexItemView, setIndexItemView] = React.useState(0)
-    
-    React.useEffect(() => {
-        console.log(DATA)
-        console.log(DATA[0].image)
-    }, []);
 
-    // function selectedDot(id){
-    //     console.log('CONSOLE DE ID =====>',id)
-    // }
     const selectedDot =
         (scrollPosition) =>{
             const screenWith = Dimensions.get('window').width
@@ -50,10 +42,7 @@ export default function OnboardingContainer({ navigation, route }) {
 
     const dotMap = DATA.map(
         (element) => {
-            console.log(indexItemView)
-            console.log(element.id)
                 if(element.id===indexItemView){
-                console.log('IN')
                     return <View id={element.id} style={{height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: '#005DB2E5' }}></View>
                 }
                 else{
@@ -99,7 +88,7 @@ export default function OnboardingContainer({ navigation, route }) {
                 
                 />
 
-                <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
+                <View style={{ alignSelf: 'center', width: '80%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
                     <View style={{ height: 10, marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
                     {dotMap}
                     </View>
