@@ -16,6 +16,14 @@ const initialState = {
     level: "",
     address: "",
     plus: "",
+    pictures: {
+        one: "",
+        two: "",
+        three: "",
+        four: "",
+        five: "",
+        six: ""
+    }
 }
 
 const PublishProvider = ({ children }) => {
@@ -25,11 +33,20 @@ const PublishProvider = ({ children }) => {
         console.log(publishPost)
     }, [publishPost])
 
+    const updatePublish1 = async (title, desc, category) => {
+        setPublishPost({
+            ...publishPost,
+            title: title,
+            description: desc,
+            category: category,
+        })
+    }
+
 
     return (
         <PublishContext.Provider
             value={{
-
+                updatePublish1,
             }}
         >
             {children}

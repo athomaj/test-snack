@@ -14,7 +14,8 @@ import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
 import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
-import ModalPublish from './Containers/publish/PublishPost1';
+import PublishPost1 from './Containers/publish/PublishPost1';
+import PublishPost2 from './Containers/publish/PublishPost2';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -46,7 +47,7 @@ function MainTabStackScreen({ navigation }) {
     <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Membres', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Publish" component={ModalPublish} listeners={{ tabPress: (e) => {e.preventDefault(); navigation.navigate("ModalStack")}}} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Publish" component={PublishPost1} listeners={{ tabPress: (e) => {e.preventDefault(); navigation.navigate("ModalStack")}}} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
@@ -74,7 +75,8 @@ export default function App() {
               headerShown: false,
             }}
           >
-            <RootStack.Screen name="ModalStack" component={ModalPublish}/>
+            <RootStack.Screen name="ModalStack" component={PublishPost1}/>
+            <RootStack.Screen name="PublishPost2" component={PublishPost2}/>
           </RootStack.Group>
         </RootStack.Navigator>
       </NavigationContainer>

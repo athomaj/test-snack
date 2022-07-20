@@ -48,6 +48,16 @@
     },
     "avatarUrl": {
       "type": "string"
+    },
+    "pictures": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
     }
   }
 }
