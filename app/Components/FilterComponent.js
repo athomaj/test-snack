@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, TextInput } from 'react-native';
+import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, TextInput, SafeAreaView } from 'react-native';
 
 import { colors } from "../utils/colors";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -8,7 +8,6 @@ import { kitchenTypeData } from "../fakeData/kitchenType";
 import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
 import SelectDropdown from 'react-native-select-dropdown';
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
 
@@ -21,7 +20,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const [level, setLevel] = React.useState([])
 
     const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008",
-                        "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
+        "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
 
     React.useEffect(() => {
         createKitchen()
@@ -40,7 +39,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         setShow(true);
     };
 
-    function createKitchen(){
+    function createKitchen() {
         const cKitchen = kitchenTypeData.map((data, index) => {
             data["status"] = false
             data['id'] = index
@@ -53,20 +52,20 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         <TouchableOpacity style={styles.renderKitchenType} onPress={() => kitchenTypeChange(index)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
             {item.status === true ?
-                <Image style={styles.checkImage} source={require('../assets/icon/check.png')}/>
-            :null
+                <Image style={styles.checkImage} source={require('../assets/icon/check.png')} />
+                : null
             }
         </TouchableOpacity>
     );
 
-    function kitchenTypeChange(index){
+    function kitchenTypeChange(index) {
         const data = [...kitchenTypeData]
         data[index].status = !data[index].status
         setKitchen(data)
     }
 
 
-    function createLevel(){
+    function createLevel() {
         const cLevel = levelData.map((data, index) => {
             data["status"] = false
             data['id'] = index
@@ -79,20 +78,20 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         <TouchableOpacity style={styles.renderKitchenType} onPress={() => levelChange(index)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
             {item.status === true ?
-                <Image style={styles.checkImage} source={require('../assets/icon/check.png')}/>
-            :null
+                <Image style={styles.checkImage} source={require('../assets/icon/check.png')} />
+                : null
             }
         </TouchableOpacity>
     );
 
-    function levelChange(index){
+    function levelChange(index) {
         const data = [...levelData]
         data[index].status = !data[index].status
         setLevel(data)
     }
 
 
-    function createDiet(){
+    function createDiet() {
         const cDiet = dietData.map((data, index) => {
             data["status"] = false
             data['id'] = index
@@ -104,27 +103,27 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const renderDiet = ({ item, index }) => (
         <TouchableOpacity style={styles.renderDiet} onPress={() => dietChange(index)}>
             {item.status === true ?
-            <View style={styles.viewDietTrue}>
-                <Image style={styles.imageDiet} source={require('../assets/icon/whiteCarrot.png')}/>
-                <Text style={styles.textDietTrue}>{item.title}</Text>
-            </View>
-            :
+                <View style={styles.viewDietTrue}>
+                    <Image style={styles.imageDiet} source={require('../assets/icon/whiteCarrot.png')} />
+                    <Text style={styles.textDietTrue}>{item.title}</Text>
+                </View>
+                :
                 <View style={styles.viewDiet}>
-                    <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')}/>
+                    <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
                     <Text style={styles.textDiet}>{item.title}</Text>
                 </View>
             }
         </TouchableOpacity>
     );
 
-    function dietChange(index){
+    function dietChange(index) {
         const data = [...dietData]
         data[index].status = !data[index].status
         setDiet(data)
     }
 
 
-    function deleteAll(){
+    function deleteAll() {
         createKitchen()
         createDiet()
         createLevel()
@@ -132,104 +131,106 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.textHeader}>Recherche d'évènements</Text>
-                <TouchableOpacity style={styles.backTouch} onPress={closeModal}>
-                    <Text style={styles.back}>{'<'}</Text>
-                </TouchableOpacity>
-            </View>
-            <ScrollView style={styles.body} contentContainerStyle={{ paddingTop: 58, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
-                <View style={styles.searchBar}>
-                    <Image style={styles.searchPicture} source={require('../assets/icon/search.png')}/>
-                    <TextInput style={styles.searchInput} placeholder="Que recherchez-vous ?" placeholderTextColor={colors.primaryBlue}/>
+            <View style={{ height: '100%', width: '100%' }}>
+                <View style={styles.header}>
+                    <Text style={styles.textHeader}>Recherche d'évènements</Text>
+                    <TouchableOpacity style={styles.backTouch} onPress={closeModal}>
+                        <Text style={styles.back}>{'<'}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.date}>
-                    <Text style={styles.textDate}>Quelle date vous interesse ?</Text>
-                    <View style={styles.containerDate}>
-                        {dateValue === null ?
-                            <Text style={styles.chooseTextDate}>Choisir une date</Text>
-                        :
-                            <Text style={styles.chooseTextDate}>{moment(date).format('D/MM/YYYY')}</Text>
-                        }
-                        <TouchableOpacity style={styles.containerSelectDate} onPress={showDatePicker}>
-                            <Image style={styles.selectDate} source={require('../assets/icon/select.png')}/>
-                        </TouchableOpacity>
-                        {show && (
-                            <DateTimePicker
-                                testID="dateTimePicker"
-                                value={date}
-                                mode={'date'}
-                                is24Hour={true}
-                                onChange={onChange}
-                            />
-                        )}
+                <ScrollView style={{ height: '100%', width: '100%'}} contentContainerStyle={{ paddingTop: 68, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
+                    <View style={styles.searchBar}>
+                        <Image style={styles.searchPicture} source={require('../assets/icon/search.png')} />
+                        <TextInput style={styles.searchInput} placeholder="Que recherchez-vous ?" placeholderTextColor={colors.primaryBlue} />
                     </View>
-                </View>
-                <View style={styles.kitchenType}>
-                    <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
-                    <FlatList
-                        scrollEnabled={false}
-                        data={kitchenTypeData}
-                        renderItem={renderKitchenType}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-                <View style={styles.diet}>
-                    <Text style={styles.titles}>Un régime alimentaire en particulier ?</Text>
-                    <FlatList
-                        scrollEnabled={false}
-                        data={diet}
-                        numColumns={3}
-                        renderItem={renderDiet}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-                <View style={styles.date}>
-                    <Text style={styles.textDate}>Dans quelle quartier ?</Text>
-                    <View style={styles.containerDate}>
-                        {district === null ?
-                            <Text style={styles.chooseTextDate}>Choisir un quartier</Text>
-                        :
-                            <Text style={styles.chooseTextDate}>{district}</Text>
-                        }
-                        <TouchableOpacity style={styles.containerSelectDate}>
-                            <Image style={styles.selectDate} source={require('../assets/icon/select.png')}/>
-                        </TouchableOpacity>
-                        <SelectDropdown
-                            data={districts}
-                            onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index)
-                            }}
-                            buttonTextAfterSelection={(selectedItem, index) => {
-                                return selectedItem
-                            }}
-                            rowTextForSelection={(item, index) => {
-                                return item
-                            }}
+                    <View style={styles.date}>
+                        <Text style={styles.textDate}>Quelle date vous interesse ?</Text>
+                        <View style={styles.containerDate}>
+                            {dateValue === null ?
+                                <Text style={styles.chooseTextDate}>Choisir une date</Text>
+                                :
+                                <Text style={styles.chooseTextDate}>{moment(date).format('D/MM/YYYY')}</Text>
+                            }
+                            <TouchableOpacity style={styles.containerSelectDate} onPress={showDatePicker}>
+                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
+                            </TouchableOpacity>
+                            {show && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    mode={'date'}
+                                    is24Hour={true}
+                                    onChange={onChange}
+                                />
+                            )}
+                        </View>
+                    </View>
+                    <View style={styles.kitchenType}>
+                        <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
+                        <FlatList
+                            scrollEnabled={false}
+                            data={kitchenTypeData}
+                            renderItem={renderKitchenType}
+                            keyExtractor={item => item.id}
                         />
                     </View>
-                </View>
-                <View style={styles.level}>
-                    <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
-                    <FlatList
-                        scrollEnabled={false}
-                        data={level}
-                        renderItem={renderLevel}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-                <View style={styles.footer}>
-                    <TouchableOpacity style={styles.deleteAll} onPress={deleteAll}>
-                        <Text style={styles.textDelete}>Tout effacer</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.searchAll}>
-                        <View style={styles.imageSearchSize}>
-                            <Image style={styles.imageSearch} source={require('../assets/icon/whiteSearch.png')}/>
+                    <View style={styles.diet}>
+                        <Text style={styles.titles}>Un régime alimentaire en particulier ?</Text>
+                        <FlatList
+                            scrollEnabled={false}
+                            data={diet}
+                            numColumns={3}
+                            renderItem={renderDiet}
+                            keyExtractor={item => item.id}
+                        />
+                    </View>
+                    <View style={styles.date}>
+                        <Text style={styles.textDate}>Dans quelle quartier ?</Text>
+                        <View style={styles.containerDate}>
+                            {district === null ?
+                                <Text style={styles.chooseTextDate}>Choisir un quartier</Text>
+                                :
+                                <Text style={styles.chooseTextDate}>{district}</Text>
+                            }
+                            <TouchableOpacity style={styles.containerSelectDate}>
+                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
+                            </TouchableOpacity>
+                            <SelectDropdown
+                                data={districts}
+                                onSelect={(selectedItem, index) => {
+                                    console.log(selectedItem, index)
+                                }}
+                                buttonTextAfterSelection={(selectedItem, index) => {
+                                    return selectedItem
+                                }}
+                                rowTextForSelection={(item, index) => {
+                                    return item
+                                }}
+                            />
                         </View>
-                        <Text style={styles.textSearch}>Rechercher</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+                    </View>
+                    <View style={styles.level}>
+                        <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
+                        <FlatList
+                            scrollEnabled={false}
+                            data={level}
+                            renderItem={renderLevel}
+                            keyExtractor={item => item.id}
+                        />
+                    </View>
+                    <View style={styles.footer}>
+                        <TouchableOpacity style={styles.deleteAll} onPress={deleteAll}>
+                            <Text style={styles.textDelete}>Tout effacer</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.searchAll}>
+                            <View style={styles.imageSearchSize}>
+                                <Image style={styles.imageSearch} source={require('../assets/icon/whiteSearch.png')} />
+                            </View>
+                            <Text style={styles.textSearch}>Rechercher</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -238,8 +239,7 @@ const styles = StyleSheet.create({
 
     container: {
         backgroundColor: colors.white,
-        width: '100%',
-        height: '100%',
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -278,14 +278,6 @@ const styles = StyleSheet.create({
         width: 30,
         justifyContent: "center",
         alignItems: "center",
-    },
-
-
-
-    body: {
-        marginTop: 20,
-        width: '100%',
-        height: '100%'
     },
 
     searchBar: {

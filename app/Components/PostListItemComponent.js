@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { colors } from '../utils/colors';
 
-export function PostComponent({ item, index}) {
+export function PostListItemComponent({ item, index}) {
     return (
         <View style={{ paddingTop: index === 0 ? 20 : 0 }}>
             <View style={styles.container}>

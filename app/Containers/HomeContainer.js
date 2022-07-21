@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal, StyleSheet, TextInput } from 'react-native';
-import HeaderChapter from '../Components/Utils/HeaderChapter';
+import moment from 'moment';
+
 import { useUserContext } from '../context/UserContext';
+
+import HeaderChapter from '../Components/Utils/HeaderChapter';
+import { PostListItemComponent } from '../Components/PostListItemComponent';
+import FilterComponent from '../Components/FilterComponent';
 
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
-import moment from 'moment';
-import FilterComponent from '../Components/FilterComponent';
 import postApi from '../services/postApi';
-import { PostComponent } from '../Components/PostComponent';
 
 const deviceHeight = Dimensions.get('screen').height
 const deviceWidth = Dimensions.get('screen').width
@@ -17,8 +19,6 @@ export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
-    const [leftValue, setLeftValue] = useState(new Animated.Value(0))
-    const [widthValue, setWidthValue] = useState(new Animated.Value(deviceWidth * 0.15))
     const [slideIndex, setSlideIndex] = useState(0)
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
@@ -30,7 +30,8 @@ export default function HomeContainer({ navigation }) {
     }, [])
 
     async function getPosts() {
-        const data = await postApi.display()
+        const data = await postApi.getPosts()
+        console.log(data)
         if (data) {
             setPosts(data)
             setFilterPosts(data)
@@ -80,7 +81,7 @@ export default function HomeContainer({ navigation }) {
             }
             if (filterData.districts?.length > 0) {
                 data = data.filter((item) => {
-                    const filteredData = filterData.districts.flatMap(item => {return item.isChecked ? item.district : ""})
+                    const filteredData = filterData.districts.flatMap(item => { return item.isChecked ? item.district : "" })
                     console.log(filteredData)
                     return filteredData.includes("" + item.attributes.district)
                 })
@@ -123,24 +124,24 @@ export default function HomeContainer({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostComponent item={item} index={index}></PostComponent>,
+        ({ item, index }) => <PostListItemComponent item={item} index={index}></PostListItemComponent>,
         []
     );
 
     return (
-        <View style={{ height: '100%', width: '100%' }}>
-            <SafeAreaView style={ styles.container }>
+        <SafeAreaView style={styles.container}>
+            <View style={{ height: '100%', width: '100%' }}>
                 <FlatList
-                    ListHeaderComponentStyle={{ backgroundColor: 'white' }}
+                    ListHeaderComponentStyle={{ backgroundColor: 'white', paddingHorizontal: 10 }}
                     ListHeaderComponent={(
                         <>
                             <View style={styles.header}>
-                                <Image style={styles.imageHeader} source={require('../assets/icon/defaultImage.png')}/>
+                                <Image style={styles.imageHeader} source={require('../assets/icon/defaultImage.png')} />
                                 <View style={styles.titleSize}>
                                     <Text style={styles.title}>{'Bonjour ' + userContext.authState.user.username}</Text>
                                 </View>
                                 <TouchableOpacity style={styles.searchBar} onPress={() => setModalVisible(true)}>
-                                    <Image style={styles.searchPicture} source={require('../assets/icon/search.png')}/>
+                                    <Image style={styles.searchPicture} source={require('../assets/icon/search.png')} />
                                     <Text style={styles.searchInput}>Que recherchez-vous ?</Text>
                                 </TouchableOpacity>
                             </View>
@@ -155,27 +156,26 @@ export default function HomeContainer({ navigation }) {
                     renderItem={renderItem}
                     keyExtractor={flatListKeyExtractor}
                     style={{ height: '100%', width: '100%' }}
+                    contentContainerStyle={{paddingHorizontal: 10}}
                     stickyHeaderIndices={[0]}
                 />
-            </SafeAreaView>
-            {modalVisible &&
-                <Modal animationType='fade' transparent={true} visible={modalVisible}>
-                    <FilterComponent filters={filters} closeModal={() => setModalVisible(false)} updateFilters={updateFilters}></FilterComponent>
-                </Modal>
-            }
-        </View>
+                {modalVisible &&
+                    <Modal animationType='fade' transparent={true} visible={modalVisible}>
+                        <FilterComponent filters={filters} closeModal={() => setModalVisible(false)} updateFilters={updateFilters}></FilterComponent>
+                    </Modal>
+                }
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
 
     container: {
-        height: '100%',
-        width: '100%',
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
-        padding: '5%'
+        backgroundColor: colors.white
     },
 
     header: {
