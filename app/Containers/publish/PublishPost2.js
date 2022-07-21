@@ -5,7 +5,7 @@ import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
 import { usePublishContext } from "../../context/PublishContext";
 import PostPicturePicker from "../../Components/Utils/postPicturePicker";
 
-export default function PublishPost1({ navigation }) {
+export default function PublishPost2({ navigation }) {
 
     const PublishContext = usePublishContext()
     const [buttonDisable, setButtonDisable] = React.useState(false)
@@ -51,7 +51,7 @@ export default function PublishPost1({ navigation }) {
                     <Image style={styles.cross} source={require("../../assets/icon/cross.png")} />
                 </TouchableOpacity>
             </View>
-            <PublishFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('PublishPost2')} updatecontext={() => PublishContext.updatePublish2(title,desc,category)}/>
+            <PublishFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('PublishPost3')} updatecontext={() => PublishContext.updatePublish2(picture)}/>
         </SafeAreaView>
     )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import {  View, TouchableOpacity, Text, ActivityIndicator, Image, StyleSheet } from 'react-native';
 import { colors } from '../../utils/colors';
 
-export default function PublishFooterNav({ onPressContinue,  onPressBack, disabledButton, updatecontext }) {
+export default function PublishFooterNavLast({ onPressContinue,  onPressBack, disabledButton, updatecontext }) {
 
     function whenContinueIsPress(){
         if(updatecontext) {
@@ -18,8 +18,8 @@ export default function PublishFooterNav({ onPressContinue,  onPressBack, disabl
                 <TouchableOpacity style={{width:44, height:44, borderRadius:22, backgroundColor: '#E6EFF7', alignItems: 'center', justifyContent: 'center'}} onPress={onPressBack}>
                 <Image style={{resizeMode: 'contain',width: 20}} source={require('../../assets/icon/return_icon.png')}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => whenContinueIsPress()} disabled={disabledButton} style={{ width: 118, height: 44, borderRadius: 4, justifyContent:'center', alignItems:'center', backgroundColor: disabledButton ? colors.grey : colors.thirdBlue }}>
-                    <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Suivant</Text>
+                <TouchableOpacity onPress={() => whenContinueIsPress()} disabled={disabledButton} style={{ width: 195, height: 44, borderRadius: 4, justifyContent:'center', alignItems:'center', backgroundColor: disabledButton ? colors.grey : colors.thirdBlue }}>
+                    <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Publier l'annonce</Text>
                 </TouchableOpacity>
             </View>
         </>

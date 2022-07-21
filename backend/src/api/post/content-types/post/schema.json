@@ -50,14 +50,27 @@
       "type": "string"
     },
     "pictures": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "kitchens": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::kitchen.kitchen",
+      "inversedBy": "posts"
+    },
+    "diets": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::diet.diet",
+      "inversedBy": "posts"
     }
   }
 }

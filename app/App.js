@@ -16,6 +16,10 @@ import { colors } from './utils/colors';
 import { UserProvider } from './context/UserContext';
 import PublishPost1 from './Containers/publish/PublishPost1';
 import PublishPost2 from './Containers/publish/PublishPost2';
+import PublishPost3 from './Containers/publish/PublishPost3';
+import { PublishProvider } from './context/PublishContext';
+import PublishPost4 from './Containers/publish/PublishPost4';
+import PostPublished from './Containers/publish/PostPublished';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -57,6 +61,7 @@ function MainTabStackScreen({ navigation }) {
 export default function App() {
   return (
     <UserProvider>
+    <PublishProvider>
       <NavigationContainer>
         <RootStack.Navigator>
           <RootStack.Screen
@@ -77,9 +82,13 @@ export default function App() {
           >
             <RootStack.Screen name="ModalStack" component={PublishPost1}/>
             <RootStack.Screen name="PublishPost2" component={PublishPost2}/>
+            <RootStack.Screen name="PublishPost3" component={PublishPost3}/>
+            <RootStack.Screen name="PublishPost4" component={PublishPost4}/>
+            <RootStack.Screen name="PostPublished" component={PostPublished}/>
           </RootStack.Group>
         </RootStack.Navigator>
       </NavigationContainer>
+      </PublishProvider>
     </UserProvider>
   );
 }

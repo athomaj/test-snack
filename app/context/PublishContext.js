@@ -15,7 +15,7 @@ const initialState = {
     diet: "",
     level: "",
     address: "",
-    plus: "",
+    bonus: "",
     pictures: {
         one: "",
         two: "",
@@ -30,7 +30,7 @@ const PublishProvider = ({ children }) => {
     const [publishPost, setPublishPost] = React.useState(initialState)
 
     React.useEffect(() => {
-        console.log(publishPost)
+        //console.log(publishPost)
     }, [publishPost])
 
     const updatePublish1 = async (title, desc, category) => {
@@ -42,11 +42,85 @@ const PublishProvider = ({ children }) => {
         })
     }
 
+    const updatePublish2 = async (picture) => {
+        setPublishPost({
+            ...publishPost,
+            pictures: {
+                one: picture[0]?.uri,
+                two: picture[1]?.uri,
+                three: picture[2]?.uri,
+                four: picture[3]?.uri,
+                five: picture[4]?.uri,
+                six: picture[5]?.uri
+            }
+        })
+    }
+
+    const updatePublish3 = async (date, seats, kitchen, diet, level) => {
+        const newKitchen = []
+        const newDiet = []
+        const newLevel = []
+
+        kitchen.filter(item => {
+            if (item.status === true) {
+                newKitchen.push(item.title)
+            }
+        })
+
+        diet.filter(item => {
+            if (item.status === true) {
+                newDiet.push(item.title)
+            }
+        })
+
+        level.filter(item => {
+            if (item.status === true) {
+                newLevel.push(item.title)
+            }
+        })
+
+        setPublishPost({
+            ...publishPost,
+            datetime: date,
+            seats: seats,
+            kitchen : newKitchen,
+            diet: newDiet,
+            level: newLevel,
+        })
+    }
+
+    const updatePublish4 = async (address, bonus) => {
+        const newBonus = []
+
+        bonus.filter(item => {
+            if (item.status === true) {
+                newBonus.push(item.title)
+            }
+        })
+        console.log(newBonus)
+
+        setPublishPost({
+            ...publishPost,
+            address: address,
+            bonus: bonus
+        })
+
+        finalPost()
+    }
+
+    const finalPost = async () => {
+
+    }
+
 
     return (
         <PublishContext.Provider
             value={{
                 updatePublish1,
+                updatePublish2,
+                updatePublish3,
+                updatePublish4,
+                finalPost,
             }}
         >
             {children}
