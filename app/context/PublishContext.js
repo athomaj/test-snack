@@ -1,6 +1,10 @@
 import React from "react";
+import { Platform } from "react-native";
 import { BASE_URL } from "../config/config";
 import postApi from "../services/postApi";
+import uploadApi from "../services/uploadApi";
+import { randomId } from "../utils/sharedFunctions";
+import { useUserContext } from "./UserContext";
 
 const PublishContext = React.createContext();
 
@@ -11,9 +15,9 @@ const initialState = {
     category: "",
     datetime: "",
     seats: "",
-    kitchen: "",
-    diet: "",
-    level: "",
+    kitchens: "",
+    diets: "",
+    levels: "",
     address: "",
     bonus: "",
     pictures: {
@@ -28,6 +32,8 @@ const initialState = {
 
 const PublishProvider = ({ children }) => {
     const [publishPost, setPublishPost] = React.useState(initialState)
+
+    const userContext = useUserContext()
 
     React.useEffect(() => {
         //console.log(publishPost)
@@ -45,14 +51,7 @@ const PublishProvider = ({ children }) => {
     const updatePublish2 = async (picture) => {
         setPublishPost({
             ...publishPost,
-            pictures: {
-                one: picture[0]?.uri,
-                two: picture[1]?.uri,
-                three: picture[2]?.uri,
-                four: picture[3]?.uri,
-                five: picture[4]?.uri,
-                six: picture[5]?.uri
-            }
+            pictures: picture
         })
     }
 
@@ -63,19 +62,19 @@ const PublishProvider = ({ children }) => {
 
         kitchen.filter(item => {
             if (item.status === true) {
-                newKitchen.push(item.title)
+                newKitchen.push(item.id)
             }
         })
 
         diet.filter(item => {
             if (item.status === true) {
-                newDiet.push(item.title)
+                newDiet.push(item.id)
             }
         })
 
         level.filter(item => {
             if (item.status === true) {
-                newLevel.push(item.title)
+                newLevel.push(item.id)
             }
         })
 
@@ -83,9 +82,9 @@ const PublishProvider = ({ children }) => {
             ...publishPost,
             datetime: date,
             seats: seats,
-            kitchen : newKitchen,
-            diet: newDiet,
-            level: newLevel,
+            kitchens: newKitchen,
+            diets: newDiet,
+            levels: newLevel,
         })
     }
 
@@ -94,10 +93,9 @@ const PublishProvider = ({ children }) => {
 
         bonus.filter(item => {
             if (item.status === true) {
-                newBonus.push(item.title)
+                newBonus.push(item.id)
             }
         })
-        console.log(newBonus)
 
         setPublishPost({
             ...publishPost,
@@ -109,7 +107,55 @@ const PublishProvider = ({ children }) => {
     }
 
     const finalPost = async () => {
+        const newPictures = []
+        publishPost.pictures.filter(item => {
+            newPictures.push(item.uri)
+        })
+        const data = {
+            post: {
+                title: publishPost.title,
+                description: publishPost.description,
+                category: {id: publishPost.category},
+                datetime: publishPost.datetime,
+                seats: publishPost.seats,
+                kitchens: publishPost.kitchens,
+                diets:  publishPost.diets,
+                levels: publishPost.levels,
+                address: publishPost.address,
+                bonus: publishPost.bonus
+            },
+            picture: Platform.OS === 'ios' ? newPictures.replace('file://', '') : newPictures,
+        }
 
+        const index = 0
+        console.log(data.picture)
+        if (data.picture) {
+            while(data.picture[index]){
+                const formData = new FormData()
+                let uri = data.picture[index]
+                const imageId = randomId(20)
+
+                formData.append('files', {
+                    name: `${imageId}.jpg`,
+                    type: 'image/jpeg',
+                    uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+                });
+
+                const uploadResponse = await uploadApi.uploadPicture(formData)
+
+                console.log(uploadResponse)
+
+                if (uploadResponse[0]?.url) {
+                    data.post.pictures = [...data.post.picture, BASE_URL + uploadResponse[0].url]
+                }
+                index = index + 1
+            }
+        }
+        // const response = await postApi.publish({ data: data.post })
+
+        // if (response.data.error) {
+        //     console.log(response)
+        // }
     }
 
 

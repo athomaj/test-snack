@@ -37,7 +37,7 @@ export default function PublishPost1({ navigation }) {
         const data = [...dataCategory]
         data.map(allFalse)
         data[index].status = true
-        setCategory(data[index].name)
+        setCategory(data[index].id)
     }
 
     function allFalse(item){

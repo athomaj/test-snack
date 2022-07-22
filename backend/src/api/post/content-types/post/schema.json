@@ -30,9 +30,6 @@
     "title": {
       "type": "string"
     },
-    "isSearch": {
-      "type": "boolean"
-    },
     "category": {
       "type": "relation",
       "relation": "oneToOne",
@@ -46,18 +43,12 @@
     "datetime": {
       "type": "datetime"
     },
-    "avatarUrl": {
-      "type": "string"
-    },
     "pictures": {
       "type": "media",
       "multiple": true,
       "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "kitchens": {
@@ -71,6 +62,15 @@
       "relation": "manyToMany",
       "target": "api::diet.diet",
       "inversedBy": "posts"
+    },
+    "levels": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::level.level",
+      "inversedBy": "posts"
+    },
+    "bonus": {
+      "type": "string"
     }
   }
 }
