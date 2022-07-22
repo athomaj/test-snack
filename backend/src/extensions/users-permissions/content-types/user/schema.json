@@ -95,9 +95,6 @@
       "target": "api::post.post",
       "mappedBy": "user"
     },
-    "numberPhone": {
-      "type": "biginteger"
-    },
     "pendings": {
       "type": "relation",
       "relation": "oneToMany",
@@ -110,6 +107,9 @@
       "type": "string"
     },
     "district": {
+      "type": "string"
+    },
+    "numberPhone": {
       "type": "string"
     }
   }

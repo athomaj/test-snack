@@ -15,19 +15,20 @@ export default function AuthContainer({ navigation, route }) {
     React.useEffect(() => {
         
         if (userContext.authState.isConnected && isLogin) {
-            navigation.replace('MainStack')
+            navigation.replace('SearchContact')
         }
         if (userContext.authState.errorMessage) {
             setErrorMessage(userContext.authState.errorMessage);
             if(!getData('alreadyConnected')){
                 storeData('alreadyConnected', true)
-                navigate.replace('')
+                navigate.replace('login')
             }
         }
     }, [userContext.authState.isConnected, userContext.authState.errorMessage, isLogin])
 
     function changeLoginStatus() {
         setIsLogin(!isLogin)
+        navigation.replace('SignUpStep1')
     }
 
     function searchContact(search) {

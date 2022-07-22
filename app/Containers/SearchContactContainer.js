@@ -7,15 +7,20 @@ import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
 
 
-export default function SearchContactContainer({ closeModal }) {
+export default function SearchContactContainer({ navigation }) {
 
     const userContext = useUserContext()
     const [memberMatch, setMemberMatch ] = React.useState([])//Tableau des membres en relation avec l'user
     const [selectedSponsor, setSelectedSponsor] = React.useState([]) //Sponsor ayant reçu l'invitation
     const [SendAsk, setSendAsk] = React.useState(false) //Si un 
 
+    async function logMorinfo(element){
+      Contacts.getContactByIdAsync({contactId: element.lookupKey},{fields: [Contacts.Fields.PhoneNumbers]}).then(data => console.log(data.phoneNumbers[0].type))
+    }
   React.useEffect(() => {
+
     (async () => {
+      console.log(userContext.authState)
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === 'granted') {
         const { data } = await Contacts.getContactsAsync({
@@ -25,7 +30,9 @@ export default function SearchContactContainer({ closeModal }) {
         if (data.length > 0) {
           const contact = data;
         //trate un tableau avec liste des téléphone au bon format
+           console.log(data[0])
           const listPhoneNumber = contact.map( element => {
+            logMorinfo(element)
             const elementNativ = element.phoneNumbers[0].number
             const elementResult = elementNativ.split(" ").join(""); 
              return elementResult.slice(1)
@@ -107,7 +114,7 @@ export default function SearchContactContainer({ closeModal }) {
 
 
   return (
-    <View style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', paddingHorizontal: 15}}>
         <FlatList
         ListHeaderComponentStyle={{backgroundColor: 'white'}}
             ListHeaderComponent={(
@@ -127,9 +134,9 @@ export default function SearchContactContainer({ closeModal }) {
     
         <TouchableOpacity
         style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}
-        onPress={() => closeModal(SendAsk)}>
-        <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Poursuivre</Text>
+        onPress={() => navigation.navigate('UpdateProfil1')}>
+        <Text style={{fontWeight: '600', fontSize: 14, color: 'white'}}>Poursuivre</Text>
         </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }

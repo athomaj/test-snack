@@ -10,31 +10,31 @@ export default function SplashScreen({ navigation }) {
     const userContext = useUserContext();
 
     async function hasConnectedBefore(){
-        navigation.navigate('SignUpStep1')
-        return
+  
         const footprint = await getData('alreadyConnected')
         console.log(footprint)
         if(!footprint){
-            console.log('IN ELSE IF')
+            console.log('IN FOOTPRINT')
             storeData('alreadyConnected', 'true')
             navigation.replace('onboarding')
         }
-        else console.log('VARIABLE IN STORAGE',footprint)
+        else navigation.navigate('Login',{isLogin: true})
     }
 
     useFocusEffect(
          React.useCallback(() => {
             if (userContext.authState.isLoading) {
-                hasConnectedBefore()
                 return
             }
             if (userContext.authState.isInitialized && userContext.authState.isConnected) {
                 const user = userContext.authState.user
-                if (user.sponsors.length < 3) {
-                    navigation.navigate('Login', { isLogin: false })
+                if (user.sponsors?.length < 3) {
+                    navigation.navigate('SearchContact')
                 } else {
                     navigation.navigate("MainStack")
                 }
+            } else {
+                hasConnectedBefore()
             }
             
         }, [userContext.authState.isLoading, userContext.authState.isConnected])

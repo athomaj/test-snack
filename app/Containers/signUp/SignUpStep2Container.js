@@ -13,8 +13,11 @@ export default function SignUpStep2Container({ navigation }) {
     const SignUpContext = useSignUpContext()
     const [firstName, setFirstName] = React.useState("")
     const [Name, setName] = React.useState("")
-    const [buttonDisable, setDisabledButton] = React.useState(false)
-   
+    const [buttonDisable, setDisabledButton] = React.useState(true)
+
+   React.useEffect(()=>{
+    firstName.length > 0 && Name.length > 0 ? setDisabledButton(false) : setDisabledButton(true);
+   })
 
     //SignUpStep1
     return (

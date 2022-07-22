@@ -23,6 +23,12 @@ import SignUpStep2Container from './Containers/signUp/SignUpStep2Container';
 import SignUpStep3Container from './Containers/signUp/SignUpStep3Container';
 import SignUpStep4Container from './Containers/signUp/SignUpStep4Container';
 import { SignUpProvider } from './context/SignUpContext';
+//Profil
+import CompletProfil1 from './Containers/CompletProfil/CompleteProfil1';
+import CompletProfil2 from './Containers/CompletProfil/CompleteProfil2';
+import CompletProfil3 from './Containers/CompletProfil/CompleteProfil3';
+import CompletProfil4 from './Containers/CompletProfil/CompleteProfil4';
+import CompletProfil5 from './Containers/CompletProfil/CompleteProfil5';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -46,11 +52,16 @@ function AuthStackScreen() {
         <LoginStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="onboarding" component={OnboardingContainer} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
-        <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="SignUpStep1" component={ SignUpStep1Container } options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="SignUpStep2" component={ SignUpStep2Container } options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="SignUpStep3" component={ SignUpStep3Container } options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="SignUpStep4" component={ SignUpStep4Container } options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="UpdateProfil1" component={CompletProfil1} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="UpdateProfil2" component={CompletProfil2} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="UpdateProfil3" component={CompletProfil3} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="UpdateProfil4" component={CompletProfil4} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="UpdateProfil5" component={CompletProfil5} options={{ headerShown: false, gestureEnabled: false }} />
       </LoginStack.Navigator>
     </SignUpProvider>
   );

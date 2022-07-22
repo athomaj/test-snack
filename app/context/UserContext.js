@@ -18,6 +18,7 @@ const initialState = {
         email: "",
         username: "",
         id: "",
+        avatarUrl: "",
         plate: "",
         famillyGame: ""
     }
@@ -86,25 +87,25 @@ const UserProvider = ({ children }) => {
             ...authState,
             isLoading: true
         })
+        // A CONSERVER POUR L'AVATAR
+        // if (data.picture) {
+        //     const formData = new FormData()
+        //     let uri = data.picture
+        //     const imageId = randomId(20)
 
-        if (data.picture) {
-            const formData = new FormData()
-            let uri = data.picture
-            const imageId = randomId(20)
+        //     formData.append('files', {
+        //         name: `${imageId}.jpg`,
+        //         type: 'image/jpeg',
+        //         uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+        //     });
 
-            formData.append('files', {
-                name: `${imageId}.jpg`,
-                type: 'image/jpeg',
-                uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
-            });
-
-            const uploadResponse = await uploadApi.uploadPicture(formData)
-            if (uploadResponse[0]?.url) {
-                data.user.avatarUrl = BASE_URL + uploadResponse[0].url
-            }
-        }
-
-        const response = await authApi.register(data.user)
+        //     const uploadResponse = await uploadApi.uploadPicture(formData)
+        //     if (uploadResponse[0]?.url) {
+        //         data.user.avatarUrl = BASE_URL + uploadResponse[0].url
+        //     }
+        // }
+        
+        const response = await authApi.register(data)
 
         if (response.data.error) {
             setAuthState({
@@ -116,6 +117,7 @@ const UserProvider = ({ children }) => {
         }
         getCurrentUser()
         // const user = await userApi.getMe()
+        //on change
         // setAuthState({
         //     ...authState,
         //     isConnected: true,
@@ -123,7 +125,6 @@ const UserProvider = ({ children }) => {
         //     isLoading: false,
         //     user: response.data.user
         // })
-
     };
 
 

@@ -106,8 +106,8 @@ export default function SignUpStep3Container({ navigation }) {
             ]
         },
     ]
-    const [buttonDisable, setDisabledButton] = React.useState(false)
-    const [selectedAroddissement, setselectedAroddissement] = React.useState();
+    const [buttonDisable, setDisabledButton] = React.useState(true)
+    const [selectedAroddissement, setselectedAroddissement] = React.useState(null);
     const WIDTHCONTAINER = (Dimensions.get('window').width/2)-21;
     const [selectedcity, setSelectedcity] = React.useState([])
 
@@ -127,6 +127,9 @@ export default function SignUpStep3Container({ navigation }) {
         )
         }
     };
+    React.useEffect(()=>{
+        setDisabledButton(selectedAroddissement ? false : true) 
+    })
     
   
     const renderItem = React.useCallback(

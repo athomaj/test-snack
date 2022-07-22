@@ -71,6 +71,9 @@ export const sharedStyles = StyleSheet.create({
         marginBottom: 10,
         fontWeight: '500'
     },
+    textUnderPrimaryButton:{
+        fontWeight: '600', fontSize: 14, color: 'white',
+    },
     shortText:{
         fontSize: 15,
         color: colors.primaryYellow,
