@@ -111,6 +111,11 @@
     },
     "numberPhone": {
       "type": "string"
+    },
+    "typeOfCooks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::type-of-cook.type-of-cook"
     }
   }
 }

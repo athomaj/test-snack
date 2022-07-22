@@ -129,11 +129,13 @@ const UserProvider = ({ children }) => {
 
 
     const updateUserInformation = async (userUpdated) => {
+         console.log(authState.user.id)
         setAuthState({
             ...authState,
             isLoading: true
         })
 
+        userApi.updateUser(userUpdated, authState.user.id)
     };
 
     const disconnect = async () => {
