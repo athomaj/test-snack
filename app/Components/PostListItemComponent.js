@@ -3,22 +3,23 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
 import { colors } from '../utils/colors';
+import { BASE_URL } from '../config/config';
 
 export function PostListItemComponent({ item, index}) {
     return (
         <View style={{ paddingTop: index === 0 ? 20 : 0 }}>
             <View style={styles.container}>
-                <Image style={styles.imagePost} source={{uri: item.attributes.avatarUrl}}></Image>
+                <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}}/>
                 <View style={styles.bottom}>
                     <Text style={styles.title}>{item.attributes.title}</Text>
                     <View style={styles.userAndDate}>
                         <View style={styles.user}>
                             <View style={styles.sizeAvatar}>
-                                <Image style={styles.avatarUrl} source={{uri: item.attributes.user.data.attributes.avatarUrl}}></Image>
+                                <Image style={styles.avatarUrl} source={{uri: item.attributes.user.data.attributes.avatarUrl}}/>
                             </View>
                             <Text style={styles.userdate}>{item.attributes.user.data.attributes.username}</Text>
                         </View>
-                        <Text style={styles.userdate}>{moment((item.attributes.date)).format('DD MMM à H:mm')}</Text>
+                        <Text style={styles.userdate}>{moment((item.attributes.datetime)).format('DD MMM à H:mm')}</Text>
                     </View>
                 </View>
             </View>

@@ -129,6 +129,18 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         createLevel()
     }
 
+    function display() {
+        const filterData = {
+            date: date,
+            dateValue: dateValue,
+            kitchen: kitchen,
+            diet: diet,
+            district: district,
+            level: level
+        }
+        updateFilters(filterData)
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ height: '100%', width: '100%' }}>
@@ -195,7 +207,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                             <TouchableOpacity style={styles.containerSelectDate}>
                                 <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
                             </TouchableOpacity>
-                            <SelectDropdown
+                            {/* <SelectDropdown
                                 data={districts}
                                 onSelect={(selectedItem, index) => {
                                     console.log(selectedItem, index)
@@ -206,7 +218,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                                 rowTextForSelection={(item, index) => {
                                     return item
                                 }}
-                            />
+                            /> */}
                         </View>
                     </View>
                     <View style={styles.level}>
@@ -222,7 +234,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                         <TouchableOpacity style={styles.deleteAll} onPress={deleteAll}>
                             <Text style={styles.textDelete}>Tout effacer</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.searchAll}>
+                        <TouchableOpacity style={styles.searchAll} onPress={display}>
                             <View style={styles.imageSearchSize}>
                                 <Image style={styles.imageSearch} source={require('../assets/icon/whiteSearch.png')} />
                             </View>

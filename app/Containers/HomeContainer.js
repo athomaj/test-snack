@@ -1,25 +1,18 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal, StyleSheet, TextInput } from 'react-native';
 import moment from 'moment';
-
 import { useUserContext } from '../context/UserContext';
-
-import HeaderChapter from '../Components/Utils/HeaderChapter';
 import { PostListItemComponent } from '../Components/PostListItemComponent';
 import FilterComponent from '../Components/FilterComponent';
-
 import { colors } from '../utils/colors';
-import { sharedStyles } from '../utils/styles';
 import postApi from '../services/postApi';
 
 const deviceHeight = Dimensions.get('screen').height
-const deviceWidth = Dimensions.get('screen').width
 
 export default function HomeContainer({ navigation }) {
 
     const userContext = useUserContext()
 
-    const [slideIndex, setSlideIndex] = useState(0)
     const [posts, setPosts] = useState([])
     const [filterPosts, setFilterPosts] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
@@ -31,15 +24,10 @@ export default function HomeContainer({ navigation }) {
 
     async function getPosts() {
         const data = await postApi.getPosts()
-        console.log(data)
         if (data) {
             setPosts(data)
             setFilterPosts(data)
         }
-    }
-
-    function filterEvent(data, event) {
-        return data.filter(item => item.attributes.category.data.attributes.name.toLowerCase() === event)
     }
 
     function filterTime(type, plus, data) {
@@ -59,57 +47,47 @@ export default function HomeContainer({ navigation }) {
         }
     }
 
-    function filtersPosts(index, filterData) {
+    function filtersPosts(filterData) {
         let data = [...posts]
-        if (index === 1) {
-            data = filterEvent(data, 'événements')
-        }
-        if (index === 2) {
-            data = filterEvent(data, 'ateliers')
-        }
-        if (index === 3) {
-            data = filterEvent(data, 'bons plans')
-        }
+        const newKitchen = []
+        const newDiet = []
+        const newLevel = []
+        filterData.kitchen.map((data) => {
+            if(data["status"] === true){
+                newKitchen.push(data.title)
+            }
+        })
+        filterData.diet.map((data) => {
+            if(data["status"] === true){
+                newDiet.push(data.title)
+            }
+        })
+        filterData.level.map((data) => {
+            if(data["status"] === true){
+                newLevel.push(data.title)
+            }
+        })
         if (filterData) {
-            if (filterData.search === true) {
-                data = data.filter(item => item.attributes.isSearch === true)
-                console.log("DATA ===", data)
+            if (filterData.dateValue){
+                data = data.filter(item => moment(item.attributes.datetime).format('D/MM/YYYY') === moment(filterData.date).format('D/MM/YYYY'))
             }
-            if (filterData.proposal === true) {
-                data = data.filter(item => item.attributes.isSearch === false)
-                console.log("DATA 2 ===", data)
+            if (filterData.district) {
+                data = data.filter(item => item.attributes.district === filterData.district)
             }
-            if (filterData.districts?.length > 0) {
+            if (newKitchen?.length > 0) {
                 data = data.filter((item) => {
-                    const filteredData = filterData.districts.flatMap(item => { return item.isChecked ? item.district : "" })
-                    console.log(filteredData)
-                    return filteredData.includes("" + item.attributes.district)
+                    return item.attributes.kitchens.data.filter(item => newKitchen.includes(item.attributes.name)).length > 0
                 })
-                console.log("DATA 3 ===", data)
             }
-            let dataWeeks = []
-            if (filterData.thisWeek === true || filterData.nextWeek === true || filterData.nextMonth === true) {
-                if (filterData.thisWeek === true) {
-                    const filteredData = filterTime('w', 0, data)
-                    dataWeeks = dataWeeks.concat(filteredData)
-                }
-                if (filterData.nextWeek === true) {
-                    const filteredData = filterTime('w', 1, data)
-                    dataWeeks = dataWeeks.concat(filteredData)
-                }
-                if (filterData.nextMonth === true) {
-                    const filteredData = filterTime('m', 1, data)
-                    if (dataWeeks.length > 0) {
-                        for (let i = 0; i < dataWeeks.length; i++) {
-                            if (filteredData.indexOf(dataWeeks[i]) === -1)
-                                filteredData.push(dataWeeks[i])
-                        }
-                    }
-                    else {
-                        dataWeeks = dataWeeks.concat(filteredData)
-                    }
-                }
-                data = dataWeeks
+            if (newDiet?.length > 0) {
+                data = data.filter((item) => {
+                    return item.attributes.diets.data.filter(item => newDiet.includes(item.attributes.name)).length > 0
+                })
+            }
+            if (newLevel?.length > 0) {
+                data = data.filter((item) => {
+                    return item.attributes.levels.data.filter(item => newLevel.includes(item.attributes.name)).length > 0
+                })
             }
         }
         setFilterPosts(data)
@@ -117,7 +95,7 @@ export default function HomeContainer({ navigation }) {
 
     function updateFilters(data) {
         setFilters(data)
-        filtersPosts(slideIndex, data)
+        filtersPosts(data)
         setModalVisible(false)
     }
 
