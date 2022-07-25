@@ -18,6 +18,7 @@ export default function SplashScreen({ navigation }) {
             storeData('alreadyConnected', 'true')
             navigation.replace('onboarding')
         }
+        // else navigation.replace('onboarding')
         else navigation.navigate('Login',{isLogin: true})
     }
 

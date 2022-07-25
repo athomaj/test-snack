@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Image, Text, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import TextArea from '../../Components/Utils/TextArea';
@@ -17,13 +17,15 @@ export default function CompletProfil4({ navigation }) {
   
     //SignUpStep1
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 106}}>
-                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('UpdateProfil5')}></SignupFooterNav>
+        <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15}}>
+        <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('UpdateProfil5')}></SignupFooterNav>
+            <ScrollView style={{width: '100%', height:'100%'}}
+            contentContainerStyle= {{paddingTop: 106}}>
 
                 <Text style={{...sharedStyles.h2, marginBottom: 15}}>A propos de vous</Text>
                 <Text style={{...sharedStyles.shortText, marginBottom:25}}>Quoi que vous aimiez, vous le trouverez ici.</Text>
 
-                <View style={{ width: '100%', height: 100}}>
+                <View style={{ width: '100%'}}>
 
                     <TextArea
                     value={pres}
@@ -52,7 +54,7 @@ export default function CompletProfil4({ navigation }) {
                     ></TextArea>
 
                 </View>
-           
+            </ScrollView>
         </SafeAreaView>
     );
 }

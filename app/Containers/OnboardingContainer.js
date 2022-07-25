@@ -92,7 +92,7 @@ export default function OnboardingContainer({ navigation, route }) {
                     <View style={{ height: 10, marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
                     {dotMap}
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUpStep1Container')} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUpStep1')} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
                         <Text style={{ fontSize: 14, color: 'white', fontWeight: '600' }}>Démarrer</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('Login', { isLogin: true })} style={{...sharedStyles.secondaryButton, justifyContent: 'center', alignItems: 'center' }}>

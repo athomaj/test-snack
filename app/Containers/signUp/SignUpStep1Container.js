@@ -99,6 +99,7 @@ export default function SignUpStep1Container({ navigation }) {
                         textInputProps={{placeholder: 'Numéro de téléphone', placeholderTextColor: colors.primaryYellow, onEndEditing: ()=>{validPhoneNumber ? setNumberPhone(numberPhone): ''} }}
                         containerStyle={{backgroundColor: '#E6EFF7'}}
                         textContainerStyle={{backgroundColor: '#E6EFF7'}}
+                        codeTextStyle={{ textAlignVertical: 'center', height:20}}
                         ref={phoneInput}
                         defaultValue={value}
                         defaultCode="FR"

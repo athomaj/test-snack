@@ -9,7 +9,7 @@ import { useUserContext } from '../../context/UserContext';
 export default function CompletProfil2({ navigation }) {
 
     const userContext = useUserContext();
-    const [buttonDisable, setDisabledButton] = React.useState(false)
+    const [buttonDisable, setDisabledButton] = React.useState(true)
     const [typeOfCooks, setTypeOfCooks] = React.useState([])
     const [data, setData] = React.useState({})
 
@@ -25,6 +25,7 @@ export default function CompletProfil2({ navigation }) {
         {id:9, name:"orientale"},
     ]
     React.useEffect(()=>{
+        typeOfCooks.length > 1 ? setDisabledButton(false) : setDisabledButton(true);
         setData({"typeOfCooks": typeOfCooks})
     },[typeOfCooks])
 
