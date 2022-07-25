@@ -12,5 +12,6 @@ export const colors = {
     greyImage: "#D9D9D9",
     primaryBlue: "#0A4072",
     secondaryBlue: "#E6EFF7",
-    thirdBlue: "#005DB2"
+    thirdBlue: "#005DB2",
+    whiteBlue: "#E6EFF7"
 }

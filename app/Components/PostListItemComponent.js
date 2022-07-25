@@ -10,6 +10,13 @@ export function PostListItemComponent({ item, index}) {
         <View style={{ paddingTop: index === 0 ? 20 : 0 }}>
             <View style={styles.container}>
                 <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}}/>
+                <View style={styles.category}>
+                    <Text style={styles.categoryText}>{item.attributes.category.data.attributes.name}</Text>
+                </View>
+                <View style={styles.district}>
+                    <Image style={styles.pin} source={require("../assets/icon/pin.png")}/>
+                    <Text style={styles.districtText}>{item.attributes.district}</Text>
+                </View>
                 <View style={styles.bottom}>
                     <Text style={styles.title}>{item.attributes.title}</Text>
                     <View style={styles.userAndDate}>
@@ -77,5 +84,49 @@ const styles = StyleSheet.create({
 
     sizeAvatar: {
         width: 25,
+    },
+
+    category: {
+        position: 'absolute',
+        backgroundColor: colors.whiteBlue,
+        width: 63,
+        height: 22,
+        borderRadius: 27,
+        justifyContent: 'center',
+        top: 214,
+        left: 11,
+    },
+
+    categoryText: {
+        fontWeight: '500',
+        fontSize: 11.5,
+        color: colors.primaryBlue,
+        textAlign: 'center',
+    },
+
+    district: {
+        position: 'absolute',
+        backgroundColor: colors.whiteBlue,
+        width: 63,
+        height: 22,
+        borderRadius: 27,
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 214,
+        left: 80,
+        flexDirection: 'row'
+    },
+
+    districtText: {
+        fontWeight: '500',
+        fontSize: 11.5,
+        color: colors.primaryBlue,
+        textAlign: 'center',
+        padding: 3
+    },
+
+    pin: {
+        width: 9,
+        height: 12.5,
     }
 })

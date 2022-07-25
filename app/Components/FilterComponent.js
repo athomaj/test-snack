@@ -8,6 +8,7 @@ import { kitchenTypeData } from "../fakeData/kitchenType";
 import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
 import SelectDropdown from 'react-native-select-dropdown';
+import { categoryData } from "../fakeData/category";
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
 
@@ -18,11 +19,22 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const [kitchen, setKitchen] = React.useState([])
     const [diet, setDiet] = React.useState([])
     const [level, setLevel] = React.useState([])
+    const [category, setCategory] = React.useState(null)
 
     const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008",
         "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
 
     React.useEffect(() => {
+        if(filters){
+            setDate(filters.date)
+            setDateValue(filters.dateValue)
+            setDistrict(filters.district)
+            setKitchen(filters.kitchen)
+            setDiet(filters.diet)
+            setLevel(filters.level)
+            setCategory(filters.category)
+            return
+        }
         createKitchen()
         createDiet()
         createLevel()
@@ -38,6 +50,22 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const showDatePicker = () => {
         setShow(true);
     };
+
+    const renderCategory = ({ item, index }) => (
+        <TouchableOpacity onPress={() => setCategory(item.title)}>
+            {category === item.title ?
+                <View style={styles.viewDietTrue}>
+                    <Image style={styles.imageDiet} source={require('../assets/icon/whiteCarrot.png')} />
+                    <Text style={styles.textDietTrue}>{item.title}</Text>
+                </View>
+                :
+                <View style={styles.viewDiet}>
+                    <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+                    <Text style={styles.textDiet}>{item.title}</Text>
+                </View>
+            }
+        </TouchableOpacity>
+    )
 
     function createKitchen() {
         const cKitchen = kitchenTypeData.map((data, index) => {
@@ -127,6 +155,10 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         createKitchen()
         createDiet()
         createLevel()
+        setDistrict(null)
+        setDateValue(null)
+        setCategory(null)
+        setDate(new Date())
     }
 
     function display() {
@@ -136,7 +168,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
             kitchen: kitchen,
             diet: diet,
             district: district,
-            level: level
+            level: level,
+            category: category
         }
         updateFilters(filterData)
     }
@@ -151,9 +184,14 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={{ height: '100%', width: '100%'}} contentContainerStyle={{ paddingTop: 68, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
-                    <View style={styles.searchBar}>
-                        <Image style={styles.searchPicture} source={require('../assets/icon/search.png')} />
-                        <TextInput style={styles.searchInput} placeholder="Que recherchez-vous ?" placeholderTextColor={colors.primaryBlue} />
+                    <View style={styles.category}>
+                        <FlatList
+                        scrollEnabled={false}
+                        data={categoryData}
+                        renderItem={renderCategory}
+                        numColumns={3}
+                        keyExtractor={item => item.id}
+                        />
                     </View>
                     <View style={styles.date}>
                         <Text style={styles.textDate}>Quelle date vous interesse ?</Text>
@@ -199,18 +237,14 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                     <View style={styles.date}>
                         <Text style={styles.textDate}>Dans quelle quartier ?</Text>
                         <View style={styles.containerDate}>
-                            {district === null ?
-                                <Text style={styles.chooseTextDate}>Choisir un quartier</Text>
-                                :
-                                <Text style={styles.chooseTextDate}>{district}</Text>
-                            }
-                            <TouchableOpacity style={styles.containerSelectDate}>
-                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
-                            </TouchableOpacity>
-                            {/* <SelectDropdown
+                            <SelectDropdown
                                 data={districts}
+                                defaultValue={district}
+                                defaultButtonText={"Clique pour choisir un quartier"}
+                                buttonStyle={{backgroundColor: colors.white, height: 30, width: '100%'}}
+                                buttonTextStyle={{color: colors.thirdBlue, fontWeight: '500', fontSize: 14}}
                                 onSelect={(selectedItem, index) => {
-                                    console.log(selectedItem, index)
+                                    setDistrict(selectedItem)
                                 }}
                                 buttonTextAfterSelection={(selectedItem, index) => {
                                     return selectedItem
@@ -218,7 +252,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                                 rowTextForSelection={(item, index) => {
                                     return item
                                 }}
-                            /> */}
+                            />
                         </View>
                     </View>
                     <View style={styles.level}>
@@ -292,29 +326,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    searchBar: {
-        backgroundColor: colors.secondaryBlue,
-        height: 44,
-        alignItems: "center",
-        flexDirection: "row",
-        padding: '2%',
-        borderRadius: 4,
-    },
-
-    searchPicture: {
-        width: 19,
-        height: 19,
-    },
-
-    searchInput: {
-        left: 10,
-        width: '90%',
-    },
-
-
     date: {
-        height: 120,
-        top: 30
+        height: 90,
+        marginTop: 10
     },
 
     textDate: {
@@ -477,5 +491,10 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontWeight: '600',
         fontSize: 14
+    },
+
+    category: {
+        marginTop: 40,
+        marginBottom: 30
     }
 })

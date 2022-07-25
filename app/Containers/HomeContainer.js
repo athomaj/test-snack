@@ -30,23 +30,6 @@ export default function HomeContainer({ navigation }) {
         }
     }
 
-    function filterTime(type, plus, data) {
-        if (type === 'w') {
-            const today = moment().week()
-            return data.filter(item => {
-                const dateItem = moment(item.attributes.date).week()
-                return dateItem === today + plus
-            })
-        }
-        if (type === 'm') {
-            const today = moment().month()
-            return data.filter(item => {
-                const dateItem = moment(item.attributes.date).month()
-                return dateItem === today + plus
-            })
-        }
-    }
-
     function filtersPosts(filterData) {
         let data = [...posts]
         const newKitchen = []
@@ -72,7 +55,10 @@ export default function HomeContainer({ navigation }) {
                 data = data.filter(item => moment(item.attributes.datetime).format('D/MM/YYYY') === moment(filterData.date).format('D/MM/YYYY'))
             }
             if (filterData.district) {
-                data = data.filter(item => item.attributes.district === filterData.district)
+                data = data.filter(item => item.attributes.district === parseInt(filterData.district))
+            }
+            if (filterData.category) {
+                data = data.filter(item => item.attributes.category.data.attributes.name ===filterData.category)
             }
             if (newKitchen?.length > 0) {
                 data = data.filter((item) => {
