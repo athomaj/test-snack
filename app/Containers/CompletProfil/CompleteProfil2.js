@@ -12,7 +12,7 @@ export default function CompletProfil2({ navigation }) {
     const [buttonDisable, setDisabledButton] = React.useState(true)
     const [typeOfCooks, setTypeOfCooks] = React.useState([])
     const [data, setData] = React.useState({})
-
+    
     const ArraytypeOfCooks = [
         {id:1, name:"Africaine"},
         {id:2, name:"Asiatique"},
@@ -65,7 +65,7 @@ export default function CompletProfil2({ navigation }) {
                 </View>}
                 style={{ width: '100%', height: '100%'}}
                 contentContainerStyle={{paddingBottom: 80}}
-                data={ArraytypeOfCooks}
+                data={allcitys}
                 renderItem={renderItem}
                 stickyHeaderIndices={[0]}
                 />

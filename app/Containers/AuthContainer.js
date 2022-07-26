@@ -28,7 +28,7 @@ export default function AuthContainer({ navigation, route }) {
 
     function changeLoginStatus() {
         setIsLogin(!isLogin)
-        navigation.replace('SignUpStep1')
+        navigation.replace('SignUpStep3')
     }
 
     function searchContact(search) {

@@ -6,6 +6,7 @@ import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import Link from '../../Components/Utils/Link';
 import {Picker} from '@react-native-picker/picker';
 import { useSignUpContext } from '../../context/SignUpContext';
+import citiesApi from '../../services/citiesApi';
 
 
 
@@ -13,6 +14,8 @@ export default function SignUpStep3Container({ navigation }) {
 
     const SignUpContext = useSignUpContext();
     const [citySelected, setCitySelected] = React.useState(null)
+    const [city, setcity] = React.useState(null)
+
     const CITYS = [
         { 
         name : 'Marseille',
@@ -111,6 +114,15 @@ export default function SignUpStep3Container({ navigation }) {
     const WIDTHCONTAINER = (Dimensions.get('window').width/2)-21;
     const [selectedcity, setSelectedcity] = React.useState([])
 
+   const getAllCities = async () => {
+        const citiesAll = await citiesApi.getAllCities();
+        citiesAll?.data ? setcity(citiesAll.data) : null
+        console.log(citiesAll.data[0].attributes.districts.data[0].attributes.name)
+    }
+    React.useEffect(()=>{
+        getAllCities()
+    },[])
+
     React.useEffect(()=>{
         setSelectedcity(SelectPicker)
     },[citySelected])
@@ -118,9 +130,9 @@ export default function SignUpStep3Container({ navigation }) {
     const SelectPicker = () => {
         if(citySelected)
         {
-        const city = [...citySelected.arrondissements]
-        const arrondissements = city.map(element =>{
-            return <Picker.Item style={{ color: colors.primaryYellow}} label={element} value={element} />
+        const cityOnselected = [...citySelected.attributes.districts.data]
+        const arrondissements = cityOnselected.map(element =>{
+            return <Picker.Item style={{ color: colors.primaryYellow}} label={element.attributes.name} value={element.id} />
         })
         return(
             arrondissements
@@ -136,10 +148,10 @@ export default function SignUpStep3Container({ navigation }) {
         ({ item, index }) => {
             return(
             <TouchableOpacity onPress={() => setCitySelected(item)} style={{backgroundColor: '#E6EFF7', height: 87, width:WIDTHCONTAINER, borderRadius: 4, marginBottom: 12}}>
-                { citySelected && item.name === citySelected.name && 
+                { citySelected && item.attributes.name === citySelected.attributes.name && 
                 <Image source={require('../../assets/icon/validate_icon.png')} style={{position: 'absolute', top:8, right:8, width: 21, height: 21,}} />
                 }
-                <Text style={{...sharedStyles.shortText, position: 'absolute', bottom:0, left:0, paddingLeft:10, paddingBottom:10}}>{item.name}</Text>
+                <Text style={{...sharedStyles.shortText, position: 'absolute', bottom:0, left:0, paddingLeft:10, paddingBottom:10}}>{item.attributes.name}</Text>
             </TouchableOpacity>)},
         [citySelected]
     );
@@ -153,7 +165,7 @@ export default function SignUpStep3Container({ navigation }) {
                     <Text style={{...sharedStyles.h2, width: '100%'}}>Où habites-tu ? </Text>
                     <Text style={{...sharedStyles.shortText, height:55}}>Participe avec nous à développer la vie du quartier de ta ville.</Text>
                     <FlatList
-                    data={CITYS}
+                    data={city}
                     renderItem={renderItem}
                     style={{ width: '100%'}}
                     horizontal={false}
