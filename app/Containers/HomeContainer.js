@@ -35,30 +35,31 @@ export default function HomeContainer({ navigation }) {
         const newKitchen = []
         const newDiet = []
         const newLevel = []
-        filterData.kitchen.map((data) => {
-            if(data["status"] === true){
-                newKitchen.push(data.title)
-            }
-        })
-        filterData.diet.map((data) => {
-            if(data["status"] === true){
-                newDiet.push(data.title)
-            }
-        })
-        filterData.level.map((data) => {
-            if(data["status"] === true){
-                newLevel.push(data.title)
-            }
-        })
         if (filterData) {
-            if (filterData.dateValue){
+            filterData.kitchen.map((data) => {
+                if (data["status"] === true) {
+                    newKitchen.push(data.title)
+                }
+            })
+            filterData.diet.map((data) => {
+                if (data["status"] === true) {
+                    newDiet.push(data.title)
+                }
+            })
+            filterData.level.map((data) => {
+                if (data["status"] === true) {
+                    newLevel.push(data.title)
+                }
+            })
+
+            if (filterData.dateValue) {
                 data = data.filter(item => moment(item.attributes.datetime).format('D/MM/YYYY') === moment(filterData.date).format('D/MM/YYYY'))
             }
             if (filterData.district) {
                 data = data.filter(item => item.attributes.district === parseInt(filterData.district))
             }
             if (filterData.category) {
-                data = data.filter(item => item.attributes.category.data.attributes.name ===filterData.category)
+                data = data.filter(item => item.attributes.category.data.attributes.name === filterData.category)
             }
             if (newKitchen?.length > 0) {
                 data = data.filter((item) => {
@@ -72,17 +73,19 @@ export default function HomeContainer({ navigation }) {
             }
             if (newLevel?.length > 0) {
                 data = data.filter((item) => {
-                    return item.attributes.levels.data.filter(item => newLevel.includes(item.attributes.name)).length > 0
+                    return newLevel.includes(item.attributes.level.data.attributes.name)
                 })
             }
         }
         setFilterPosts(data)
     }
 
-    function updateFilters(data) {
+    function updateFilters(data, close) {
         setFilters(data)
         filtersPosts(data)
-        setModalVisible(false)
+        if (close) {
+            setModalVisible(false)
+        }
     }
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
@@ -120,7 +123,7 @@ export default function HomeContainer({ navigation }) {
                     renderItem={renderItem}
                     keyExtractor={flatListKeyExtractor}
                     style={{ height: '100%', width: '100%' }}
-                    contentContainerStyle={{paddingHorizontal: 10}}
+                    contentContainerStyle={{ paddingHorizontal: 10 }}
                     stickyHeaderIndices={[0]}
                 />
                 {modalVisible &&

@@ -66,14 +66,6 @@
     "favoriteDish": {
       "type": "string"
     },
-    "favoritePlace": {
-      "type": "string"
-    },
-    "food_families": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::family.family"
-    },
     "sponsors": {
       "type": "relation",
       "relation": "manyToMany",
@@ -102,12 +94,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
-    },
-    "kitchen_level": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::kitchen-level.kitchen-level",
-      "inversedBy": "users"
     }
   }
 }

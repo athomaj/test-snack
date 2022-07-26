@@ -6,7 +6,7 @@ export const categoryData = [
     },
     {
         "id": "2",
-        "title": "Diner",
+        "title": "Dîner",
     },
     {
         "id": "3",

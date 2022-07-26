@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, TextInput, SafeAreaView } from 'react-native';
+import React from "react";
+import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, SafeAreaView, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import SelectDropdown from 'react-native-select-dropdown';
+import moment from "moment";
 
 import { colors } from "../utils/colors";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from "moment";
+
 import { kitchenTypeData } from "../fakeData/kitchenType";
 import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
-import SelectDropdown from 'react-native-select-dropdown';
 import { categoryData } from "../fakeData/category";
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
@@ -21,18 +22,19 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const [level, setLevel] = React.useState([])
     const [category, setCategory] = React.useState(null)
 
-    const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008",
-        "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
+    const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008", "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
 
     React.useEffect(() => {
-        if(filters){
-            setDate(filters.date)
-            setDateValue(filters.dateValue)
-            setDistrict(filters.district)
-            setKitchen(filters.kitchen)
-            setDiet(filters.diet)
-            setLevel(filters.level)
-            setCategory(filters.category)
+        console.log("FILTERS HOEM ====", filters)
+        if (filters) {
+            const filtersCopy = JSON.parse(JSON.stringify(filters))
+            setDate(new Date(filtersCopy.date))
+            setDateValue(filtersCopy.dateValue)
+            setDistrict(filtersCopy.district)
+            setKitchen(filtersCopy.kitchen)
+            setDiet(filtersCopy.diet)
+            setLevel(filtersCopy.level)
+            setCategory(filtersCopy.category)
             return
         }
         createKitchen()
@@ -68,7 +70,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     )
 
     function createKitchen() {
-        const cKitchen = kitchenTypeData.map((data, index) => {
+        const copy = [...kitchenTypeData]
+        const cKitchen = copy.map((data, index) => {
             data["status"] = false
             data['id'] = index
             return data
@@ -87,14 +90,15 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     );
 
     function kitchenTypeChange(index) {
-        const data = [...kitchenTypeData]
+        const data = [...kitchen]
         data[index].status = !data[index].status
         setKitchen(data)
     }
 
 
     function createLevel() {
-        const cLevel = levelData.map((data, index) => {
+        const copy = [...levelData]
+        const cLevel = copy.map((data, index) => {
             data["status"] = false
             data['id'] = index
             return data
@@ -113,14 +117,15 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     );
 
     function levelChange(index) {
-        const data = [...levelData]
+        const data = [...level]
         data[index].status = !data[index].status
         setLevel(data)
     }
 
 
     function createDiet() {
-        const cDiet = dietData.map((data, index) => {
+        const copy = [...dietData]
+        const cDiet = copy.map((data, index) => {
             data["status"] = false
             data['id'] = index
             return data
@@ -145,7 +150,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     );
 
     function dietChange(index) {
-        const data = [...dietData]
+        const data = [...diet]
         data[index].status = !data[index].status
         setDiet(data)
     }
@@ -159,6 +164,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         setDateValue(null)
         setCategory(null)
         setDate(new Date())
+
+        updateFilters(null, false)
     }
 
     function display() {
@@ -171,7 +178,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
             level: level,
             category: category
         }
-        updateFilters(filterData)
+        updateFilters(filterData, true)
     }
 
     return (
@@ -183,43 +190,54 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                         <Text style={styles.back}>{'<'}</Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView style={{ height: '100%', width: '100%'}} contentContainerStyle={{ paddingTop: 68, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
+                <ScrollView style={{ height: '100%', width: '100%' }} contentContainerStyle={{ paddingTop: 68, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
                     <View style={styles.category}>
                         <FlatList
-                        scrollEnabled={false}
-                        data={categoryData}
-                        renderItem={renderCategory}
-                        numColumns={3}
-                        keyExtractor={item => item.id}
+                            scrollEnabled={false}
+                            data={categoryData}
+                            renderItem={renderCategory}
+                            numColumns={3}
+                            keyExtractor={item => item.id}
                         />
                     </View>
                     <View style={styles.date}>
                         <Text style={styles.textDate}>Quelle date vous interesse ?</Text>
-                        <View style={styles.containerDate}>
-                            {dateValue === null ?
-                                <Text style={styles.chooseTextDate}>Choisir une date</Text>
-                                :
-                                <Text style={styles.chooseTextDate}>{moment(date).format('D/MM/YYYY')}</Text>
-                            }
-                            <TouchableOpacity style={styles.containerSelectDate} onPress={showDatePicker}>
-                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
-                            </TouchableOpacity>
-                            {show && (
+                        {Platform.OS === 'ios' ?
+                            <View style={{ alignItems: 'flex-start', width: '100%', paddingTop: 5 }}>
                                 <DateTimePicker
-                                    testID="dateTimePicker"
+                                    display="compact"
+                                    mode="date"
+                                    style={{ width: 132 }}
                                     value={date}
-                                    mode={'date'}
-                                    is24Hour={true}
                                     onChange={onChange}
                                 />
-                            )}
-                        </View>
+                            </View>
+                            :
+                            <TouchableOpacity style={styles.containerDate} onPress={showDatePicker}>
+                                {dateValue === null ?
+                                    <Text style={styles.chooseTextDate}>Choisir une date</Text>
+                                    :
+                                    <Text style={styles.chooseTextDate}>{moment(date).format('D/MM/YYYY')}</Text>
+                                }
+                                {/* <TouchableOpacity style={styles.containerSelectDate} onPress={showDatePicker}> */}
+                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
+                                {/* </TouchableOpacity> */}
+                                {show &&
+                                    <DateTimePicker
+                                        value={date}
+                                        mode={'date'}
+                                        is24Hour={true}
+                                        onChange={onChange}
+                                    />
+                                }
+                            </TouchableOpacity>
+                        }
                     </View>
                     <View style={styles.kitchenType}>
                         <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
                         <FlatList
                             scrollEnabled={false}
-                            data={kitchenTypeData}
+                            data={kitchen}
                             renderItem={renderKitchenType}
                             keyExtractor={item => item.id}
                         />
@@ -241,8 +259,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                                 data={districts}
                                 defaultValue={district}
                                 defaultButtonText={"Clique pour choisir un quartier"}
-                                buttonStyle={{backgroundColor: colors.white, height: 30, width: '100%'}}
-                                buttonTextStyle={{color: colors.thirdBlue, fontWeight: '500', fontSize: 14}}
+                                buttonStyle={{ backgroundColor: colors.white, height: 30, width: '100%' }}
+                                buttonTextStyle={{ color: colors.thirdBlue, fontWeight: '500', fontSize: 14, textAlign: 'left', width: '100%' }}
                                 onSelect={(selectedItem, index) => {
                                     setDistrict(selectedItem)
                                 }}
