@@ -1,86 +1,80 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { colors } from "../../utils/colors";
+import { Image, Keyboard, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
+
 import { usePublishContext } from "../../context/PublishContext";
+
 import { dataCategory } from "../../fakeData/dataCategory";
+
+import { postCreateStyles } from "../../utils/styles";
+import { colors } from "../../utils/colors";
+
+const categorySelectedPicture = require('../../assets/icon/blueCarrot.png')
+const categoryUnselectedPicture = require('../../assets/icon/whiteCarrot.png')
 
 export default function PublishPost1({ navigation }) {
 
-    const PublishContext = usePublishContext()
+    const publishContext = usePublishContext()
+
     const [buttonDisable, setButtonDisable] = React.useState(false)
     const [title, setTitle] = React.useState('')
     const [desc, setDesc] = React.useState('')
-    const [category, setCategory] = React.useState('')
+    const [category, setCategory] = React.useState(0)
 
-    const closeModal = () => {
-        navigation.navigate('Home')
+    const textInput2Ref = React.useRef(null)
+
+    async function onPressContinue() {
+        await publishContext.updatePublish1(title, desc, category + 1)
+
+        navigation.navigate('PublishPost2')
     }
 
-    const renderCategory = ({ item, index }) => (
-        <TouchableOpacity style={styles.renderCategory} onPress={() => categoryChange(index)}>
-            {item.status === true ?
-            <View style={styles.viewCategoryTrue}>
-                <Image style={styles.imageCategory} source={require('../../assets/icon/whiteCarrot.png')}/>
-                <Text style={styles.textCategoryTrue}>{item.name}</Text>
+    return (
+        <SafeAreaView style={{ height: '100%', flex: 1, backgroundColor: 'white' }}>
+            <View style={{ height: '100%', width: '100%', backgroundColor: colors.white }}>
+                <KeyboardAwareScrollView keyboardDismissMode="on-drag" style={{ flex: 1 }}>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                            <Text style={styles.title}>Super titre</Text>
+                            <Text style={styles.desc}>Texte d’introduction...</Text>
+                            <Text style={styles.desc}>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo...</Text>
+                            <Text style={styles.desc2}>Important d’avoir une photo avant de commencer !</Text>
+                            <View style={styles.categoryViewContainer}>
+                                {dataCategory.map((item, index) => (
+                                    <TouchableOpacity style={{ width: '32%' }} onPress={() => setCategory(index)}>
+                                        <View style={{ ...styles.viewCategory, backgroundColor: category === index ? colors.thirdBlue : colors.secondaryBlue }}>
+                                            <Image style={styles.imageCategory} source={category != index ? categorySelectedPicture : categoryUnselectedPicture} />
+                                            <Text style={{ ...styles.textCategory, color: category === index ? colors.white : colors.primaryBlue }}>{item.name}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ))
+                                }
+                            </View>
+                            <Text style={styles.chooseTitle}>Choisissez un titre pour l’évènements</Text>
+                            <View style={styles.contLilTI}>
+                                <TextInput returnKeyType="next" onSubmitEditing={() => textInput2Ref.current?.focus()} blurOnSubmit={false} style={styles.lilTextInput} placeholder="Titre" placeholderTextColor={colors.primaryBlue} value={title} onChangeText={(e) => setTitle(e)} />
+                            </View>
+                            <View style={styles.contBigTI}>
+                                <TextInput ref={textInput2Ref} style={styles.bigTextInput} placeholder="Description de l'évènement" placeholderTextColor={colors.primaryBlue} value={desc} onChangeText={(e) => setDesc(e)} multiline={true} numberOfLines={9} />
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </KeyboardAwareScrollView>
+                <View style={postCreateStyles.header}>
+                    <Text style={postCreateStyles.titleHeader}>Création d’évènement</Text>
+                    <TouchableOpacity style={postCreateStyles.crossView} onPress={() => navigation.navigate('Home')}>
+                        <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
+                    </TouchableOpacity>
+                </View>
+                <PublishFooterNav firstScreen={true} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} />
             </View>
-            :
-                <View style={styles.viewCategory}>
-                    <Image style={styles.imageCategory} source={require('../../assets/icon/blueCarrot.png')}/>
-                    <Text style={styles.textCategory}>{item.name}</Text>
-                </View>
-            }
-        </TouchableOpacity>
-    );
-
-    function categoryChange(index){
-        const data = [...dataCategory]
-        data.map(allFalse)
-        data[index].status = true
-        setCategory(data[index].id)
-    }
-
-    function allFalse(item){
-        item.status = false
-    }
-
-    return(
-        <SafeAreaView>
-            <ScrollView style={styles.container}>
-                <Text style={styles.title}>Super titre</Text>
-                <Text style={styles.desc}>Texte d’introduction...</Text>
-                <Text style={styles.desc}>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo...</Text>
-                <Text style={styles.desc2}>Important d’avoir une photo avant de commencer !</Text>
-                <View style={styles.viewFlatlist}>
-                    <FlatList
-                        scrollEnabled={false}
-                        data={dataCategory}
-                        numColumns={3}
-                        renderItem={renderCategory}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-                <Text style={styles.chooseTitle}>Choisissez un titre pour l’évènements</Text>
-                <View style={styles.contLilTI}>
-                    <TextInput style={styles.lilTextInput} placeholder= "Titre" placeholderTextColor={colors.primaryBlue} value={title} onChangeText={(e) => setTitle(e)}/>
-                </View>
-                <View style={styles.contBigTI}>
-                    <TextInput style={styles.bigTextInput} placeholder= "Description de l'évènement" placeholderTextColor={colors.primaryBlue} value={desc} onChangeText={(e) => setDesc(e)} multiline={true} numberOfLines={9}/>
-                </View>
-            </ScrollView>
-            <View style={styles.header}>
-                <Text style={styles.titleHeader}>Création d’évènement</Text>
-                <TouchableOpacity style={styles.crossView} onPress={closeModal}>
-                    <Image style={styles.cross} source={require("../../assets/icon/cross.png")} />
-                </TouchableOpacity>
-            </View>
-            <PublishFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('PublishPost2')} updatecontext={() => PublishContext.updatePublish1(title, desc, category)}/>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-
     container: {
         height: '100%',
         width: '100%',
@@ -88,39 +82,8 @@ const styles = StyleSheet.create({
         padding: 15
     },
 
-    header: {
-        height: 100,
-        width: '100%',
-        position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colors.white
-    },
-
-    titleHeader: {
-        marginTop: 30,
-        fontWeight: '500',
-        fontSize: 15,
-        color: colors.primaryBlue
-    },
-
-    cross: {
-        width: 18,
-        height: 18,
-    },
-
-    crossView: {
-        width: 30,
-        height: 30,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: 47,
-        left: 342
-    },
-
     title: {
-        marginTop: 100,
+        marginTop: Platform.OS === 'ios' ? 80 : 100,
         fontWeight: '600',
         fontSize: 22,
         color: colors.primaryBlue,
@@ -140,10 +103,8 @@ const styles = StyleSheet.create({
     },
 
     viewCategory: {
-        backgroundColor: colors.secondaryBlue,
-        width: 110,
+        width: "100%",
         height: 110,
-        margin: 5,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 4
@@ -157,30 +118,15 @@ const styles = StyleSheet.create({
     textCategory: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.primaryBlue,
         marginTop: 10
     },
 
-    viewCategoryTrue: {
-        backgroundColor: colors.thirdBlue,
-        width: 110,
-        height: 110,
-        margin: 5,
-        justifyContent: "center",
+    categoryViewContainer: {
         alignItems: "center",
-        borderRadius: 4
-    },
-
-    textCategoryTrue: {
-        fontWeight: '500',
-        fontSize: 13,
-        color: colors.white,
-        marginTop: 10
-    },
-
-    viewFlatlist: {
-        alignItems: "center",
-        marginTop: 30
+        justifyContent: "space-between",
+        flexDirection: 'row',
+        marginTop: 30,
+        width: '100%'
     },
 
     chooseTitle: {

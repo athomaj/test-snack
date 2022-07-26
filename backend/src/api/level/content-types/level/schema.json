@@ -4,21 +4,16 @@
   "info": {
     "singularName": "level",
     "pluralName": "levels",
-    "displayName": "Level"
+    "displayName": "Level",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string"
-    },
-    "posts": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::post.post",
-      "mappedBy": "levels"
     }
   }
 }

@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"name": "Commis",
+		"createdAt": "2022-07-25T07:59:32.554Z",
+		"updatedAt": "2022-07-25T07:59:32.554Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 2,
+		"name": "Second",
+		"createdAt": "2022-07-25T07:59:38.482Z",
+		"updatedAt": "2022-07-25T07:59:38.482Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 3,
+		"name": "Chef",
+		"createdAt": "2022-07-25T07:59:42.933Z",
+		"updatedAt": "2022-07-25T07:59:42.933Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	}
+]

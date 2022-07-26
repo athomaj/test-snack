@@ -1,23 +1,24 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { colors } from "../../utils/colors";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-import { usePublishContext } from "../../context/PublishContext";
 import PostPicturePicker from "../../Components/Utils/postPicturePicker";
+
+import { usePublishContext } from "../../context/PublishContext";
+
+import { postCreateStyles } from "../../utils/styles";
+import { colors } from "../../utils/colors";
 
 export default function PublishPost2({ navigation }) {
 
-    const PublishContext = usePublishContext()
+    const publishContext = usePublishContext()
+
     const [buttonDisable, setButtonDisable] = React.useState(false)
     const [image, setImage] = React.useState([''])
     const [picture, setPicture] = React.useState([])
 
-    const closeModal = () => {
-        navigation.navigate('Home')
-    }
-
-    function tempImage(returnImage, index){
-        if(index < 5){
+    function tempImage(returnImage, index) {
+        if (index < 5) {
             setImage([...image, index])
         }
         setPicture([...picture, returnImage])
@@ -26,32 +27,41 @@ export default function PublishPost2({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderPictures = React.useCallback(
-        ({ item, index }) => <PostPicturePicker image={picture[index]?.uri} setParamImage={(returnImage) => tempImage(returnImage, index)}/>
-        ,[picture]
+        ({ item, index }) => <PostPicturePicker image={picture[index]?.uri} setParamImage={(returnImage) => tempImage(returnImage, index)} />
+        , [picture]
     )
 
-    return(
-        <SafeAreaView>
-            <ScrollView style={styles.container}>
-                <View style={styles.allText}>
-                    <Text style={styles.text}>Choisit une photo pour l’évènement.</Text>
-                    <Text style={styles.text}>Conseil pour prendre de bonne photo et rassurer... (jusqu’à 6 photos) Possibilité de le faire plus tard.</Text>
+    async function onPressContinue() {
+        await publishContext.updatePublish2(picture)
+
+        navigation.navigate('PublishPost3')
+    }
+
+    return (
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <View style={{ height: '100%', width: '100%' }}>
+                <View style={{ paddingHorizontal: 10 }}>
+                    <View style={styles.allText}>
+                        <Text style={styles.text}>Choisit une photo pour l’évènement.</Text>
+                        <Text style={styles.text}>Conseil pour prendre de bonne photo et rassurer... (jusqu’à 6 photos) Possibilité de le faire plus tard.</Text>
+                    </View>
+                    <View style={styles.flatlist}>
+                        <FlatList
+                            numColumns={3}
+                            renderItem={renderPictures}
+                            data={image}
+                            keyExtractor={flatListKeyExtractor}
+                        />
+                    </View>
                 </View>
-                <View style={styles.flatlist}>
-                    <FlatList
-                        numColumns={3}
-                        renderItem={renderPictures}
-                        data={image}
-                    />
+                <View style={postCreateStyles.header}>
+                    <Text style={postCreateStyles.titleHeader}>Photo</Text>
+                    <TouchableOpacity style={postCreateStyles.crossView} onPress={() => navigation.navigate('Home')}>
+                        <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-            <View style={styles.header}>
-                <Text style={styles.titleHeader}>Photo</Text>
-                <TouchableOpacity style={styles.crossView} onPress={closeModal}>
-                    <Image style={styles.cross} source={require("../../assets/icon/cross.png")} />
-                </TouchableOpacity>
+                <PublishFooterNav firstScreen={false} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} />
             </View>
-            <PublishFooterNav disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('PublishPost3')} updatecontext={() => PublishContext.updatePublish2(picture)}/>
         </SafeAreaView>
     )
 }
@@ -65,37 +75,6 @@ const styles = StyleSheet.create({
         padding: 15
     },
 
-    header: {
-        height: 100,
-        width: '100%',
-        position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colors.white
-    },
-
-    titleHeader: {
-        marginTop: 30,
-        fontWeight: '500',
-        fontSize: 15,
-        color: colors.primaryBlue
-    },
-
-    cross: {
-        width: 18,
-        height: 18,
-    },
-
-    crossView: {
-        width: 30,
-        height: 30,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: 47,
-        left: 342
-    },
-
     text: {
         fontWeight: '500',
         fontSize: 15,
@@ -104,7 +83,7 @@ const styles = StyleSheet.create({
     },
 
     allText: {
-        marginTop: 130,
+        marginTop: Platform.OS === 'ios' ? 80 : 100,
     },
 
     flatlist: {

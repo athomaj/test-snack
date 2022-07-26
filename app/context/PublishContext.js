@@ -14,30 +14,20 @@ const initialState = {
     description: "",
     category: "",
     datetime: "",
-    seats: "",
+    seats: 0,
     kitchens: "",
     diets: "",
-    levels: "",
+    level: "",
     address: "",
     bonus: "",
-    pictures: {
-        one: "",
-        two: "",
-        three: "",
-        four: "",
-        five: "",
-        six: ""
-    }
+    pictures: []
 }
 
 const PublishProvider = ({ children }) => {
     const [publishPost, setPublishPost] = React.useState(initialState)
+    const [loading, setLoading] = React.useState(false)
 
     const userContext = useUserContext()
-
-    React.useEffect(() => {
-        //console.log(publishPost)
-    }, [publishPost])
 
     const updatePublish1 = async (title, desc, category) => {
         setPublishPost({
@@ -55,10 +45,9 @@ const PublishProvider = ({ children }) => {
         })
     }
 
-    const updatePublish3 = async (date, seats, kitchen, diet, level) => {
+    const updatePublish3 = async (date, seats, kitchen, diet, levelSelected) => {
         const newKitchen = []
         const newDiet = []
-        const newLevel = []
 
         kitchen.filter(item => {
             if (item.status === true) {
@@ -72,19 +61,13 @@ const PublishProvider = ({ children }) => {
             }
         })
 
-        level.filter(item => {
-            if (item.status === true) {
-                newLevel.push(item.id)
-            }
-        })
-
         setPublishPost({
             ...publishPost,
             datetime: date,
             seats: seats,
             kitchens: newKitchen,
             diets: newDiet,
-            levels: newLevel,
+            level: { id: levelSelected },
         })
     }
 
@@ -103,11 +86,13 @@ const PublishProvider = ({ children }) => {
             bonus: bonus
         })
 
-        finalPost()
+        await finalPost()
     }
 
     const finalPost = async () => {
+        setLoading(true)
         const newPictures = []
+
         publishPost.pictures.filter(item => {
             newPictures.push(item.uri)
         })
@@ -115,53 +100,50 @@ const PublishProvider = ({ children }) => {
             post: {
                 title: publishPost.title,
                 description: publishPost.description,
-                category: {id: publishPost.category},
-                datetime: publishPost.datetime,
+                category: { id: publishPost.category },
+                datetime: new Date(publishPost.datetime).getTime(),
                 seats: publishPost.seats,
                 kitchens: publishPost.kitchens,
-                diets:  publishPost.diets,
-                levels: publishPost.levels,
+                diets: publishPost.diets,
+                level: publishPost.level,
                 address: publishPost.address,
-                bonus: publishPost.bonus
+                // bonus: publishPost.bonus
             },
-            picture: Platform.OS === 'ios' ? newPictures.replace('file://', '') : newPictures,
+            picture: newPictures,
         }
 
-        const index = 0
-        console.log(data.picture)
-        if (data.picture) {
-            while(data.picture[index]){
-                const formData = new FormData()
-                let uri = data.picture[index]
-                const imageId = randomId(20)
+        try {
 
-                formData.append('files', {
-                    name: `${imageId}.jpg`,
-                    type: 'image/jpeg',
-                    uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+            if (data.picture) {
+                const formData = new FormData()
+
+                formData.append('data', JSON.stringify(data.post))
+                newPictures.map((item) => {
+                    const imageId = randomId(20)
+                    formData.append('files.pictures', {
+                        name: `${imageId}.jpg`,
+                        type: 'image/jpeg',
+                        uri: Platform.OS === 'ios' ? item.replace('file://', '') : item,
+                    });
                 });
 
-                const uploadResponse = await uploadApi.uploadPicture(formData)
+                const response = await postApi.publish(formData)
 
-                console.log(uploadResponse)
-
-                if (uploadResponse[0]?.url) {
-                    data.post.pictures = [...data.post.picture, BASE_URL + uploadResponse[0].url]
-                }
-                index = index + 1
+                console.log("RES PROMISE ===", response)
+                console.log("YOOOOOOOOOOOOO ===")
+                setLoading(false)
             }
+        } catch (error) {
+            console.log("ERR UPLOAD POST ====", error)
+            setLoading(false)
         }
-        // const response = await postApi.publish({ data: data.post })
-
-        // if (response.data.error) {
-        //     console.log(response)
-        // }
     }
 
 
     return (
         <PublishContext.Provider
             value={{
+                loading,
                 updatePublish1,
                 updatePublish2,
                 updatePublish3,

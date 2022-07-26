@@ -1,26 +1,26 @@
 import React from "react";
 import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { colors } from "../../utils/colors";
-import PublishFooterNavLast from "../../Components/Utils/PublishFooterNavLast";
+
+import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
+
 import { usePublishContext } from "../../context/PublishContext";
+
 import { bonusData } from "../../fakeData/bonus";
+import { colors } from "../../utils/colors";
+import { postCreateStyles } from "../../utils/styles";
 
 export default function PublishPost4({ navigation }) {
 
-    const PublishContext = usePublishContext()
+    const publishContext = usePublishContext()
     const [buttonDisable, setButtonDisable] = React.useState(false)
     const [address, setAddress] = React.useState('')
     const [bonus, setBonus] = React.useState([])
-
-    const closeModal = () => {
-        navigation.navigate('Home')
-    }
 
     React.useEffect(() => {
         createBonus()
     }, [])
 
-    function createBonus(){
+    function createBonus() {
         const cBonus = bonusData.map((data, index) => {
             data["status"] = false
             data['id'] = index
@@ -29,7 +29,7 @@ export default function PublishPost4({ navigation }) {
         setBonus(cBonus)
     }
 
-    function bonusChange(index){
+    function bonusChange(index) {
         const data = [...bonusData]
         data[index].status = !data[index].status
         setBonus(data)
@@ -38,47 +38,61 @@ export default function PublishPost4({ navigation }) {
     const renderBonus = ({ item, index }) => (
         <TouchableOpacity onPress={() => bonusChange(index)}>
             {item.status === true ?
-            <View style={styles.viewBonusTrue}>
-                <Image style={styles.imageBonus} source={require('../../assets/icon/whiteCarrot.png')}/>
-                <Text style={styles.textBonusTrue}>{item.title}</Text>
-            </View>
-            :
+                <View style={styles.viewBonusTrue}>
+                    <Image style={styles.imageBonus} source={require('../../assets/icon/whiteCarrot.png')} />
+                    <Text style={styles.textBonusTrue}>{item.title}</Text>
+                </View>
+                :
                 <View style={styles.viewBonus}>
-                    <Image style={styles.imageBonus} source={require('../../assets/icon/blueCarrot.png')}/>
+                    <Image style={styles.imageBonus} source={require('../../assets/icon/blueCarrot.png')} />
                     <Text style={styles.textBonus}>{item.title}</Text>
                 </View>
             }
         </TouchableOpacity>
     );
 
+    async function onPressContinue() {
+        await publishContext.updatePublish4(address, bonus)
 
-    return(
-        <SafeAreaView>
-            <ScrollView style={styles.container}>
-                <View style={styles.address}>
-                    <Text style={styles.title}>Lieux du rendez-vous ?</Text>
-                    <TextInput style={styles.input} placeholder={'2 place paul Cézanne 13006'} placeholderTextColor={colors.primaryBlue} value={address} onChangeText={(e) => setAddress(e)} />
-                </View>
-                <View style={styles.bonus}>
-                    <Text style={styles.title}>Le lieux de rendez-vous comprends...</Text>
-                    <View style={styles.renderBonus}>
-                        <FlatList
-                            scrollEnabled={false}
-                            data={bonus}
-                            numColumns={3}
-                            renderItem={renderBonus}
-                            keyExtractor={item => item.id}
-                        />
+        navigation.navigate('PostPublished')
+    }
+
+    return (
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <View style={{ height: '100%', width: '100%' }}>
+                <View style={styles.container}>
+                    <View style={styles.address}>
+                        <Text style={styles.title}>Lieux du rendez-vous ?</Text>
+                        <TextInput style={styles.input} placeholder={'2 place paul Cézanne 13006'} placeholderTextColor={colors.primaryBlue} value={address} onChangeText={(e) => setAddress(e)} />
+                    </View>
+                    <View style={styles.bonus}>
+                        <Text style={styles.title}>Le lieux de rendez-vous comprends...</Text>
+                        <View style={styles.renderBonus}>
+                            <FlatList
+                                scrollEnabled={false}
+                                data={bonus}
+                                numColumns={3}
+                                renderItem={renderBonus}
+                                keyExtractor={item => item.id}
+                            />
+                        </View>
                     </View>
                 </View>
-            </ScrollView>
-            <View style={styles.header}>
-                <Text style={styles.titleHeader}>Localisation</Text>
-                <TouchableOpacity style={styles.crossView} onPress={closeModal}>
-                    <Image style={styles.cross} source={require("../../assets/icon/cross.png")} />
-                </TouchableOpacity>
+                <View style={postCreateStyles.header}>
+                    <Text style={postCreateStyles.titleHeader}>Localisation</Text>
+                    <TouchableOpacity style={postCreateStyles.crossView} onPress={() => navigation.navigate('Home')}>
+                        <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
+                    </TouchableOpacity>
+                </View>
+                <PublishFooterNav
+                    firstScreen={false}
+                    lastScreen={true}
+                    loading={publishContext.loading}
+                    disabledButton={buttonDisable}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={onPressContinue}
+                />
             </View>
-            <PublishFooterNavLast disabledButton= {buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('PostPublished')} updatecontext={() => PublishContext.updatePublish4(address, bonus)}/>
         </SafeAreaView>
     )
 }
@@ -89,38 +103,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         backgroundColor: colors.white,
-        padding: 15
-    },
-
-    header: {
-        height: 100,
-        width: '100%',
-        position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colors.white
-    },
-
-    titleHeader: {
-        marginTop: 30,
-        fontWeight: '500',
-        fontSize: 15,
-        color: colors.primaryBlue
-    },
-
-    cross: {
-        width: 18,
-        height: 18,
-    },
-
-    crossView: {
-        width: 30,
-        height: 30,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: 47,
-        left: 342
+        paddingHorizontal: 10
     },
 
     title: {
@@ -187,7 +170,7 @@ const styles = StyleSheet.create({
     },
 
     address: {
-        marginTop: 120
+        marginTop: Platform.OS === 'ios' ? 80 : 100,
     }
 
 })

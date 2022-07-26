@@ -20,10 +20,12 @@ import PublishPost3 from './Containers/publish/PublishPost3';
 import { PublishProvider } from './context/PublishContext';
 import PublishPost4 from './Containers/publish/PublishPost4';
 import PostPublished from './Containers/publish/PostPublished';
+import PublishParentComponent from './Components/PublishParentComponent';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
-const MainTabSatck = createBottomTabNavigator()
+const MainTabSatck = createBottomTabNavigator();
+const PublishStack = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIcon.png')
 const homeIconInactive = require('./assets/tabBar/loupeIcon.png')
@@ -51,43 +53,55 @@ function MainTabStackScreen({ navigation }) {
     <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Membres', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Publish" component={PublishPost1} listeners={{ tabPress: (e) => {e.preventDefault(); navigation.navigate("ModalStack")}}} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }
 
+function PublishStackScreen({ navigation }) {
+  return (
+    <PublishStack.Navigator initialRouteName={"PublishPost1"} screenOptions={{ headerTransparent: true, headerShown: false }}>
+      <PublishStack.Screen name="PublishPost1" component={PublishPost1} />
+      <PublishStack.Screen name="PublishPost2" component={PublishPost2} />
+      <PublishStack.Screen name="PublishPost3" component={PublishPost3} />
+      <PublishStack.Screen name="PublishPost4" component={PublishPost4} />
+      <PublishStack.Screen name="PostPublished" component={PostPublished} />
+    </PublishStack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <UserProvider>
-    <PublishProvider>
-      <NavigationContainer>
-        <RootStack.Navigator>
-          <RootStack.Screen
-            name="AuthStack"
-            component={AuthStackScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <RootStack.Screen
-            name="MainStack"
-            component={MainTabStackScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <RootStack.Group
-            screenOptions={{
-              presentation: "transparentModal",
-              headerShown: false,
-            }}
-          >
-            <RootStack.Screen name="ModalStack" component={PublishPost1}/>
-            <RootStack.Screen name="PublishPost2" component={PublishPost2}/>
-            <RootStack.Screen name="PublishPost3" component={PublishPost3}/>
-            <RootStack.Screen name="PublishPost4" component={PublishPost4}/>
-            <RootStack.Screen name="PostPublished" component={PostPublished}/>
-          </RootStack.Group>
-        </RootStack.Navigator>
-      </NavigationContainer>
+      <PublishProvider>
+        <NavigationContainer>
+          <RootStack.Navigator>
+            <RootStack.Screen
+              name="AuthStack"
+              component={AuthStackScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+            <RootStack.Screen
+              name="MainStack"
+              component={MainTabStackScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+            <RootStack.Group
+              screenOptions={{
+                presentation: "transparentModal",
+                headerShown: false,
+              }}
+            >
+              <RootStack.Screen
+                name="PublishStack"
+                component={PublishStackScreen}
+                options={{ headerShown: false, gestureEnabled: false }}
+              />
+            </RootStack.Group>
+          </RootStack.Navigator>
+        </NavigationContainer>
       </PublishProvider>
     </UserProvider>
   );
