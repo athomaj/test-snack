@@ -8,8 +8,8 @@ import validateEmail from './Utils/RegexValidation';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
-    const [email, setEmail] = React.useState("johan@test.fr")
-    const [pass, setPass] = React.useState("Test1234")
+    const [email, setEmail] = React.useState("test@gmail.com")
+    const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
         if (email.length > 0 && pass.length > 0) {
