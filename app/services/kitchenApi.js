@@ -3,11 +3,9 @@ import { API_URL } from "../config/config";
 import { storeData, deleteData, getData } from "../utils/storage";
 
 async function getAllKitchen() {
-    return await axios.get(`${API_URL}/`)
+    return await axios.get(`${API_URL}/kitchens?fields[0]=name`)
         .then(async response => {
-            await storeData('authToken', response.data.jwt + "")
-            axios.defaults.headers["Authorization"] = "Bearer " + response.data.jwt
-            return response
+            return response.data
         })
         .catch(error => {
             console.log('ERR LOGIN ==', error.response);

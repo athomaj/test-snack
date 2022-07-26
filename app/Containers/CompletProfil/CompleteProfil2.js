@@ -3,6 +3,7 @@ import { SafeAreaView, Image, Text, View, TouchableOpacity, FlatList, Dimensions
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import { sharedStyles } from '../../utils/styles';
 import { useUserContext } from '../../context/UserContext';
+import kitchenApi from '../../services/kitchenApi';
 
 
 
@@ -12,7 +13,13 @@ export default function CompletProfil2({ navigation }) {
     const [buttonDisable, setDisabledButton] = React.useState(true)
     const [typeOfCooks, setTypeOfCooks] = React.useState([])
     const [data, setData] = React.useState({})
+    const [allKitchens, setAllKitchens] = React.useState(null)
     
+    async function getAllKitchens(){
+        const resultOfData = await kitchenApi.getAllKitchen();
+        resultOfData?.data ? setAllKitchens(resultOfData.data) : null
+    }
+
     const ArraytypeOfCooks = [
         {id:1, name:"Africaine"},
         {id:2, name:"Asiatique"},
@@ -24,8 +31,13 @@ export default function CompletProfil2({ navigation }) {
         {id:8, name:"Indienne"},
         {id:9, name:"orientale"},
     ]
+
+    React.useEffect(() => {
+        getAllKitchens()
+    },[])
+
     React.useEffect(()=>{
-        typeOfCooks.length > 1 ? setDisabledButton(false) : setDisabledButton(true);
+        typeOfCooks.length > 0 ? setDisabledButton(false) : setDisabledButton(true);
         setData({"typeOfCooks": typeOfCooks})
     },[typeOfCooks])
 
@@ -45,7 +57,7 @@ export default function CompletProfil2({ navigation }) {
     const renderItem = React.useCallback(
         ({item, index}) => {
             return(
-                <TouchableOpacity onPress={() => updateTypeOfCooks(item)} style={{...sharedStyles.inputText, marginBottom:13, justifyContent: 'center'}}><Text style={{...sharedStyles.shortText, textAlignVertical: 'center'}}>{item.name}</Text>
+                <TouchableOpacity onPress={() => updateTypeOfCooks(item)} style={{...sharedStyles.inputText, marginBottom:13, justifyContent: 'center'}}><Text style={{...sharedStyles.shortText, textAlignVertical: 'center'}}>{item.attributes.name}</Text>
                     { typeOfCooks && typeOfCooks.includes(item.id) &&
                         <Image source={require('../../assets/icon/validate_icon.png')} style={{position: 'absolute', right:8, width: 21, height: 21,}} />
                     }
@@ -65,7 +77,7 @@ export default function CompletProfil2({ navigation }) {
                 </View>}
                 style={{ width: '100%', height: '100%'}}
                 contentContainerStyle={{paddingBottom: 80}}
-                data={allcitys}
+                data={allKitchens}
                 renderItem={renderItem}
                 stickyHeaderIndices={[0]}
                 />

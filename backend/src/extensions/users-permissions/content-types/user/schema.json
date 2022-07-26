@@ -106,16 +106,13 @@
     "lastName": {
       "type": "string"
     },
-    "district": {
-      "type": "string"
-    },
     "numberPhone": {
       "type": "string"
     },
-    "typeOfCooks": {
+    "kitchen": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::type-of-cook.type-of-cook"
+      "target": "api::kitchen.kitchen"
     },
     "presentation": {
       "type": "text"
@@ -124,14 +121,20 @@
       "type": "string"
     },
     "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "district": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::district.district"
     }
   }
 }

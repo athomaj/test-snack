@@ -73,7 +73,7 @@ const SignUpProvider = ({ children }) => {
     const updateSignUp3 = async (arrondissementInput) => {
         setsignUpUser({
             ...signUpUser,
-            district: arrondissementInput
+            district: parseInt(arrondissementInput)
         })
     };
 
