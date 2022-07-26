@@ -4,21 +4,16 @@
   "info": {
     "singularName": "kitchen",
     "pluralName": "kitchens",
-    "displayName": "Kitchen"
+    "displayName": "Kitchen",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string"
-    },
-    "posts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::post.post",
-      "mappedBy": "kitchen"
     }
   }
 }

@@ -30,9 +30,6 @@
     "title": {
       "type": "string"
     },
-    "isSearch": {
-      "type": "boolean"
-    },
     "seats": {
       "type": "integer",
       "required": false,
@@ -41,20 +38,36 @@
     "datetime": {
       "type": "datetime"
     },
-    "avatarUrl": {
+    "pictures": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "bonus": {
       "type": "string"
+    },
+    "kitchens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::kitchen.kitchen"
+    },
+    "level": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::level.level"
     },
     "category": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::category.category",
-      "inversedBy": "posts"
+      "relation": "oneToOne",
+      "target": "api::category.category"
     },
-    "kitchen": {
+    "diets": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::kitchen.kitchen",
-      "inversedBy": "posts"
+      "relation": "oneToMany",
+      "target": "api::diet.diet"
     }
   }
 }
