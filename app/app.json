@@ -11,12 +11,14 @@
         "expo-image-picker",
         {
           "photosPermission": "custom photos permission",
-          "cameraPermission": "Allow $(PRODUCT_NAME) to open the camera",
-
+          "cameraPermission": "Autoriser $(PRODUCT_NAME) à utiliser la caméra",
           "//": "Disables the microphone permission",
           "microphonePermission": false
         }
       ]
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "com.laplateforme.foodfood"
+    }
   }
 }

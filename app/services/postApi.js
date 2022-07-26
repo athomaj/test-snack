@@ -12,7 +12,7 @@ async function publish(data) {
         });
 }
 
-async function display() {
+async function getPosts() {
     return await axios.get(`${API_URL}/posts?populate=*`)
         .then(response => {
             return response.data.data
@@ -25,5 +25,5 @@ async function display() {
 
 export default {
     publish,
-    display
+    getPosts
 }
