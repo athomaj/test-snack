@@ -29,9 +29,6 @@ export default function CompletProfil2({ navigation }) {
         setData({"typeOfCooks": typeOfCooks})
     },[typeOfCooks])
 
-    React.useEffect(
-        ()=>{ console.log('DATA',data)}
-    , [data])
 
     function updateTypeOfCooks(item){
         const modifyArray =  typeOfCooks?.length > 0 ? [...typeOfCooks] : []

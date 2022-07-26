@@ -116,6 +116,22 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::type-of-cook.type-of-cook"
+    },
+    "presentation": {
+      "type": "text"
+    },
+    "pleasure": {
+      "type": "string"
+    },
+    "avatar": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

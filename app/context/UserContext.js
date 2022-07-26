@@ -83,27 +83,11 @@ const UserProvider = ({ children }) => {
     };
 
     const register = async (data) => {
+      
         setAuthState({
             ...authState,
             isLoading: true
         })
-        // A CONSERVER POUR L'AVATAR
-        // if (data.picture) {
-        //     const formData = new FormData()
-        //     let uri = data.picture
-        //     const imageId = randomId(20)
-
-        //     formData.append('files', {
-        //         name: `${imageId}.jpg`,
-        //         type: 'image/jpeg',
-        //         uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
-        //     });
-
-        //     const uploadResponse = await uploadApi.uploadPicture(formData)
-        //     if (uploadResponse[0]?.url) {
-        //         data.user.avatarUrl = BASE_URL + uploadResponse[0].url
-        //     }
-        // }
         
         const response = await authApi.register(data)
 
@@ -127,14 +111,51 @@ const UserProvider = ({ children }) => {
         // })
     };
 
+    const updatePicture = async (data) => {
+        
+    
+        if (data.picture) {
+            const formData = new FormData()
+            let uri = data.picture
+            const imageId = randomId(20)
+
+            formData.append('files', {
+                name: `${imageId}.jpg`,
+                type: 'image/jpeg',
+                uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+            });
+
+            const uploadResponse = await uploadApi.uploadPicture(formData)
+            if (uploadResponse[0]?.url) {
+                //data.user.avatarUrl = 
+
+                const updateAvatar = {
+                    "avatarUrl": uploadResponse[0]?.url,
+                    "avatar": uploadResponse[0]?.id
+                }
+                userApi.updateUser(updateAvatar, authState.user.id)
+                const NewStateStatus = {...authState}
+                NewStateStatus.user.avatarUrl = BASE_URL + uploadResponse[0].url
+                setAuthState(NewStateStatus)
+
+            }
+            else console.log(uploadResponse)
+        }
+    }
 
     const updateUserInformation = async (userUpdated) => {
-         console.log(authState.user.id)
-        setAuthState({
-            ...authState,
-            isLoading: true
-        })
 
+        for (const [key, value] of Object.entries(userUpdated)) {
+          const edintingState = {...authState}
+            const entries = Object.keys(authState.user).includes(key)
+            if(entries){
+        
+                edintingState.user[key] = value
+                setAuthState(edintingState)
+            }
+          }
+          
+        const data = JSON.stringify(userUpdated) 
         userApi.updateUser(userUpdated, authState.user.id)
     };
 
@@ -162,6 +183,7 @@ const UserProvider = ({ children }) => {
                 updateUserInformation,
                 register,
                 disconnect,
+                updatePicture,
             }}
         >
             {children}

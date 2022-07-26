@@ -6,9 +6,6 @@ import { sharedStyles } from '../../utils/styles';
 
 export default function CompletProfil1({ navigation }) {
 
-    React.useEffect(()=>{
-        // console.log('SIGNUP CONTEXT =>',SignUpContext.signUpUser)
-    })
   
     //SignUpStep1
     return (

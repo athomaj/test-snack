@@ -62,7 +62,6 @@ export default function SignUpStep3Container({ navigation }) {
          const modifyArray =  regime?.length > 0 ? [...regime] : []
         if(modifyArray.length > 0 )
         {
-            console.log('IN FOREACH')
             modifyArray.find( element => element.name === item.name) ? modifyArray.splice(modifyArray.indexOf(item.name), 1)  : modifyArray.push(item)
             // modifyArray.forEach(element => {
             //     const index = modifyArray.indexOf(element)
@@ -71,7 +70,6 @@ export default function SignUpStep3Container({ navigation }) {
             // });
         }
         else  modifyArray.push(item)
-        console.log('MODIFY ARRAY ====>',modifyArray)
         setregime(modifyArray)
     }
 

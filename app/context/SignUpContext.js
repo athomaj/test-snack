@@ -21,9 +21,6 @@ const initialState = {
 const SignUpProvider = ({ children }) => {
     const [signUpUser, setsignUpUser] = React.useState(initialState)
 
-    React.useEffect(()=>{
-        console.log(signUpUser)
-    },[signUpUser])
 
     const register = async (data) => {
 
