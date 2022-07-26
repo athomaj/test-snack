@@ -30,14 +30,6 @@
     "title": {
       "type": "string"
     },
-    "isSearch": {
-      "type": "boolean"
-    },
-    "category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category"
-    },
     "seats": {
       "type": "integer",
       "required": false,
@@ -46,8 +38,36 @@
     "datetime": {
       "type": "datetime"
     },
-    "avatarUrl": {
+    "pictures": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "bonus": {
       "type": "string"
+    },
+    "kitchens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::kitchen.kitchen"
+    },
+    "level": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::level.level"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "diets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::diet.diet"
     }
   }
 }

@@ -269,7 +269,6 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                             <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>Continuer sans parrain</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.centeredView}>
                         <Modal
                             animationType="slide"
                             transparent={true}
@@ -280,7 +279,6 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                             }}>
                                 <SearchContactContainer closeModal={(isdite) => askSponsorCompleted(isdite)} ></SearchContactContainer>
                         </Modal>
-                    </View>
                 </View>
             }
         </SafeAreaView>

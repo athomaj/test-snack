@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"name": "Atelier",
+		"createdAt": "2022-07-25T07:46:39.659Z",
+		"updatedAt": "2022-07-25T07:46:39.659Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 2,
+		"name": "Dîner",
+		"createdAt": "2022-07-25T07:46:56.824Z",
+		"updatedAt": "2022-07-25T07:46:56.824Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 3,
+		"name": "Matériel",
+		"createdAt": "2022-07-25T07:52:21.659Z",
+		"updatedAt": "2022-07-25T07:52:21.659Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	}
+]

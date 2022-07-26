@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kitchens",
+  "info": {
+    "singularName": "kitchen",
+    "pluralName": "kitchens",
+    "displayName": "Kitchen",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
