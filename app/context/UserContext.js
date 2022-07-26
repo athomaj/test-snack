@@ -128,9 +128,7 @@ const UserProvider = ({ children }) => {
             const uploadResponse = await uploadApi.uploadPicture(formData)
             if (uploadResponse[0]?.url) {
                 //data.user.avatarUrl = 
-
                 const updateAvatar = {
-                    "avatarUrl": uploadResponse[0]?.url,
                     "avatar": uploadResponse[0]?.id
                 }
                 userApi.updateUser(updateAvatar, authState.user.id)
@@ -139,7 +137,7 @@ const UserProvider = ({ children }) => {
                 setAuthState(NewStateStatus)
 
             }
-            else console.log(uploadResponse)
+            else console.log("BAAAD REQUEST ===================================>",uploadResponse)
         }
     }
 

@@ -20,25 +20,13 @@ export default function CompletProfil2({ navigation }) {
         resultOfData?.data ? setAllKitchens(resultOfData.data) : null
     }
 
-    const ArraytypeOfCooks = [
-        {id:1, name:"Africaine"},
-        {id:2, name:"Asiatique"},
-        {id:3, name:"Britannique"},
-        {id:4, name:"Cuisine des Iles"},
-        {id:5, name:"Flammande"},
-        {id:6, name:"Française gastronomique"},
-        {id:7, name:"Française terroir"},
-        {id:8, name:"Indienne"},
-        {id:9, name:"orientale"},
-    ]
-
     React.useEffect(() => {
         getAllKitchens()
     },[])
 
     React.useEffect(()=>{
         typeOfCooks.length > 0 ? setDisabledButton(false) : setDisabledButton(true);
-        setData({"typeOfCooks": typeOfCooks})
+        setData({"kitchen": typeOfCooks})
     },[typeOfCooks])
 
 

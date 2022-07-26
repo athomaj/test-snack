@@ -4,97 +4,64 @@ import { colors } from '../../utils/colors';
 import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import Link from '../../Components/Utils/Link';
-import {Picker} from '@react-native-picker/picker';
-import { useSignUpContext } from '../../context/SignUpContext';
+import dietApi from '../../services/dietApi';
+import { useUserContext } from '../../context/UserContext';
 
 
 
 export default function SignUpStep3Container({ navigation }) {
 
+    const userContext = useUserContext();
     const [buttonDisable, setDisabledButton] = React.useState(true)
     const WIDTHCONTAINER = (Dimensions.get('window').width/3)-21;
-    const [regime, setregime] = React.useState(null)
-    const CITYS = [
-        { 
-        name : 'Sans Gluten',
-        id : 1,
-        },
-        { 
-        name: 'Vegan',
-        id: 2,
-        },
-        { 
-        name: 'Végétarien',
-        id: 3,
-        },
-        { 
-        name: 'Sans Alcool',
-        id: 4,
-        },
-        { 
-        name: 'Sans Sucre',
-        id: 5,
-        },
-        { 
-        name: 'Sans Arachide',
-        id: 6,
-        },
-        { 
-        name: 'Hallal',
-        id: 6,
-        },
-        { 
-        name: 'Casher',
-        id: 6,
-        },
-        { 
-        name: 'RAS',
-        id: 6,
-        },
-    ]
+    const [regime, setregime] = React.useState([])
+    const [diets, setDiets] = React.useState(null)
+    const [data, setData] = React.useState(null)
 
+    async function getAlldiets(){
+        const resultOfdata = await dietApi.getAllDiets();
+        resultOfdata.data ? setDiets(resultOfdata.data) : null
+    }
+    React.useEffect( () => {
+        getAlldiets()
+    },[])
 
     React.useEffect(()=>{
-        regime?.length > 0 ? setDisabledButton(false) : null
+        regime?.length > 0 ? setDisabledButton(false) : setDisabledButton(true)
+        const request = {
+            "diet": regime
+        }
+        setData(request);
+
     },[regime])
 
     function updateRegime(item){
          const modifyArray =  regime?.length > 0 ? [...regime] : []
         if(modifyArray.length > 0 )
         {
-            modifyArray.find( element => element.name === item.name) ? modifyArray.splice(modifyArray.indexOf(item.name), 1)  : modifyArray.push(item)
-            // modifyArray.forEach(element => {
-            //     const index = modifyArray.indexOf(element)
-            //     console.log('INDEX ====> ',index)
-            //     element.name === item.name ? modifyArray.splice(index, 1) : 
-            // });
+            modifyArray.includes(item.id) ? modifyArray.splice(modifyArray.indexOf(item.id), 1)  : modifyArray.push(item.id)
+
         }
-        else  modifyArray.push(item)
+        else  modifyArray.push(item.id)
         setregime(modifyArray)
     }
 
-    function itemSelected(itemName){
-        if(regime?.length > 0)
-        {
-        return  regime.find( element => element.name === itemName)
-        } else return false
-    }
     
   
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return(
-            <TouchableOpacity onPress={() => updateRegime(item)} style={{backgroundColor: itemSelected(item.name) ? colors.primaryYellow : '#E6EFF7', height: WIDTHCONTAINER, width:WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent:'center', alignItems: 'center'}}>
-                { itemSelected(item.name) ?
+            <TouchableOpacity onPress={() => updateRegime(item)} style={{backgroundColor: regime.includes(item.id) ? colors.primaryYellow : '#E6EFF7', height: WIDTHCONTAINER, width:WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent:'center', alignItems: 'center'}}>
+                { regime.includes(item.id) ?
                 <Image source={require('../../assets/icon/whiteCarrot.png')} style={{width: 35, height: 35, resizeMode: 'contain'}} />
                 :
                 <Image source={require('../../assets/icon/blueCarrot.png')} style={{width: 35, height: 35, resizeMode: 'contain'}}/>
                 }
                 <Text style={{
                     fontSize: 13,
-                    color: itemSelected(item.name) ? 'white' : colors.primaryYellow,
+                    color: regime.includes(item.id) ? 'white' : colors.primaryYellow,
                     fontWeight: '500',}}
-                >{item.name}</Text>
+                >{item.attributes.name}</Text>
                 
             </TouchableOpacity>)},
         [regime]
@@ -103,14 +70,14 @@ export default function SignUpStep3Container({ navigation }) {
     //SignUpStep1
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 80 }}>
-                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('UpdateProfil4')}></SignupFooterNav>
+                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('UpdateProfil4')} updatecontext={()=> userContext.updateUserInformation(data)} ></SignupFooterNav>
 
 
                 <ScrollView style={{ width: '100%', height: '100%'}} scrollEnabled={false}>
                     <Text style={{...sharedStyles.h2, width: '100%'}}>Régime alimentaire</Text>
                     <Text style={{...sharedStyles.shortText, height:55}}>Phrase de description</Text>
                     <FlatList
-                    data={CITYS}
+                    data={diets}
                     renderItem={renderItem}
                     style={{ width: '100%'}}
                     horizontal={false}

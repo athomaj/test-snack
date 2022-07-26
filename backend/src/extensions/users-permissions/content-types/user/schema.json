@@ -135,6 +135,11 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::district.district"
+    },
+    "diet": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::diet.diet"
     }
   }
 }
