@@ -31,20 +31,20 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
     const [disabledButton, setDisabledButton] = React.useState(true)
     const showAlert = () =>
         Alert.alert(
-        '🥳 Félicitation',
-        'Vos demandes de parrainage ont bien été envoyé',
-        [
+            '🥳 Félicitation',
+            'Vos demandes de parrainage ont bien été envoyé',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
             {
-            text: 'Cancel',
-            style: 'cancel',
-            },
-        ],
-        {
-            cancelable: true,
-            onDismiss: () => searchContact(false)
-            ,
-        }
-    );
+                cancelable: true,
+                onDismiss: () => searchContact(false)
+                ,
+            }
+        );
 
     React.useEffect(() => {
         if (userContext.authState.isConnected) {
@@ -148,11 +148,9 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
         }
     }
 
-    function askSponsorCompleted(state)
-    {
+    function askSponsorCompleted(state) {
         setModalVisible(false)
-        if(state === true)
-        {
+        if (state === true) {
             showAlert()
         }
     }
@@ -253,7 +251,7 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                         <Image style={{ resizeMode: 'contain', width: 100, height: 100, borderRadius: 50 }} source={require('../assets/userFakeImage/avatar_purple.png')}></Image>
                     </View>
                     <View style={{ height: '40%', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <View style={{width: '90%'}}>
+                        <View style={{ width: '90%' }}>
                             <Text style={{ fontSize: 27, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Trouvez vos parrains</Text>
                             <Text style={{ fontSize: 18, fontWeight: 'normal', textAlign: 'center' }}>Food Food est accessible sur recommandation. Pour devenir membre, vous devez obtenir 3 parrainages. Pour vous aider à trouver des parrains, nous croisons vos contacts avec la liste des membres. C’est tout !</Text>
                         </View>
@@ -269,19 +267,17 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
                             <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>Continuer sans parrain</Text>
                         </TouchableOpacity>
                     </View>
-                    
-
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
                             Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
-                            }}>
-                                <SearchContactContainer closeModal={(isdite) => askSponsorCompleted(isdite)} ></SearchContactContainer>
-                        </Modal>
-                        
+                        }}>
+                        <SearchContactContainer closeModal={(isdite) => askSponsorCompleted(isdite)} ></SearchContactContainer>
+                    </Modal>
+
                 </View>
             }
         </SafeAreaView>
@@ -291,28 +287,28 @@ export default function SignUpComponent({ loading, error, requestSignUp, loginSt
 
 const styles = StyleSheet.create({
     centeredView: {
-      flex: 1,
-      width: '100%',
-      height: '90%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginVertical: 10
+        flex: 1,
+        width: '100%',
+        height: '90%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10
     },
     modalView: {
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'white',
-      borderRadius: 20,
-      padding: 35,
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
     // button: {
     //   borderRadius: 20,
@@ -334,5 +330,4 @@ const styles = StyleSheet.create({
     //   marginBottom: 15,
     //   textAlign: 'center',
     // },
-  });
-  
+});

@@ -1,0 +1,74 @@
+[
+	{
+		"id": 1,
+		"name": "Sans Gluten",
+		"createdAt": "2022-07-25T07:56:40.818Z",
+		"updatedAt": "2022-07-25T07:56:40.818Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 2,
+		"name": "Vegan",
+		"createdAt": "2022-07-25T07:56:48.179Z",
+		"updatedAt": "2022-07-25T07:56:48.179Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 3,
+		"name": "Végétarien",
+		"createdAt": "2022-07-25T07:57:05.750Z",
+		"updatedAt": "2022-07-25T07:57:05.750Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 4,
+		"name": "Sans Alcool",
+		"createdAt": "2022-07-25T07:57:13.745Z",
+		"updatedAt": "2022-07-25T07:57:13.745Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 5,
+		"name": "Sans Sucre",
+		"createdAt": "2022-07-25T07:57:22.653Z",
+		"updatedAt": "2022-07-25T07:57:22.653Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 6,
+		"name": "Sans Arachide",
+		"createdAt": "2022-07-25T07:57:36.249Z",
+		"updatedAt": "2022-07-25T07:57:36.249Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 7,
+		"name": "Hallal",
+		"createdAt": "2022-07-25T07:57:41.764Z",
+		"updatedAt": "2022-07-25T07:57:41.764Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 8,
+		"name": "Casher",
+		"createdAt": "2022-07-25T07:57:47.527Z",
+		"updatedAt": "2022-07-25T07:57:47.527Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 9,
+		"name": "RAS",
+		"createdAt": "2022-07-25T07:57:55.351Z",
+		"updatedAt": "2022-07-25T07:57:55.351Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	}
+]

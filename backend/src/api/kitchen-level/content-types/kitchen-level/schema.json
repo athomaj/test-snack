@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kitchen_levels",
+  "info": {
+    "singularName": "kitchen-level",
+    "pluralName": "kitchen-levels",
+    "displayName": "KitchenLevel"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

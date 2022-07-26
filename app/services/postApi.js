@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "../config/config";
 
 async function publish(data) {
-    return await axios.post(`${API_URL}/posts`, data, { headers: { "Content-Type": "application/json" } })
+    return await axios.post(`${API_URL}/posts`, data, { headers: { "Content-Type": "multipart/form-data" } })
         .then(response => {
             return response
         })
@@ -12,7 +12,7 @@ async function publish(data) {
         });
 }
 
-async function display() {
+async function getPosts() {
     return await axios.get(`${API_URL}/posts?populate=*`)
         .then(response => {
             return response.data.data
@@ -36,6 +36,6 @@ async function getOne(id) {
 
 export default {
     publish,
-    display,
     getOne,
+    getPosts
 }

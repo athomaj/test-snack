@@ -1,0 +1,50 @@
+[
+	{
+		"id": 1,
+		"name": "Africaine",
+		"createdAt": "2022-07-25T07:58:07.161Z",
+		"updatedAt": "2022-07-25T07:58:17.608Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 2,
+		"name": "Asiatique",
+		"createdAt": "2022-07-25T07:58:57.159Z",
+		"updatedAt": "2022-07-25T07:58:57.159Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 3,
+		"name": "Britannique",
+		"createdAt": "2022-07-25T07:59:02.320Z",
+		"updatedAt": "2022-07-25T07:59:02.320Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 4,
+		"name": "Cuisine des Iles",
+		"createdAt": "2022-07-25T07:59:11.357Z",
+		"updatedAt": "2022-07-25T07:59:11.357Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 5,
+		"name": "Flammande",
+		"createdAt": "2022-07-25T07:59:16.175Z",
+		"updatedAt": "2022-07-25T07:59:16.175Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	},
+	{
+		"id": 6,
+		"name": "Française gastronomique",
+		"createdAt": "2022-07-25T07:59:23.059Z",
+		"updatedAt": "2022-07-25T07:59:23.059Z",
+		"createdBy": 1,
+		"updatedBy": 1
+	}
+]
