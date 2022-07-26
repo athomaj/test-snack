@@ -11,7 +11,17 @@ export default function SplashScreen({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            navigation.navigate("MainStack")
+            if (userContext.authState.isLoading) {
+                return
+            }
+            if (userContext.authState.isInitialized && userContext.authState.isConnected) {
+                const user = userContext.authState.user
+                if (user.sponsors.length < 3) {
+                    navigation.navigate('Login', { isLogin: false })
+                } else {
+                    navigation.navigate("MainStack")
+                }
+            }
         }, [userContext.authState.isLoading, userContext.authState.isConnected])
     );
 
