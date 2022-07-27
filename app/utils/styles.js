@@ -22,30 +22,85 @@ export const sharedStyles = StyleSheet.create({
         borderStyle: 'solid'
     },
     titleH1: {
-        fontWeight: 'bold',
-        fontSize: 18
+        fontWeight: '700',
+        fontSize: 41,
+        color: '#005DB2'
+    },
+    h2: {
+        fontWeight: '600',
+        fontSize: 30,
+        color: '#005DB2',
+    },
+    h3: {
+        fontWeight: '600',
+        fontSize: 18,
+        color: '#005DB2',
     },
     primaryButtonWithoutColor: {
-        border: 20,
+        border: 1,
         height: 50,
-        width: '80%',
-        borderRadius: 20,
+        width: '100%',
+        borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center'
     },
     primaryButtonWithColor: {
-        border: 20,
+        border: 1,
         height: 50,
-        width: '80%',
-        borderRadius: 20,
+        width: '100%',
+        borderRadius: 4,
         backgroundColor: colors.primaryYellow,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        color: '#ffffff',
+    },
+    secondaryButton: {
+        border: 20,
+        height: 50,
+        width: '100%',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: colors.primaryYellow,
+        color: colors.primaryYellow,
     },
     textPublish: {
-        fontSize: 14,
+        fontSize: 1,
         marginBottom: 10,
         fontWeight: '500'
+    },
+    textUnderPrimaryButton:{
+        fontWeight: '600', fontSize: 14, color: 'white',
+    },
+    shortText:{
+        fontSize: 15,
+        color: colors.primaryYellow,
+        fontWeight: '500',
+
+    },
+    inputText: {
+        backgroundColor: '#E6EFF7',
+        borderRadius: 4,
+        height: 44,
+        width: '100%',
+        color: colors.primaryYellow,
+        fontSize: 15,
+        fontWeight: '500',
+        paddingHorizontal: 15,
+
+    },
+    label: {
+        fontSize: 13,
+        color: colors.primaryYellow,
+        fontWeight: '500',
+
+    },
+    bottomCaesura: {
+        borderBottomColor: colors.primaryYellow,
+        borderStyle: 'solid',
+        borderBottomWidth: 0.5
     }
 })
 

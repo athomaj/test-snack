@@ -71,13 +71,14 @@ const UserProvider = ({ children }) => {
             return
         }
         if (response.data.user) {
-            setAuthState({
-                ...authState,
-                isConnected: true,
-                isInitialized: true,
-                isLoading: false,
-                user: response.data.user
-            })
+            getCurrentUser()
+            // setAuthState({
+            //     ...authState,
+            //     isConnected: true,
+            //     isInitialized: true,
+            //     isLoading: false,
+            //     user: response.data.user
+            // })
         }
     };
 
