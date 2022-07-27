@@ -23,7 +23,7 @@ export default function CompletProfil5({ navigation }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', paddingHorizontal: 15, paddingTop: 106}}>
 
-                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('UpdateProfil5')} updatecontext={() => UserContext.updatePicture(data)}></SignupFooterNav>
+                <SignupFooterNav disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={() => navigation.navigate('MainStack')} updatecontext={() => UserContext.updatePicture(data)}></SignupFooterNav>
                 
                 <Text style={{...sharedStyles.h2, marginBottom: 15}}>Photo de profil</Text>
                 <Text style={{...sharedStyles.shortText, marginBottom:25}}>Dernière étapes, une belle photo de profil. Une photo donne vie à ton profil, donnant aux autres une meilleure idée de qui vous êtes.</Text>

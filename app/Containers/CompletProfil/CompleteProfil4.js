@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import { sharedStyles } from '../../utils/styles';
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
-import TextArea from '../../Components/Utils/TextArea';
+import {TextArea} from '../../Components/Utils/TextArea';
 import { useUserContext } from '../../context/UserContext';
 
 
@@ -13,6 +13,8 @@ export default function CompletProfil4({ navigation }) {
     const [pleasure, setPleasure] = React.useState('')
     const [favoriteDish, setFavoriteDish] = React.useState('')
     const [data, setData] = React.useState(null)
+    const pleasureTexteArea = React.useRef(null)
+    const favoriteDishTexteArea = React.useRef(null)
 
     React.useEffect(()=>{
         Presentation.length > 1 && pleasure.length > 1 && favoriteDish.length > 1 ? setDisabledButton(false) : setDisabledButton(true);
@@ -44,6 +46,7 @@ export default function CompletProfil4({ navigation }) {
                     legend = 'test légende'
                     placeholder = 'Un bref descriptif de qui vous êtes...'
                     ismultiline= {true}
+                    lastFocus = {pleasureTexteArea}
                     ></TextArea>
 
                     <TextArea
@@ -52,6 +55,8 @@ export default function CompletProfil4({ navigation }) {
                     callBackText = {setPleasure}
                     legend = 'Mon plaisir coupacle'
                     placeholder = 'Le chocolat'
+                    ref = {pleasureTexteArea}
+                    lastFocus = {favoriteDishTexteArea}
                     ></TextArea>
 
                     <TextArea
@@ -60,6 +65,7 @@ export default function CompletProfil4({ navigation }) {
                     callBackText = {setFavoriteDish}
                     legend = 'Si je devais choisir mon plat préférée...'
                     placeholder = 'Le gateau au chocolat'
+                    ref = {favoriteDishTexteArea}
                     ></TextArea>
 
                 </View>

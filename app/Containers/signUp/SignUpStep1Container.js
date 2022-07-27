@@ -30,6 +30,8 @@ export default function SignUpStep1Container({ navigation }) {
     const [validPhoneNumber, setValidPhoneNumber] =  React.useState(false);
     const [value, setValue] = React.useState("");
     const phoneInput =  React.useRef(null);
+    const emailInput = React.useRef(null);
+    const passwordInput = React.useRef(null);
     
     //En cliquant sur suivant, vous acceptez les termes de nos services, et notre politique de confidentialité. 
    
@@ -80,13 +82,36 @@ export default function SignUpStep1Container({ navigation }) {
                     <Text style={{...sharedStyles.h2, width: '100%'}}>Créer un compte</Text>
                     <Text style={{...sharedStyles.shortText,  height:55}}>Quelques informations pour faire partie du club...</Text>
                     <View style={{ height: 44, width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
-                        <TextInput autoComplete='off' autoCapitalize='none' keyboardType='email-address' value={email} onChangeText={(text) => setEmail(text)} placeholder='Entrer votre email' placeholderTextColor={colors.primaryYellow} style={{ ...sharedStyles.inputText }}></TextInput>
+                        <TextInput 
+                        autoComplete='off' 
+                        autoCapitalize='none' 
+                        keyboardType='email-address'
+                        returnKeyType='next'
+                        ref={emailInput}
+                        value={email} onChangeText={(text) => setEmail(text)} 
+                        placeholder='Entrer votre email' 
+                        placeholderTextColor={colors.primaryYellow} 
+                        style={{ ...sharedStyles.inputText }}
+                        onSubmitEditing={() => { passwordInput.current.focus(); }}
+                        >
+                        </TextInput>
                         {email.length > 0 &&
                             <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15 }} source={isvalidEmail ? validateEmailicon : forbidenEmail}></Image>
                         }
                     </View>
                     <View style={{ height: 44, width: '100%', alignItems: 'center', justifyContent: 'center', marginVertical: 15 }}>
-                    <TextInput textContentType='password' secureTextEntry={true} value={pass} onChangeText={(text) => setPass(text)} placeholder='Créer un mot de passe' placeholderTextColor={colors.primaryYellow} style={{ ...sharedStyles.inputText, marginVertical: 15,}}></TextInput>
+                    <TextInput
+                    textContentType='password'
+                     secureTextEntry={true}
+                     value={pass}
+                     onChangeText={(text) => setPass(text)}
+                     placeholder='Créer un mot de passe'
+                     placeholderTextColor={colors.primaryYellow}
+                     style={{ ...sharedStyles.inputText, marginVertical: 15,}}
+                     returnKeyType='next'
+                     ref={passwordInput}
+                        >
+                     </TextInput>
                     {pass.length > 0 &&
                             <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15 }} source={isvalidPass ? validateEmailicon : forbidenEmail}></Image>
                         }
