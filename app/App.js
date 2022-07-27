@@ -22,10 +22,14 @@ import PublishPost4 from './Containers/publish/PublishPost4';
 import PostPublished from './Containers/publish/PostPublished';
 import PublishParentComponent from './Components/PublishParentComponent';
 
+//PROFIL
+import PendingsContainer from './Containers/PendingsContainer';
+
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
 const MainTabSatck = createBottomTabNavigator();
 const PublishStack = createNativeStackNavigator();
+const ProfilStack = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIcon.png')
 const homeIconInactive = require('./assets/tabBar/loupeIcon.png')
@@ -45,6 +49,15 @@ function AuthStackScreen() {
       <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
       <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
     </LoginStack.Navigator>
+  );
+}
+
+function ProfilStackScreen() {
+  return (
+    <ProfilStack.Navigator initialRouteName={"Account"} screenOptions={{ headerTransparent: true }}>
+      <ProfilStack.Screen name="Account" component={AccountContainer} />
+      <ProfilStack.Screen nname="Pendings" component={PendingsContainer} />
+    </ProfilStack.Navigator>
   );
 }
 
@@ -91,7 +104,7 @@ export default function App() {
             <RootStack.Group
               screenOptions={{
                 presentation: "transparentModal",
-                headerShown: false,
+                headerShown: false
               }}
             >
               <RootStack.Screen
@@ -100,6 +113,11 @@ export default function App() {
                 options={{ headerShown: false, gestureEnabled: false }}
               />
             </RootStack.Group>
+            <RootStack.Screen
+                name="ProfilStack"
+                component={ProfilStackScreen}
+                options={{ headerShown: false, gestureEnabled: false }}
+              />
           </RootStack.Navigator>
         </NavigationContainer>
       </PublishProvider>

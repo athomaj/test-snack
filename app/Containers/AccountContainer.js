@@ -40,7 +40,9 @@ export default function AccountContainer({ navigation }) {
             </View>
             <View style={{paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura}}>
                 <Image source={require('../assets/icon/iconUser.png')} style={{width: 24, height: 24, resizeMode: 'contain', marginRight: 15}}></Image>
-                <TouchableOpacity><Text style={{...sharedStyles.shortText}}>Demande de parainnage</Text></TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('Pendings')}
+                ><Text style={{...sharedStyles.shortText}}>Demande de parainnage</Text></TouchableOpacity>
                 { numberPendings &&
                 <Text style={{position: 'absolute', top: 8, right:8, backgroundColor: colors.primaryYellow, width: 20, height: 20, borderRadius:10, color: 'white', textAlignVertical: 'center', textAlign: 'center'}}>{numberPendings}</Text>
                 }
