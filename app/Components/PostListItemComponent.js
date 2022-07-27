@@ -5,9 +5,9 @@ import moment from 'moment';
 import { colors } from '../utils/colors';
 import { BASE_URL } from '../config/config';
 
-export function PostListItemComponent({ item, index }) {
+export function PostListItemComponent({ item, index, navigateTo }) {
     return (
-        <View style={{ paddingTop: index === 0 ? 20 : 0 }}>
+        <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
                 <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures?.data[0].attributes.url }} />
                 <View style={styles.category}>
@@ -28,7 +28,7 @@ export function PostListItemComponent({ item, index }) {
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         borderRadius: 12,
-        marginRight: 5
+        marginRight: 5,
+        backgroundColor: colors.thirdBlue
     },
 
     user: {

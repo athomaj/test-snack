@@ -1,59 +1,48 @@
 import React from 'react';
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../utils/colors';
 import postApi from '../services/postApi';
 import moment from 'moment';
+import { isIphoneX } from '../utils/isIphoneX';
 
 export function PostDetailComponent({ navigation, route }) {
 
     const [post, setPost] = React.useState(null)
     const [diet, setDiet] = React.useState(null)
-    const [badge, setBadge] = React.useState([{'name': 'Super organisateur'}, {'name': 'Badge 2'}, {'name': 'Badge 3'}])
-    const [bring, setBring] = React.useState([{'name': 'Un dessert de votre choix'}, {'name': 'Une boisson non alcooliser'}, {'name': '300g de Beurre'}])
-    const [info, setInfo] = React.useState([{'name': 'Animaux de compagnie'}, {'name': 'Non fumeur'}, {'name': 'Place de parking sur place'}])
+    const [badge, setBadge] = React.useState([{ 'id': 1, 'name': 'Super organisateur' }, { 'id': 2, 'name': 'Badge 2' }, { 'id': 3, 'name': 'Badge 3' }])
+    const [bring, setBring] = React.useState([{ 'id': 1, 'name': 'Un dessert de votre choix' }, { 'id': 2, 'name': 'Une boisson non alcooliser' }, { 'id': 3, 'name': '300g de Beurre' }])
+    const [info, setInfo] = React.useState([{ 'id': 1, 'name': 'Animaux de compagnie' }, { 'id': 2, 'name': 'Non fumeur' }, { 'id': 3, 'name': 'Place de parking sur place' }])
 
-    async function fetchData(id){
+    async function fetchData(id) {
         const response = await postApi.getOne(id)
         setPost(response)
-        setDiet(response.attributes.families.data)
+        const doubleDier = [...response.attributes.diets.data, ...response.attributes.diets.data]
+        // doubleDier.concat(response.attributes.diets.data)
+        console.log(response.attributes.user)
+        setDiet(doubleDier)
         return response
     }
 
     React.useEffect(() => {
         fetchData(route.params.index)
-        console.log()
     }, [])
 
     const renderDiet = ({ item }) => (
         <View style={styles.viewDiet}>
-            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')}/>
+            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
             <Text style={styles.textDiet}>{item.attributes.name}</Text>
         </View>
     );
 
-    const renderBadge = ({ item }) => (
-        <View style={styles.badge}>
-            <Image style={styles.man} source={require('../assets/icon/man.png')}/>
-            <Text style={styles.badgeText}>{item.name}</Text>
-        </View>
-    );
-
-    const renderBring = ({ item }) => (
-        <View style={styles.badge}>
-            <View style={styles.dot}/>
-            <Text style={styles.badgeText}>{item.name}</Text>
-        </View>
-    );
-
     return (
-        <SafeAreaView>
+        <View>
             <ScrollView style={styles.container}>
                 <View style={styles.top}>
                     {post &&
-                        <Image style={{width:'100%', height: '100%'}} source={{uri : post.attributes.avatarUrl}}/>
+                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: post.attributes.avatarUrl }} />
                     }
                     <TouchableOpacity onPress={navigation.goBack} style={styles.backBox}>
-                        <Text style={styles.back}>{'<'}</Text>
+                        <Text style={styles.back}>{'x'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.body}>
@@ -77,37 +66,37 @@ export function PostDetailComponent({ navigation, route }) {
                                 <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
                                 <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text>
                             </View>
-                            <Image style={styles.userPicture} source={{uri : post?.attributes.user.data.attributes.avatarUrl}}/>
+                            <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
                         </View>
                         <View style={styles.flatlistUser}>
-                            <FlatList
-                                scrollEnabled={false}
-                                data={badge}
-                                renderItem={renderBadge}
-                                keyExtractor={item => item.id}
-                            />
+                            {badge.map((item) => (
+                                <View key={item.id} style={styles.badge}>
+                                    <Image style={styles.man} source={require('../assets/icon/man.png')} />
+                                    <Text style={styles.badgeText}>{item.name}</Text>
+                                </View>
+                            ))}
                         </View>
                     </View>
                     <View styles={styles.bring}>
                         <Text style={styles.multipleTitle}>Ce que vous devrez amemer</Text>
-                        <FlatList
-                            scrollEnabled={false}
-                            data={bring}
-                            renderItem={renderBring}
-                            keyExtractor={item => item.id}
-                        />
+                        {bring.map((item) => (
+                            <View key={item.id} style={styles.badge}>
+                                <View style={styles.dot} />
+                                <Text style={styles.badgeText}>{item.name}</Text>
+                            </View>
+                        ))}
                     </View>
                     <View style={styles.place}>
                         <Text style={styles.multipleTitle}>Lieu de rendez-vous</Text>
                         <Text style={styles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
                         <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.district}</Text>
                         <View style={styles.flatlistUser}>
-                            <FlatList
-                                scrollEnabled={false}
-                                data={info}
-                                renderItem={renderBadge}
-                                keyExtractor={item => item.id}
-                            />
+                            {info.map((item) => (
+                                <View key={item.id} style={styles.badge}>
+                                    <Image style={styles.man} source={require('../assets/icon/man.png')} />
+                                    <Text style={styles.badgeText}>{item.name}</Text>
+                                </View>
+                            ))}
                         </View>
                     </View>
                 </View>
@@ -121,12 +110,11 @@ export function PostDetailComponent({ navigation, route }) {
                     <Text style={styles.participate}>Participer</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-
     container: {
         height: '100%',
         width: '100%',
@@ -141,7 +129,7 @@ const styles = StyleSheet.create({
 
     backBox: {
         position: 'absolute',
-        top: 60,
+        top: isIphoneX() ? 60 : 20,
         left: 20,
         height: 30,
         width: 30,
@@ -156,9 +144,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backBlue,
     },
 
-
     body: {
-        padding: '5%'
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingHorizontal: 10
     },
 
     title: {
@@ -180,7 +169,7 @@ const styles = StyleSheet.create({
     },
 
     multipleTitle: {
-        fontWeight:'600',
+        fontWeight: '600',
         fontSize: 18,
         color: colors.primaryBlue,
         height: 35
@@ -188,7 +177,7 @@ const styles = StyleSheet.create({
 
     viewDiet: {
         backgroundColor: colors.secondaryBlue,
-        width: 110,
+        width: Dimensions.get('window').width * 0.3,
         height: 110,
         margin: 5,
         justifyContent: "center",
@@ -209,7 +198,7 @@ const styles = StyleSheet.create({
     },
 
     user: {
-        marginBottom: 40,
+        marginBottom: 40
     },
 
     topUser: {
@@ -223,12 +212,13 @@ const styles = StyleSheet.create({
         height: 46,
         borderRadius: 23,
         borderWidth: 1,
-        borderColor: colors.thirdBlue
+        borderColor: colors.thirdBlue,
+        backgroundColor: colors.thirdBlue
     },
 
     username: {
         textTransform: 'capitalize',
-        fontWeight:'600',
+        fontWeight: '600',
         fontSize: 18,
         color: colors.primaryBlue,
     },
@@ -245,7 +235,7 @@ const styles = StyleSheet.create({
     },
 
     badgeText: {
-        fontWeight:'500',
+        fontWeight: '500',
         fontSize: 12,
         color: colors.primaryBlue,
         lineHeight: 30
@@ -271,7 +261,7 @@ const styles = StyleSheet.create({
 
     placeText: {
         textTransform: 'capitalize',
-        fontWeight:'500',
+        fontWeight: '500',
         fontSize: 12,
         color: colors.primaryBlue,
         lineHeight: 18,
@@ -281,7 +271,6 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom: 90,
     },
-
 
     footer: {
         height: 95,
