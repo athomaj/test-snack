@@ -5,23 +5,27 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import SplashScreen from './Components/SplashScreen';
 import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
 import MembersContainer from './Containers/MembersContainer';
 import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
-import { colors } from './utils/colors';
-import { UserProvider } from './context/UserContext';
 import OnboardingContainer from './Containers/OnboardingContainer';
 import PublishPost1 from './Containers/publish/PublishPost1';
 import PublishPost2 from './Containers/publish/PublishPost2';
 import PublishPost3 from './Containers/publish/PublishPost3';
-import { PublishProvider } from './context/PublishContext';
 import PublishPost4 from './Containers/publish/PublishPost4';
 import PostPublished from './Containers/publish/PostPublished';
+
+import SplashScreen from './Components/SplashScreen';
 import PublishParentComponent from './Components/PublishParentComponent';
+import { PostDetailComponent } from './Components/PostDetailComponent';
+
+import { UserProvider } from './context/UserContext';
+import { PublishProvider } from './context/PublishContext';
+
+import { colors } from './utils/colors';
 
 //SIGNUP
 import SignUpStep1Container from './Containers/signUp/SignUpStep1Container';
@@ -39,6 +43,7 @@ import CompletProfil5 from './Containers/CompletProfil/CompleteProfil5';
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
 const MainTabSatck = createBottomTabNavigator();
+// const HomeStack = createNativeStackNavigator();
 const PublishStack = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIcon.png')
@@ -86,6 +91,15 @@ function MainTabStackScreen({ navigation }) {
   );
 }
 
+// function HomeStackScreen({ navigation }) {
+//   return (
+//     <HomeStack.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true, headerShown: false }}>
+//       <HomeStack.Screen name="Home" component={HomeContainer} />
+//       <HomeStack.Screen name="PostDetail" component={PostDetailComponent} />
+//     </HomeStack.Navigator>
+//   )
+// }
+
 function PublishStackScreen({ navigation }) {
   return (
     <PublishStack.Navigator initialRouteName={"PublishPost1"} screenOptions={{ headerTransparent: true, headerShown: false }}>
@@ -123,6 +137,11 @@ export default function App() {
               <RootStack.Screen
                 name="PublishStack"
                 component={PublishStackScreen}
+                options={{ headerShown: false, gestureEnabled: false }}
+              />
+              <RootStack.Screen
+                name="PostDetail"
+                component={PostDetailComponent}
                 options={{ headerShown: false, gestureEnabled: false }}
               />
             </RootStack.Group>

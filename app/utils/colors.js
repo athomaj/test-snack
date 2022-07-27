@@ -15,5 +15,6 @@ export const colors = {
     primaryBlue: "#0A4072",
     secondaryBlue: "#E6EFF7",
     thirdBlue: "#005DB2",
+    whiteBlue: "#E6EFF7",
     backBlue: "#A8CBEB"
 }

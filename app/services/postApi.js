@@ -12,18 +12,30 @@ async function publish(data) {
         });
 }
 
-async function display() {
+async function getPosts() {
     return await axios.get(`${API_URL}/posts?populate=*`)
         .then(response => {
             return response.data.data
         })
         .catch(error => {
             console.log("GET POSTS ERR ====", error.response)
-            return null
+            return error.response
         });
+}
+
+async function getOne(id) {
+    return await axios.get(`${API_URL}/posts/${id}?populate=*`)
+        .then(response => {
+            return response.data.data
+        })
+        .catch(error => {
+            console.log("ERROR FIND ONE POST ====", error.response)
+            return error.response
+        })
 }
 
 export default {
     publish,
-    display
+    getOne,
+    getPosts
 }
