@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { colors } from "../../utils/colors";
 
-const TextArea = React.forwardRef(({ heightSize,legend, maxChar, callBackText, placeholder, value, ismultiline, ref, lastFocus }) => {
+const TextArea = React.forwardRef(({ heightSize,legend, maxChar, callBackText, placeholder, value, ismultiline, onSubmitEditing}, ref) => {
 
 
     return(
@@ -20,9 +20,9 @@ const TextArea = React.forwardRef(({ heightSize,legend, maxChar, callBackText, p
                 onChangeText={(text) => callBackText(text)}
                 multiline={ismultiline ? true : false}
                 placeholder={placeholder}
-                returnKeyType={lastFocus ? 'next' : null}
                 ref = {ref ? ref : null}
-                onSubmitEditing={() => { lastFocus ? lastFocus.current.focus() : null; }}
+                onBlur={onSubmitEditing}
+                // blurOnSubmit={false}
             // onContentSizeChange={ScrollRef.current?.scrollToEnd({ animated: true })}
             >
             </TextInput>

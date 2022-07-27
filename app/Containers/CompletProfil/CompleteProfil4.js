@@ -46,7 +46,7 @@ export default function CompletProfil4({ navigation }) {
                     legend = 'test légende'
                     placeholder = 'Un bref descriptif de qui vous êtes...'
                     ismultiline= {true}
-                    lastFocus = {pleasureTexteArea}
+                    onSubmitEditing = {() => pleasureTexteArea.current.focus()}
                     ></TextArea>
 
                     <TextArea
@@ -56,7 +56,7 @@ export default function CompletProfil4({ navigation }) {
                     legend = 'Mon plaisir coupacle'
                     placeholder = 'Le chocolat'
                     ref = {pleasureTexteArea}
-                    lastFocus = {favoriteDishTexteArea}
+                    onSubmitEditing = {() => favoriteDishTexteArea.current.focus()}
                     ></TextArea>
 
                     <TextArea

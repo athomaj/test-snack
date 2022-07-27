@@ -31,6 +31,7 @@ const UserProvider = ({ children }) => {
         getCurrentUser()
     }, [])
 
+
     const getCurrentUser = async () => {
         setAuthState({
             ...authState,
