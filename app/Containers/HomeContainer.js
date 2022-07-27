@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Animated, Dimensions, Modal, StyleSheet, TextInput } from 'react-native';
 import moment from 'moment';
-import { useUserContext } from '../context/UserContext';
+
 import { PostListItemComponent } from '../Components/PostListItemComponent';
 import FilterComponent from '../Components/FilterComponent';
-import { colors } from '../utils/colors';
+
+import { useUserContext } from '../context/UserContext';
+
 import postApi from '../services/postApi';
+
+import { colors } from '../utils/colors';
 
 const deviceHeight = Dimensions.get('screen').height
 
@@ -91,7 +95,7 @@ export default function HomeContainer({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostListItemComponent item={item} index={index}></PostListItemComponent>,
+        ({ item, index }) => <PostListItemComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: item.id})}></PostListItemComponent>,
         []
     );
 
