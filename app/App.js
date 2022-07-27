@@ -9,7 +9,6 @@ import SplashScreen from './Components/SplashScreen';
 import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
 import MembersContainer from './Containers/MembersContainer';
-import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
 import { colors } from './utils/colors';
@@ -21,6 +20,7 @@ import { PublishProvider } from './context/PublishContext';
 import PublishPost4 from './Containers/publish/PublishPost4';
 import PostPublished from './Containers/publish/PostPublished';
 import PublishParentComponent from './Components/PublishParentComponent';
+import ChatContainer from './Containers/ChatContainer';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -54,7 +54,7 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Membres', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Messages" component={ChatContainer} options={{ ...tabBarOptions, title: 'Messages', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
   );

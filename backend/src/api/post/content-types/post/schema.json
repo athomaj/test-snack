@@ -68,6 +68,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::diet.diet"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "events"
     }
   }
 }
