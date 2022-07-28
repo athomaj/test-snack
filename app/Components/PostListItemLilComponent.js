@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 12,
         color: colors.thirdBlue,
+        textDecorationLine: 'underline',
     },
 
     avatarUrl: {
@@ -62,14 +63,16 @@ const styles = StyleSheet.create({
     },
 
     userdate: {
-        fontSize: 13,
+        fontSize: 10,
         fontWeight: '500',
-        color: colors.primaryBlue,
+        color: colors.thirdBlue
     },
 
     userAndDate: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '33%'
     },
 
 })

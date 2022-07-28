@@ -1,11 +1,10 @@
 import React from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import postApi from "../services/postApi";
 import { colors } from "../utils/colors";
 import moment from "moment";
 import { useUserContext } from "../context/UserContext";
 import { PostListItemComponent } from "../Components/PostListItemComponent";
-import { BASE_URL } from "../config/config";
 import { PostListLilItemComponent } from "../Components/PostListItemLilComponent";
 
 export default function MealContainer({ navigation }) {
@@ -73,6 +72,20 @@ export default function MealContainer({ navigation }) {
                         </View>
                     :
                         <Text>Vous n'avez pas d'évènements à venir</Text>
+                    }
+                </View>
+                <View style={{marginTop: 30, marginBottom: 30}}>
+                    <Text style={styles.eventTitle}>Archives</Text>
+                    {futureEvent.length > 0 ?
+                        <View>
+                            {pastEvent.map((data, index) => (
+                                <View key={index}>
+                                    <PostListLilItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
+                                </View>
+                            ))}
+                        </View>
+                    :
+                        <Text>Vous n'avez pas d'évènements passé</Text>
                     }
                 </View>
             </ScrollView>
