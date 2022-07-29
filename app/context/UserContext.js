@@ -14,6 +14,7 @@ const initialState = {
     error: false,
     errorMessage: "",
     isInitialized: false,
+    isLoginScreen: true,
     user: {
         email: "",
         username: "",
@@ -28,17 +29,18 @@ const UserProvider = ({ children }) => {
     const [authState, setAuthState] = React.useState(initialState)
 
     React.useEffect(() => {
-        getCurrentUser()
+        getCurrentUser(true)
     }, [])
 
 
-    const getCurrentUser = async () => {
+    const getCurrentUser = async (isLogin) => {
         setAuthState({
             ...authState,
             isLoading: true
         })
 
         const response = await userApi.getMe()
+
         if (!response) {
             setAuthState({
                 ...authState,
@@ -51,7 +53,8 @@ const UserProvider = ({ children }) => {
                 isLoading: false,
                 isInitialized: true,
                 isConnected: true,
-                user: response.data
+                user: response.data,
+                isLoginScreen: isLogin
             })
         }
 
@@ -67,24 +70,16 @@ const UserProvider = ({ children }) => {
         if (response.data.error) {
             setAuthState({
                 ...authState,
+                isLoading: false,
                 error: true,
                 errorMessage: response.data.error.message
             })
             return
         }
-        if (response.data.user) {
-            setAuthState({
-                ...authState,
-                isConnected: true,
-                isInitialized: true,
-                isLoading: false,
-                user: response.data.user
-            })
-        }
+        getCurrentUser(true)
     };
 
     const register = async (data) => {
-      
         setAuthState({
             ...authState,
             isLoading: true
@@ -95,26 +90,16 @@ const UserProvider = ({ children }) => {
         if (response.data.error) {
             setAuthState({
                 ...authState,
+                isLoading: false,
                 error: true,
                 errorMessage: response.data.error.message
             })
             return
         }
-        getCurrentUser()
-        // const user = await userApi.getMe()
-        //on change
-        // setAuthState({
-        //     ...authState,
-        //     isConnected: true,
-        //     isInitialized: true,
-        //     isLoading: false,
-        //     user: response.data.user
-        // })
+        getCurrentUser(false)
     };
 
     const updatePicture = async (data) => {
-        
-    
         if (data.picture) {
             const formData = new FormData()
             let uri = data.picture

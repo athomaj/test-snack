@@ -3,8 +3,6 @@ import { View, TouchableOpacity, Text, ActivityIndicator, Image, StyleSheet } fr
 import { colors } from '../../utils/colors';
 
 export default function PublishFooterNav({ firstScreen, lastScreen, loading, onPressContinue, onPressBack, disabledButton }) {
-
-    //<Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
     return (
         <>
             <View style={{ alignSelf: 'center', zIndex: 1, position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'space-between', width: '100%', padding: 10, backgroundColor: colors.white }}>

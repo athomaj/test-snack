@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../../utils/colors';
 
-export default function ImagePickerExample({ image, setParamImage }) {
+export default function PicturePickerComponent({ image, setParamImage }) {
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library

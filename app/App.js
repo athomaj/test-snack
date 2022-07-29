@@ -46,14 +46,21 @@ const MainTabSatck = createBottomTabNavigator();
 // const HomeStack = createNativeStackNavigator();
 const PublishStack = createNativeStackNavigator();
 
-const homeIconActive = require('./assets/tabBar/loupeIcon.png')
+const homeIconActive = require('./assets/tabBar/loupeIconActive.png')
 const homeIconInactive = require('./assets/tabBar/loupeIcon.png')
+const eventIconActive = require('./assets/tabBar/eventIconActive.png')
+const eventIconInactive = require('./assets/tabBar/eventIcon.png')
+const addIconIconActive = require('./assets/tabBar/addIconActive.png')
+const addIconIconInactive = require('./assets/tabBar/addIcon.png')
+const messageIconActive = require('./assets/tabBar/messageIconActive.png')
+const messageIconInactive = require('./assets/tabBar/messageIcon.png')
 const userIconActive = require('./assets/tabBar/userIcon.png')
 const userIconInactive = require('./assets/tabBar/userIcon.png')
 
 const tabBarOptions = {
   headerShown: false,
-  tabBarActiveTintColor: colors.black,
+  tabBarActiveTintColor: "#0A4072",
+  tabBarInactiveTintColor: "#4C749A",
   tabBarLabelStyle: { fontWeight: 'normal', fontSize: 10 }
 }
 
@@ -83,9 +90,9 @@ function MainTabStackScreen({ navigation }) {
   return (
     <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Membres', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
