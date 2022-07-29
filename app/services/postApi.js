@@ -8,7 +8,7 @@ async function publish(data) {
         })
         .catch(error => {
             console.log("ERROR PUBLISH ==== ", error)
-            return error.response
+            return null
         });
 }
 
@@ -19,7 +19,7 @@ async function getPosts() {
         })
         .catch(error => {
             console.log("GET POSTS ERR ====", error.response)
-            return error.response
+            return null
         });
 }
 
@@ -30,7 +30,7 @@ async function getOne(id) {
         })
         .catch(error => {
             console.log("ERROR FIND ONE POST ====", error.response)
-            return error.response
+            return null
         })
 }
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, TextInput, Image, ActivityIndicator } from 'react-native';
 
-import { colors } from '../utils/colors';
+import validateEmail from '../utils/sharedFunctions';
 import { displayAlert } from '../utils/displayAlert';
 import { sharedStyles } from '../utils/styles';
-import validateEmail from './Utils/RegexValidation';
+import { colors } from '../utils/colors';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
-    const [email, setEmail] = React.useState("test@gmail.com")
+    const [email, setEmail] = React.useState("js.luciani@outlook.fr")
     const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
@@ -42,10 +42,10 @@ export default function LoginComponent({ loading, error, requestLogin, loginStat
                 <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
             </View>
 
-            <View style={{ width: '100%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
+            <View style={{ width: '90%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
                 <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>Connexion</Text>
-                    <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'black'}></ActivityIndicator>
+                    <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Connexion</Text>
+                    <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'white'}></ActivityIndicator>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={loginStatus} style={{ justifyContent: 'center', alignItems: 'center' }}>

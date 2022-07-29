@@ -9,7 +9,7 @@ export function PostListItemComponent({ item, index, navigateTo }) {
     return (
         <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
-                <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures?.data[0].attributes.url }} />
+                <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures.data[0].attributes.url }} />
                 <View style={styles.category}>
                     <Text style={styles.categoryText}>{item.attributes.category.data?.attributes.name}</Text>
                 </View>

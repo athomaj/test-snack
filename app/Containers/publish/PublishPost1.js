@@ -43,7 +43,7 @@ export default function PublishPost1({ navigation }) {
                             <Text style={styles.desc2}>Important d’avoir une photo avant de commencer !</Text>
                             <View style={styles.categoryViewContainer}>
                                 {dataCategory.map((item, index) => (
-                                    <TouchableOpacity style={{ width: '32%' }} onPress={() => setCategory(index)}>
+                                    <TouchableOpacity key={item.id} style={{ width: '32%' }} onPress={() => setCategory(index)}>
                                         <View style={{ ...styles.viewCategory, backgroundColor: category === index ? colors.thirdBlue : colors.secondaryBlue }}>
                                             <Image style={styles.imageCategory} source={category != index ? categorySelectedPicture : categoryUnselectedPicture} />
                                             <Text style={{ ...styles.textCategory, color: category === index ? colors.white : colors.primaryBlue }}>{item.name}</Text>

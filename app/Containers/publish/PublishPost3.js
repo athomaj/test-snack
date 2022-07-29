@@ -153,7 +153,7 @@ export default function PublishPost3({ navigation }) {
                     </View>
                     <View style={{ marginTop: 20 }}>
                         <Text style={styles.title}>Nombre d'invité ?</Text>
-                        <TextInput style={styles.guestInput} placeholder={'Choisir un nombre de place'} placeholderTextColor={colors.thirdBlue} value={seats} onChangeText={(e) => setSeats(parseInt(e))} keyboardType={"number-pad"} />
+                        <TextInput style={styles.guestInput} placeholder={'Choisir un nombre de place'} placeholderTextColor={colors.thirdBlue} value={"" + seats} onChangeText={(e) => setSeats(parseInt(e))} keyboardType={"number-pad"} />
                     </View>
                     <View style={styles.kitchenType}>
                         <Text style={styles.title}>Type(s) de cuisine(s)</Text>

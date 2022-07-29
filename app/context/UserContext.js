@@ -14,10 +14,12 @@ const initialState = {
     error: false,
     errorMessage: "",
     isInitialized: false,
+    isLoginScreen: true,
     user: {
         email: "",
         username: "",
         id: "",
+        avatarUrl: "",
         plate: "",
         famillyGame: ""
     }
@@ -27,16 +29,18 @@ const UserProvider = ({ children }) => {
     const [authState, setAuthState] = React.useState(initialState)
 
     React.useEffect(() => {
-        getCurrentUser()
+        getCurrentUser(true)
     }, [])
 
-    const getCurrentUser = async () => {
+
+    const getCurrentUser = async (isLogin) => {
         setAuthState({
             ...authState,
             isLoading: true
         })
 
         const response = await userApi.getMe()
+
         if (!response) {
             setAuthState({
                 ...authState,
@@ -49,7 +53,8 @@ const UserProvider = ({ children }) => {
                 isLoading: false,
                 isInitialized: true,
                 isConnected: true,
-                user: response.data
+                user: response.data,
+                isLoginScreen: isLogin
             })
         }
 
@@ -65,20 +70,13 @@ const UserProvider = ({ children }) => {
         if (response.data.error) {
             setAuthState({
                 ...authState,
+                isLoading: false,
                 error: true,
                 errorMessage: response.data.error.message
             })
             return
         }
-        if (response.data.user) {
-            setAuthState({
-                ...authState,
-                isConnected: true,
-                isInitialized: true,
-                isLoading: false,
-                user: response.data.user
-            })
-        }
+        getCurrentUser(true)
     };
 
     const register = async (data) => {
@@ -86,7 +84,22 @@ const UserProvider = ({ children }) => {
             ...authState,
             isLoading: true
         })
+        
+        const response = await authApi.register(data)
 
+        if (response.data.error) {
+            setAuthState({
+                ...authState,
+                isLoading: false,
+                error: true,
+                errorMessage: response.data.error.message
+            })
+            return
+        }
+        getCurrentUser(false)
+    };
+
+    const updatePicture = async (data) => {
         if (data.picture) {
             const formData = new FormData()
             let uri = data.picture
@@ -100,39 +113,34 @@ const UserProvider = ({ children }) => {
 
             const uploadResponse = await uploadApi.uploadPicture(formData)
             if (uploadResponse[0]?.url) {
-                data.user.avatarUrl = BASE_URL + uploadResponse[0].url
+                //data.user.avatarUrl = 
+                const updateAvatar = {
+                    "avatar": uploadResponse[0]?.id
+                }
+                userApi.updateUser(updateAvatar, authState.user.id)
+                const NewStateStatus = {...authState}
+                NewStateStatus.user.avatarUrl = BASE_URL + uploadResponse[0].url
+                setAuthState(NewStateStatus)
+
             }
+            else console.log("BAAAD REQUEST ===================================>",uploadResponse)
         }
-
-        const response = await authApi.register(data.user)
-
-        if (response.data.error) {
-            setAuthState({
-                ...authState,
-                error: true,
-                errorMessage: response.data.error.message
-            })
-            return
-        }
-        getCurrentUser()
-        // const user = await userApi.getMe()
-        // setAuthState({
-        //     ...authState,
-        //     isConnected: true,
-        //     isInitialized: true,
-        //     isLoading: false,
-        //     user: response.data.user
-        // })
-
-    };
-
+    }
 
     const updateUserInformation = async (userUpdated) => {
-        setAuthState({
-            ...authState,
-            isLoading: true
-        })
 
+        for (const [key, value] of Object.entries(userUpdated)) {
+          const edintingState = {...authState}
+            const entries = Object.keys(authState.user).includes(key)
+            if(entries){
+        
+                edintingState.user[key] = value
+                setAuthState(edintingState)
+            }
+          }
+          
+        const data = JSON.stringify(userUpdated) 
+        userApi.updateUser(userUpdated, authState.user.id)
     };
 
     const disconnect = async () => {
@@ -159,6 +167,7 @@ const UserProvider = ({ children }) => {
                 updateUserInformation,
                 register,
                 disconnect,
+                updatePicture,
             }}
         >
             {children}
