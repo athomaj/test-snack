@@ -24,6 +24,7 @@ import PublishParentComponent from './Components/PublishParentComponent';
 
 //PROFIL
 import PendingsContainer from './Containers/PendingsContainer';
+import ProfilContainer from './Containers/ProfilContainer';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -56,7 +57,8 @@ function ProfilStackScreen() {
   return (
     <ProfilStack.Navigator initialRouteName={"Account"} screenOptions={{ headerTransparent: true }}>
       <ProfilStack.Screen name="Account" component={AccountContainer} />
-      <ProfilStack.Screen nname="Pendings" component={PendingsContainer} />
+      <ProfilStack.Screen name="Pendings" component={PendingsContainer} />
+      <ProfilStack.Screen name="Profil" component={ProfilContainer} />
     </ProfilStack.Navigator>
   );
 }
@@ -68,7 +70,7 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Membres', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Account" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }
@@ -113,11 +115,6 @@ export default function App() {
                 options={{ headerShown: false, gestureEnabled: false }}
               />
             </RootStack.Group>
-            <RootStack.Screen
-                name="ProfilStack"
-                component={ProfilStackScreen}
-                options={{ headerShown: false, gestureEnabled: false }}
-              />
           </RootStack.Navigator>
         </NavigationContainer>
       </PublishProvider>

@@ -9,6 +9,11 @@ async function getUser(id) {
         .then(res => { return res.data }).catch(err => { return err })
 }
 
+async function getUserPopulate(id) {
+    return axios.get(`${API_URL}/users/${id}?populate=*`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
 async function getUsers() {
     return axios.get(`${API_URL}/users`)
         .then(res => { return res.data }).catch(err => { return err })
@@ -64,5 +69,6 @@ export default {
     updateUser,
     getUsersContactPhone,
     getPendingsOfSponsor,
-    getMePopulate
+    getMePopulate,
+    getUserPopulate
 }

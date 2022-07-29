@@ -37,6 +37,7 @@ const UserProvider = ({ children }) => {
         })
 
         const response = await userApi.getMe()
+        console.log("GET CURRENT ===",response)
         if (!response) {
             setAuthState({
                 ...authState,
@@ -70,16 +71,8 @@ const UserProvider = ({ children }) => {
             })
             return
         }
-        if (response.data.user) {
-            getCurrentUser()
-            // setAuthState({
-            //     ...authState,
-            //     isConnected: true,
-            //     isInitialized: true,
-            //     isLoading: false,
-            //     user: response.data.user
-            // })
-        }
+        getCurrentUser()
+        console.log("LOGIN ====", response.data)
     };
 
     const register = async (data) => {

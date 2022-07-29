@@ -7,16 +7,15 @@ import { sharedStyles } from '../utils/styles';
 import { BASE_URL } from '../config/config';
 
 export default function AccountContainer({ navigation }) {
-    const [avatarUrl, setAvatarUrl] = React.useState(null)
     const userContext = useUserContext();
+    const [avatarUrl, setAvatarUrl] = React.useState(null)
     const [userName, setUserName] = React.useState(null)
     const [numberPendings, setNumberPendings] = React.useState(null)
 
     React.useEffect(()=>{
-        setAvatarUrl(BASE_URL+userContext.authState.user.avatar.formats.thumbnail.url)
+        setAvatarUrl(BASE_URL+userContext.authState.user.avatar?.formats.thumbnail.url)
         setUserName(`${userContext.authState.user.firstName} ${userContext.authState.user.lastName}`)
         setNumberPendings(userContext.authState.user.pendings.length > 0 ? userContext.authState.user.pendings.length : null)
-        console.log(userContext.authState.user.pendings)
     },[])
 
     React.useEffect(() => {
