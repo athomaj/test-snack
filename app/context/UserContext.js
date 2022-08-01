@@ -122,13 +122,22 @@ const UserProvider = ({ children }) => {
 
 
     const updateUserInformation = async (userUpdated) => {
-        setAuthState({
-            ...authState,
-            isLoading: true
-        })
 
+        userApi.updateUser(userUpdated, authState.user.id)
+        getCurrentUser()
     };
 
+    const updatePendingsUser = async (idUser) => {
+        const edditingArray = []
+        const sponsors = await userApi.getSponsorsOf(idUser);
+        if(sponsors > 0){
+            sponsors.forEach(element => {
+                element.id !== idUser ? edditingArray.push(element.id) : null
+            });
+        }
+        console.log(edditingArray)
+
+    }
     const disconnect = async () => {
         await authApi.disconnect()
         setAuthState({

@@ -34,6 +34,11 @@ async function getMePopulate(idUser) {
         .then(res => { return res.data }).catch(err => { return err })
 }
 
+async function getSponsorsOf(idUser) {
+    return axios.get(`${API_URL}/users/${idUser}?fields=id&populate[sponsors][fields][0]=id`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
 async function getMe() {
     const token = await getData("authToken")
 
@@ -70,5 +75,6 @@ export default {
     getUsersContactPhone,
     getPendingsOfSponsor,
     getMePopulate,
-    getUserPopulate
+    getUserPopulate,
+    getSponsorsOf
 }

@@ -12,6 +12,7 @@ export default function ProfilContainer({ route, navigation }) {
     const userContext = useUserContext();
     const [userData, setUserData] = React.useState(null)
     const [commonBetweenUser, setCommonBetweenUser] = React.useState([])
+    const [pendingsUser, setPendingsUser] = React.useState(false)
 
     async function getData(userId){
         const dataOfUser = await  userApi.getUserPopulate(userId)
@@ -64,8 +65,9 @@ export default function ProfilContainer({ route, navigation }) {
     },[])
 
     React.useEffect(()=>{
-        userData ? console.log(userData.kitchen) : null
+         userData ? setPendingsUser(userContext.authState.user.pendings.find(element => element.id === userData.id )? true : false) : null
         // console.log('USER DATA ==========================>',userData)
+        
         commonUser()
     },[userData])
 
@@ -97,6 +99,16 @@ export default function ProfilContainer({ route, navigation }) {
                         }}
                     />
                     <Text style={{...sharedStyles.h2, paddingTop: 13}}>{userData.username}</Text>
+                    { pendingsUser &&
+                        <View style={{width: '100%', paddingTop: 8, flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                        <TouchableOpacity
+                        style={{paddingHorizontal: 20, paddingVertical: 8, borderRadius: 4, borderStyle: 'solid', borderWidth: 1, borderColor:  colors.primaryYellow}}
+                        ><Text style={{color: colors.primaryYellow}}>Refuser</Text></TouchableOpacity>
+                        <TouchableOpacity
+                        style={{paddingVertical: 8, backgroundColor: colors.primaryYellow, borderRadius: 4, paddingHorizontal: 20}}
+                        ><Text style={{color: 'white'}}>Accepter</Text></TouchableOpacity>
+                        </View>
+                    }
                 </View>
 
 
