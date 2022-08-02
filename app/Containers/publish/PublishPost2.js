@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-import PostPicturePicker from "../../Components/Utils/postPicturePicker";
+import PostPicturePickerComponent from "../../Components/Utils/PostPicturePickerComponent";
 
 import { usePublishContext } from "../../context/PublishContext";
 
@@ -27,7 +27,7 @@ export default function PublishPost2({ navigation }) {
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
 
     const renderPictures = React.useCallback(
-        ({ item, index }) => <PostPicturePicker image={picture[index]?.uri} setParamImage={(returnImage) => tempImage(returnImage, index)} />
+        ({ item, index }) => <PostPicturePickerComponent image={picture[index]?.uri} setParamImage={(returnImage) => tempImage(returnImage, index)} />
         , [picture]
     )
 

@@ -8,7 +8,7 @@ async function publish(data) {
         })
         .catch(error => {
             console.log("ERROR PUBLISH ==== ", error)
-            return error.response
+            return null
         });
 }
 
@@ -23,7 +23,19 @@ async function getPosts() {
         });
 }
 
+async function getOne(id) {
+    return await axios.get(`${API_URL}/posts/${id}?populate=*`)
+        .then(response => {
+            return response.data.data
+        })
+        .catch(error => {
+            console.log("ERROR FIND ONE POST ====", error.response)
+            return null
+        })
+}
+
 export default {
     publish,
+    getOne,
     getPosts
 }
