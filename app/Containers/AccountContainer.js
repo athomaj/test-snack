@@ -60,7 +60,9 @@ export default function AccountContainer({ navigation }) {
             <View style={{backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25}}>
                 <ImagePickerAcount image={image?.uri} imageUrl={avatarUrl} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerAcount>
                 <Text style={{...sharedStyles.h2, paddingTop: 13}}>{userName}</Text>
-                <TouchableOpacity><Text style={{...sharedStyles.shortText, textDecorationStyle: "solid", textDecorationLine:"underline", textDecorationColor: colors.primaryYellow}}>Afficher le profil</Text></TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => { navigation.navigate('Profil',{ userId: userContext.authState.user.id })}}
+                ><Text style={{...sharedStyles.shortText, textDecorationStyle: "solid", textDecorationLine:"underline", textDecorationColor: colors.primaryYellow}}>Afficher le profil</Text></TouchableOpacity>
             </View>
             <View style={{paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura}}>
                 <Image source={require('../assets/icon/iconUser.png')} style={{width: 24, height: 24, resizeMode: 'contain', marginRight: 15}}></Image>
