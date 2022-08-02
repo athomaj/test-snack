@@ -106,7 +106,7 @@ export const sharedStyles = StyleSheet.create({
         borderBottomColor: colors.primaryYellow,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
-    }
+    },
 })
 
 export const postCreateStyles = StyleSheet.create({

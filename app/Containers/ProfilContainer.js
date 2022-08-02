@@ -53,9 +53,6 @@ export default function ProfilContainer({ route, navigation }) {
 
             setCommonBetweenUser(DataCommonUser)
         }
-        // ArrayOfuser.map( idUser => {
-        //     if(dataOfUser.)
-        // })
         }
     }
 
