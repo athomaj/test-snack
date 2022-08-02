@@ -28,6 +28,7 @@ export default function AccountContainer({ navigation }) {
           if (!result.cancelled) {
             console.log(result);
             setParamImage(result);
+            userContext.updatePicture({picture: result.uri})
           }
         };
         return (
@@ -81,7 +82,9 @@ export default function AccountContainer({ navigation }) {
 
             <View style={{paddingHorizontal: 15, paddingVertical: 20,flexDirection: 'row', ...sharedStyles.bottomCaesura}}>
                 <Image source={require('../assets/icon/iconUser.png')} style={{width: 24, height: 24, resizeMode: 'contain', marginRight: 15}}></Image>
-                <TouchableOpacity><Text style={{...sharedStyles.shortText}}>Modifier mon profil</Text></TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => { navigation.navigate('UpdateProfil2',{ position: 'goback' })}}
+                ><Text style={{...sharedStyles.shortText}}>Modifier mon profil</Text></TouchableOpacity>
             </View>
 
             <View style={{paddingHorizontal: 15, paddingVertical: 20,flexDirection: 'row', ...sharedStyles.bottomCaesura}}>

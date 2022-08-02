@@ -115,7 +115,8 @@ const UserProvider = ({ children }) => {
             if (uploadResponse[0]?.url) {
                 //data.user.avatarUrl = 
                 const updateAvatar = {
-                    "avatar": uploadResponse[0]?.id
+                    "avatar": uploadResponse[0]?.id,
+                    "avatarUrl": uploadResponse[0]?.url
                 }
                 userApi.updateUser(updateAvatar, authState.user.id)
                 const NewStateStatus = {...authState}

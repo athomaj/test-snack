@@ -1,16 +1,12 @@
 import React from 'react';
 import { SafeAreaView, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
-
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
-
 import { useUserContext } from '../../context/UserContext';
-
 import kitchenApi from '../../services/kitchenApi';
-
 import { sharedStyles } from '../../utils/styles';
 import { isIphoneX } from '../../utils/isIphoneX';
 
-export default function CompletProfil2({ navigation }) {
+export default function CompletProfil2({ route, navigation }) {
 
     const userContext = useUserContext();
     const [buttonDisable, setDisabledButton] = React.useState(true)
@@ -24,12 +20,18 @@ export default function CompletProfil2({ navigation }) {
     }
 
     React.useEffect(() => {
+        if(userContext.authState.user.kitchen.length > 0){
+           const newArray = userContext.authState.user.kitchen.map(element => element.id)
+           setTypeOfCooks(newArray)
+        }
+
         getAllKitchens()
     }, [])
 
     React.useEffect(() => {
         typeOfCooks.length > 0 ? setDisabledButton(false) : setDisabledButton(true);
         setData({ "kitchen": typeOfCooks })
+        console.log(typeOfCooks)
     }, [typeOfCooks])
 
 
@@ -74,6 +76,13 @@ export default function CompletProfil2({ navigation }) {
                     />
                 </View>
             </SafeAreaView>
+            { route.params.position === 'goback' ?
+                <TouchableOpacity
+                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 10, zIndex: 1, alignSelf: 'center'}}
+                >
+                <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
+                </TouchableOpacity>
+            :
             <SignupFooterNav
                 title={"Suivant"}
                 canGoBack={true}
@@ -83,6 +92,7 @@ export default function CompletProfil2({ navigation }) {
                 updatecontext={() => userContext.updateUserInformation(data)}
             >
             </SignupFooterNav>
+            }
         </View>
     );
 }
