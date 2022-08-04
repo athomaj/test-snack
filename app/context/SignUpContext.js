@@ -7,7 +7,8 @@ const SignUpContext = React.createContext();
 const initialState = {
     email: "",
     password: "",
-    numberPhone: "",
+    countryCode: "",
+    phone: "",
     username: "",
     district: "",
 }
@@ -17,19 +18,21 @@ const SignUpProvider = ({ children }) => {
 
     const userContext = useUserContext()
 
-    const updateSignUp1 = async (emailInput, passInput, numberInput) => {
+    const updateSignUp1 = async (emailInput, passwordInput, countryCodeInput, phoneInput) => {
+        console.log(emailInput, passwordInput, countryCodeInput, phoneInput)
         setsignUpUser({
             ...signUpUser,
             email: emailInput,
-            password: passInput,
-            numberPhone: numberInput
+            password: passwordInput,
+            countryCode: countryCodeInput,
+            phone: phoneInput
         })
     };
 
-    const updateSignUp2 = async (firstNameInput, lastNameInput) => {
+    const updateSignUp2 = async (usernameInput) => {
         setsignUpUser({
             ...signUpUser,
-            username: firstNameInput
+            username: usernameInput
         })
     };
 

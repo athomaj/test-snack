@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, TouchableOpacity, Text, Image, Dimensions, FlatList, ScrollView } from 'react-native';
+import { SafeAreaView, View, TouchableOpacity, Text, Image, Dimensions, FlatList, ScrollView, ActivityIndicator } from 'react-native';
 
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
 import TextLinkComponent from '../../Components/Utils/TextLinkComponent';
@@ -21,13 +21,24 @@ export default function SignUpStep3Container({ navigation }) {
     const [dietsSelected, setDietsSelected] = React.useState([])
     const [diets, setDiets] = React.useState([])
 
+    const [error, setError] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
+
     React.useEffect(() => {
-        getAlldiets()
+        getDiets()
     }, [])
 
-    async function getAlldiets() {
-        const response = await dietApi.getAllDiets();
-        response.data ? setDiets(response.data) : null
+    async function getDiets() {
+        setLoading(true)
+        setError(false)
+        const resultOfData = await dietApi.getAllDiets();
+
+        if (resultOfData?.data) {
+            setDiets(resultOfData.data)
+        } else {
+            setError(true)
+        }
+        setLoading(false)
     }
 
     function dietTaped(item) {
@@ -71,17 +82,31 @@ export default function SignUpStep3Container({ navigation }) {
                     <ScrollView style={{ width: '100%', height: '100%' }} scrollEnabled={false}>
                         <Text style={{ ...sharedStyles.h2, width: '100%' }}>Régime alimentaire</Text>
                         <Text style={{ ...sharedStyles.shortText, height: 55 }}>Phrase de description</Text>
-                        <FlatList
-                            data={diets}
-                            renderItem={renderItem}
-                            style={{ width: '100%' }}
-                            horizontal={false}
-                            numColumns={3}
-                            keyExtractor={item => item.id}
-                            columnWrapperStyle={{ justifyContent: 'space-between' }}
-                        />
-                        <Text style={{ ...sharedStyles.label, paddingTop: 15 }}>Votre régime alimentaire n’est dans la liste ?</Text>
-                        <Text style={{ ...sharedStyles.label, marginBottom: 25 }}>N’hésitez pas à nous <TextLinkComponent navigateTo={() => console.log("navigate to")} text='contacter'></TextLinkComponent>. pour qu’on l’ajoute </Text>
+                        {error ?
+                            <View style={{ alignItems: 'center' }}>
+                                <Text style={{ color: 'red' }}>Une Erreur est survenue, veuillez réessayer</Text>
+                                <TouchableOpacity onPress={getDiets} style={{ height: 40, width: 40, padding: 5 }}>
+                                    <Image style={{ height: '100%', width: '100%', resizeMode: 'contain' }} source={require('../../assets/refresh.png')}></Image>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <>
+                                <FlatList
+                                    data={diets}
+                                    renderItem={renderItem}
+                                    style={{ width: '100%' }}
+                                    horizontal={false}
+                                    numColumns={3}
+                                    keyExtractor={item => item.id}
+                                    columnWrapperStyle={{ justifyContent: 'space-between' }}
+                                />
+                                <Text style={{ ...sharedStyles.label, paddingTop: 15 }}>Votre régime alimentaire n’est dans la liste ?</Text>
+                                <Text style={{ ...sharedStyles.label, marginBottom: 25 }}>N’hésitez pas à nous <TextLinkComponent navigateTo={() => console.log("navigate to")} text='contacter'></TextLinkComponent>. pour qu’on l’ajoute </Text>
+                            </>
+                        }
+                        {loading &&
+                            <ActivityIndicator animating={loading} hidesWhenStopped={true} color={'black'}></ActivityIndicator>
+                        }
                     </ScrollView>
                 </View>
             </SafeAreaView>
@@ -89,7 +114,7 @@ export default function SignUpStep3Container({ navigation }) {
             <SignupFooterNav
                 title={"Suivant"}
                 canGoBack={true}
-                disabledButton={!(dietsSelected.length > 0)}
+                disabledButton={false}
                 onPressBack={navigation.goBack}
                 onPressContinue={() => navigation.navigate('UpdateProfil4')}
                 updatecontext={() => userContext.updateUserInformation({ "diet": dietsSelected })}

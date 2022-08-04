@@ -2,28 +2,8 @@ import React from 'react';
 import { SafeAreaView, View, Image, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 
 import { colors } from '../utils/colors';
+import { onBoardingData } from '../utils/onBoardingData';
 import { sharedStyles } from '../utils/styles';
-
-const DATA = [
-    {
-        id: 0,
-        image: 'https://www.marcoguzzo.net/img/placeholder.png',
-        titre: 'Bienvenue fou de Food',
-        description: 'Ici vous allez pouvoir partager votre passion de la cuisine avec vos voisins'
-    },
-    {
-        id: 1,
-        image: 'https://www.marcoguzzo.net/img/placeholder.png',
-        titre: 'Plein d’activités',
-        description: 'Ateliers thématiques, dîners partagés, prêt de matériel...'
-    },
-    {
-        id: 2,
-        image: 'https://www.marcoguzzo.net/img/placeholder.png',
-        titre: 'Gens de confiance',
-        description: 'vous êtes entre passionés et en confiance.'
-    }
-]
 
 export default function OnboardingContainer({ navigation, route }) {
 
@@ -32,18 +12,18 @@ export default function OnboardingContainer({ navigation, route }) {
     const selectedDot =
         (scrollPosition) => {
             const screenWith = Dimensions.get('window').width
-            const numberOfItems = DATA.length
+            const numberOfItems = onBoardingData.length
             const indexofitem = Math.abs((-(numberOfItems - 1) + ((screenWith * numberOfItems) - (scrollPosition + screenWith)) / (screenWith)))
             setIndexItemView(indexofitem)
         }
 
-    const dotMap = DATA.map(
+    const dotMap = onBoardingData.map(
         (element) => {
             if (element.id === indexItemView) {
-                return <View id={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: '#005DB2E5' }}></View>
+                return <View key={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: '#005DB2E5' }}></View>
             }
             else {
-                return <View id={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: '#005DB266' }}></View>
+                return <View key={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: '#005DB266' }}></View>
             }
         }
     )
@@ -54,7 +34,7 @@ export default function OnboardingContainer({ navigation, route }) {
                 <View key={item.id} style={{ height: '100%', width: Dimensions.get('window').width, alignItems: 'center', justifyContent: 'center' }} >
                     <Image
                         style={{ width: 161, height: 129, marginBottom: 83 }}
-                        source={require('../assets/onboarding/pictureOnboarding.png')}
+                        source={item.image}
                     />
                     <Text style={{ width: '80%', fontSize: 24, fontWeight: "600", textAlign: 'center', color: '#0A4072' }}>{item.titre}</Text>
                     <Text style={{ width: '80%', textAlign: 'center', color: '#0A4072' }}>{item.description}</Text>
@@ -69,7 +49,7 @@ export default function OnboardingContainer({ navigation, route }) {
             <View style={{ height: '100%', width: '100%' }}>
                 <Text style={{ ...sharedStyles.titleH1, position: 'absolute', top: 60, width: '100%', textAlign: 'center' }}>FoodFood</Text>
                 <FlatList
-                    data={DATA}
+                    data={onBoardingData}
                     horizontal
                     renderItem={renderItem}
                     // contentContainerStyle={{width: '100%', height: '100%'}}

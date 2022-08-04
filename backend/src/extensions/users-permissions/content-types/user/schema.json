@@ -92,36 +92,13 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
     },
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
-    "numberPhone": {
+    "phone": {
       "type": "string"
     },
     "kitchen": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::kitchen.kitchen"
-    },
-    "presentation": {
-      "type": "text"
-    },
-    "pleasure": {
-      "type": "string"
-    },
-    "avatar": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
     },
     "district": {
       "type": "relation",
@@ -132,6 +109,15 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::diet.diet"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "guiltyPleasure": {
+      "type": "text"
     }
   }
 }

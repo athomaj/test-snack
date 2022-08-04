@@ -2,6 +2,7 @@ module.exports = ({ env }) => ({
   defaultConnection: 'default',
   connections: {
     default: {
+      // charset: env('DATABASE_CHARSET', 'utf8mb4'),
       connector: 'bookshelf',
       settings: {
         client: 'mysql',
@@ -11,8 +12,11 @@ module.exports = ({ env }) => ({
         username: env('DATABASE_USERNAME', 'strapi'),
         password: env('DATABASE_PASSWORD', 'strapi'),
         ssl: env.bool('DATABASE_SSL', false),
+        charset: "utf8mb4_unicode_ci"
       },
-      options: {}
+      options: {
+        charset: "utf8mb4_unicode_ci"
+      }
     },
   },
 });

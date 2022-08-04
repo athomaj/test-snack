@@ -21,22 +21,18 @@ export default function SignUpStep3Container({ navigation }) {
     const signUpContext = useSignUpContext();
     const userContext = useUserContext();
 
-    const [citySelected, setCitySelected] = React.useState(null)
-    const [city, setcity] = React.useState(null)
-    const [errorMessage, setErrorMessage] = React.useState(null)
+    const [citySelected, setCitySelected] = React.useState(null);
+    const [cities, setCities] = React.useState(null);
+    const [errorMessage, setErrorMessage] = React.useState(null);
 
     const [selectedAroddissement, setselectedAroddissement] = React.useState(null);
-    const [selectedcity, setSelectedcity] = React.useState([])
+    const [selectedDisctrictLabel, setSelectedDisctrictLabel] = React.useState("")
 
     const [showPicker, setShowPicker] = React.useState(false);
 
     React.useEffect(() => {
         getAllCities()
     }, [])
-
-    React.useEffect(() => {
-        setSelectedcity(SelectPicker)
-    }, [citySelected])
 
     React.useEffect(() => {
         if (userContext.authState.isConnected) {
@@ -48,25 +44,22 @@ export default function SignUpStep3Container({ navigation }) {
     }, [userContext.authState.isConnected, userContext.authState.errorMessage])
 
     const getAllCities = async () => {
-        const citiesAll = await citiesApi.getAllCities();
-        citiesAll?.data ? setcity(citiesAll.data) : null
+        const citiesAll = await citiesApi.getAllCities()
+        citiesAll?.data ? setCities(citiesAll.data) : null
     }
 
-    const SelectPicker = () => {
-        if (citySelected) {
-            const cityOnselected = [...citySelected.attributes.districts.data]
-            const arrondissements = cityOnselected.map(element => {
-                return <Picker.Item key={element.id} style={{ color: colors.primaryYellow }} label={element.attributes.name} value={element.id} />
-            })
-            return (
-                arrondissements
-            )
-        }
+    const generatePickerElements = () => {
+        const cityOnselected = [...citySelected.attributes.districts.data]
+        const arrondissements = cityOnselected.map(element => {
+            return <Picker.Item key={element.id} style={{ color: colors.primaryYellow }} label={element.attributes.name} value={element.id} />
+        })
+        return arrondissements
     };
 
     function cityTapped(item) {
+        setSelectedDisctrictLabel("")
         setCitySelected(item)
-        setselectedAroddissement(item.id)
+        setselectedAroddissement(item.attributes.districts.data[0].id)
     }
 
     function registerTapped() {
@@ -87,14 +80,13 @@ export default function SignUpStep3Container({ navigation }) {
         [citySelected]
     );
 
-    //SignUpStep1
     return (
         <SafeAreaView style={{ height: '100%', width: '100%' }}>
             <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }} scrollEnabled={false}>
                 <Text style={{ ...sharedStyles.h2, width: '100%' }}>Où habites-tu ? </Text>
                 <Text style={{ ...sharedStyles.shortText, height: 55 }}>Participe avec nous à développer la vie du quartier de ta ville.</Text>
                 <FlatList
-                    data={city}
+                    data={cities}
                     renderItem={renderItem}
                     style={{ width: '100%' }}
                     horizontal={false}
@@ -105,16 +97,15 @@ export default function SignUpStep3Container({ navigation }) {
                 <Text style={{ ...sharedStyles.label, paddingTop: 15, marginBottom: 25 }}>FoodFood est en plein développement. Si tu ne trouves pas ta ville n’hésite pas à la
                     <TextLinkComponent
                         navigateTo={() => console.log("navigate to")}
-                        text='suggérer ici'>
+                        text=' suggérer ici'>
                     </TextLinkComponent>
                     .
                 </Text>
-
                 {citySelected && Platform.OS === 'ios' &&
                     <>
                         <Text style={{ ...sharedStyles.h3, marginBottom: 10 }}>Quel est ton quartier ?</Text>
                         <TouchableOpacity onPress={() => setShowPicker(true)} style={{ backgroundColor: '#E6EFF7', borderRadius: 4, height: 40, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'flex-start', color: colors.primaryYellow }}>
-                            <Text style={{ fontSize: 15, fontWeight: '400', color: 'black' }}>{selectedAroddissement ? "" + selectedAroddissement : "Sélectionnez son quartier"}</Text>
+                            <Text style={{ fontSize: 15, fontWeight: '400', color: 'black' }}>{selectedDisctrictLabel.length > 0 ? selectedDisctrictLabel : "Sélectionnez son quartier"}</Text>
                         </TouchableOpacity>
                     </>
                 }
@@ -122,11 +113,9 @@ export default function SignUpStep3Container({ navigation }) {
                     <Picker style={{ ...sharedStyles.inputText }}
                         selectedValue={selectedAroddissement}
                         itemStyle={{ textAlign: 'center' }}
-                        onValueChange={(itemValue, itemIndex) => {
-                            setselectedAroddissement(itemValue);
-                        }
-                        }>
-                        {selectedcity}
+                        onValueChange={(itemValue, itemIndex) => setselectedAroddissement(itemValue)}
+                    >
+                        {generatePickerElements()}
                     </Picker>
                 }
             </ScrollView>
@@ -136,6 +125,7 @@ export default function SignUpStep3Container({ navigation }) {
                 canGoBack={true}
                 errorMessage={errorMessage}
                 loading={userContext.authState.isLoading}
+                // disabledButton={false}
                 disabledButton={selectedAroddissement ? false : true}
                 onPressBack={navigation.goBack}
                 onPressContinue={() => console.log("continue")}
@@ -143,21 +133,23 @@ export default function SignUpStep3Container({ navigation }) {
             >
             </SignupFooterNav>
 
-            {showPicker &&
+            {citySelected && showPicker &&
                 <View style={{ zIndex: 1, position: 'absolute', bottom: 0, width: '100%' }}>
                     <View style={{ height: 40, width: '100%', alignItems: 'flex-end', justifyContent: 'center', backgroundColor: colors.greyImage }}>
                         <TouchableOpacity onPress={() => setShowPicker(false)} style={{ height: 40, width: 100, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: colors.thirdBlue, fontSize: 15, fontWeight: 'bold' }}>Valider</Text>
                         </TouchableOpacity>
                     </View>
-                    <Picker style={{ height: 250, width: '100%', backgroundColor: '#ffffff' }}
+                    <Picker
+                        style={{ height: 250, width: '100%', backgroundColor: '#ffffff' }}
                         selectedValue={selectedAroddissement}
                         itemStyle={{ textAlign: 'center' }}
                         onValueChange={(itemValue, itemIndex) => {
-                            setselectedAroddissement(itemValue);
-                        }
-                        }>
-                        {selectedcity}
+                            setSelectedDisctrictLabel(citySelected.attributes.districts.data[itemIndex].attributes.name)
+                            setselectedAroddissement(itemValue)
+                        }}
+                    >
+                        {generatePickerElements()}
                     </Picker>
                 </View>
             }

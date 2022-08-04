@@ -84,7 +84,7 @@ const UserProvider = ({ children }) => {
             ...authState,
             isLoading: true
         })
-        
+
         const response = await authApi.register(data)
 
         if (response.data.error) {
@@ -99,47 +99,45 @@ const UserProvider = ({ children }) => {
         getCurrentUser(false)
     };
 
-    const updatePicture = async (data) => {
-        if (data.picture) {
-            const formData = new FormData()
-            let uri = data.picture
-            const imageId = randomId(20)
+    const updatePicture = async (imageUri) => {
+        const formData = new FormData()
+        const imageId = randomId(20)
 
-            formData.append('files', {
-                name: `${imageId}.jpg`,
-                type: 'image/jpeg',
-                uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
-            });
+        formData.append('files', {
+            name: `${imageId}.jpg`,
+            type: 'image/jpeg',
+            uri: Platform.OS === 'ios' ? imageUri.replace('file://', '') : imageUri,
+        });
 
-            const uploadResponse = await uploadApi.uploadPicture(formData)
-            if (uploadResponse[0]?.url) {
-                //data.user.avatarUrl = 
-                const updateAvatar = {
-                    "avatar": uploadResponse[0]?.id
-                }
-                userApi.updateUser(updateAvatar, authState.user.id)
-                const NewStateStatus = {...authState}
-                NewStateStatus.user.avatarUrl = BASE_URL + uploadResponse[0].url
-                setAuthState(NewStateStatus)
+        const uploadResponse = await uploadApi.uploadPicture(formData)
 
+        if (uploadResponse[0]?.url) {
+            const pictureURL = BASE_URL + uploadResponse[0].url
+
+            const updateAvatar = {
+                "avatarUrl": pictureURL
             }
-            else console.log("BAAAD REQUEST ===================================>",uploadResponse)
+            userApi.updateUser(updateAvatar, authState.user.id)
+            const newStateStatus = { ...authState }
+            newStateStatus.user.avatarUrl = pictureURL
+            setAuthState(newStateStatus)
+
         }
+        else console.log("BAAAD REQUEST ===================================>", uploadResponse)
     }
 
     const updateUserInformation = async (userUpdated) => {
 
         for (const [key, value] of Object.entries(userUpdated)) {
-          const edintingState = {...authState}
+            const edintingState = { ...authState }
             const entries = Object.keys(authState.user).includes(key)
-            if(entries){
-        
+            if (entries) {
+
                 edintingState.user[key] = value
                 setAuthState(edintingState)
             }
-          }
-          
-        const data = JSON.stringify(userUpdated) 
+        }
+
         userApi.updateUser(userUpdated, authState.user.id)
     };
 

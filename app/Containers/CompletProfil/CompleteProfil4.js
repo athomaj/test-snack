@@ -38,10 +38,10 @@ export default function CompletProfil4({ navigation }) {
                             heightSize={170}
                             callBackText={setDescription}
                             maxChar={400}
-                            legend='test légende'
+                            legend='Description'
                             placeholder='Un bref descriptif de qui vous êtes...'
                             ismultiline={true}
-                            onSubmitEditing={() => pleasureTexteArea.current.focus()}
+                            // onSubmitEditing={() => pleasureTexteArea.current.focus()}
                             returnKeyType={"default"}
                         ></TextAreaComponent>
 
@@ -52,7 +52,7 @@ export default function CompletProfil4({ navigation }) {
                             legend='Mon plaisir coupacle'
                             placeholder='Le chocolat'
                             ref={pleasureTexteArea}
-                            onSubmitEditing={() => favoriteDishTexteArea.current.focus()}
+                            // onSubmitEditing={() => favoriteDishTexteArea.current.focus()}
                             returnKeyType={"next"}
                         ></TextAreaComponent>
 
@@ -73,12 +73,12 @@ export default function CompletProfil4({ navigation }) {
             <SignupFooterNav
                 title={"Suivant"}
                 canGoBack={true}
-                disabledButton={!(description.length > 1 && pleasure.length > 1 && favoriteDish.length > 1)}
+                disabledButton={false}
                 onPressBack={navigation.goBack}
                 onPressContinue={() => navigation.navigate('UpdateProfil5')}
                 updatecontext={() => userContext.updateUserInformation({
-                    "presentation": description,
-                    "pleasure": pleasure,
+                    "description": description,
+                    "guiltyPleasure": pleasure,
                     "favoriteDish": favoriteDish
                 })}
             ></SignupFooterNav>
