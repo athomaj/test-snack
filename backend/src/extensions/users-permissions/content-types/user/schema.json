@@ -92,6 +92,12 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
     },
+    "events": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "participant"
+    },
     "phone": {
       "type": "string"
     },
