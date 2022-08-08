@@ -14,10 +14,12 @@ const initialState = {
     error: false,
     errorMessage: "",
     isInitialized: false,
+    isLoginScreen: true,
     user: {
         email: "",
         username: "",
         id: "",
+        avatarUrl: "",
         plate: "",
         famillyGame: ""
     }
@@ -27,16 +29,18 @@ const UserProvider = ({ children }) => {
     const [authState, setAuthState] = React.useState(initialState)
 
     React.useEffect(() => {
-        getCurrentUser()
+        getCurrentUser(true)
     }, [])
 
-    const getCurrentUser = async () => {
+
+    const getCurrentUser = async (isLogin) => {
         setAuthState({
             ...authState,
             isLoading: true
         })
 
         const response = await userApi.getMe()
+
         if (!response) {
             setAuthState({
                 ...authState,
@@ -49,7 +53,8 @@ const UserProvider = ({ children }) => {
                 isLoading: false,
                 isInitialized: true,
                 isConnected: true,
-                user: response.data
+                user: response.data,
+                isLoginScreen: isLogin
             })
         }
 
@@ -65,20 +70,13 @@ const UserProvider = ({ children }) => {
         if (response.data.error) {
             setAuthState({
                 ...authState,
+                isLoading: false,
                 error: true,
                 errorMessage: response.data.error.message
             })
             return
         }
-        if (response.data.user) {
-            setAuthState({
-                ...authState,
-                isConnected: true,
-                isInitialized: true,
-                isLoading: false,
-                user: response.data.user
-            })
-        }
+        getCurrentUser(true)
     };
 
     const register = async (data) => {
@@ -87,52 +85,60 @@ const UserProvider = ({ children }) => {
             isLoading: true
         })
 
-        if (data.picture) {
-            const formData = new FormData()
-            let uri = data.picture
-            const imageId = randomId(20)
-
-            formData.append('files', {
-                name: `${imageId}.jpg`,
-                type: 'image/jpeg',
-                uri: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
-            });
-
-            const uploadResponse = await uploadApi.uploadPicture(formData)
-            if (uploadResponse[0]?.url) {
-                data.user.avatarUrl = BASE_URL + uploadResponse[0].url
-            }
-        }
-
-        const response = await authApi.register(data.user)
+        const response = await authApi.register(data)
 
         if (response.data.error) {
             setAuthState({
                 ...authState,
+                isLoading: false,
                 error: true,
                 errorMessage: response.data.error.message
             })
             return
         }
-        getCurrentUser()
-        // const user = await userApi.getMe()
-        // setAuthState({
-        //     ...authState,
-        //     isConnected: true,
-        //     isInitialized: true,
-        //     isLoading: false,
-        //     user: response.data.user
-        // })
-
+        getCurrentUser(false)
     };
 
+    const updatePicture = async (imageUri) => {
+        const formData = new FormData()
+        const imageId = randomId(20)
+
+        formData.append('files', {
+            name: `${imageId}.jpg`,
+            type: 'image/jpeg',
+            uri: Platform.OS === 'ios' ? imageUri.replace('file://', '') : imageUri,
+        });
+
+        const uploadResponse = await uploadApi.uploadPicture(formData)
+
+        if (uploadResponse[0]?.url) {
+            const pictureURL = BASE_URL + uploadResponse[0].url
+
+            const updateAvatar = {
+                "avatarUrl": pictureURL
+            }
+            userApi.updateUser(updateAvatar, authState.user.id)
+            const newStateStatus = { ...authState }
+            newStateStatus.user.avatarUrl = pictureURL
+            setAuthState(newStateStatus)
+
+        }
+        else console.log("BAAAD REQUEST ===================================>", uploadResponse)
+    }
 
     const updateUserInformation = async (userUpdated) => {
-        setAuthState({
-            ...authState,
-            isLoading: true
-        })
 
+        for (const [key, value] of Object.entries(userUpdated)) {
+            const edintingState = { ...authState }
+            const entries = Object.keys(authState.user).includes(key)
+            if (entries) {
+
+                edintingState.user[key] = value
+                setAuthState(edintingState)
+            }
+        }
+
+        userApi.updateUser(userUpdated, authState.user.id)
     };
 
     const disconnect = async () => {
@@ -159,6 +165,7 @@ const UserProvider = ({ children }) => {
                 updateUserInformation,
                 register,
                 disconnect,
+                updatePicture,
             }}
         >
             {children}
