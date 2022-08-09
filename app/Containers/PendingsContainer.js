@@ -48,10 +48,7 @@ export default function PendingsContainer({ navigation, id }) {
             <FlatList
                 ListHeaderComponent={
                     <View style={{backgroundColor: colors.secondaryColor, width: '100%', height: 100, alignItems: 'center', justifyContent: 'center'}}>
-                        <TouchableOpacity
-                        style={{ backgroundColor: 'red', padding: 8, marginTop: 60}}
-                        onPress={() => navigation.navigate('Profil',{ userId: 9})}
-                        ><Text>Test redirect</Text></TouchableOpacity>
+                        <Text style={{...sharedStyles.shortText}}>Vos demandes en attentes</Text>
                     </View>
                 }
                 style = {{width: '100%', height: '100%'}}

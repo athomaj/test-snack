@@ -34,7 +34,7 @@ export default function CompletProfil5({ navigation }) {
                 canGoBack={true}
                 disabledButton={image ? false : true}
                 onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.navigate('MainStack')}
+                onPressContinue={() => navigation.replace('MainStack')}
                 updatecontext={() => userContext.updateUserInformation({ "picture": image?.uri })}
             ></SignupFooterNav>
         </View>

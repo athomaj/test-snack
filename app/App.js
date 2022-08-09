@@ -38,6 +38,7 @@ import SignUpStep3Container from './Containers/signUp/SignUpStep3Container';
 import SignUpStep4Container from './Containers/signUp/SignUpStep4Container';
 import { SignUpProvider } from './context/SignUpContext';
 //Profil
+import UpdateProfil from './Containers/CompletProfil/UpdateProfil';
 import CompletProfil1 from './Containers/CompletProfil/CompleteProfil1';
 import CompletProfil2 from './Containers/CompletProfil/CompleteProfil2';
 import CompletProfil3 from './Containers/CompletProfil/CompleteProfil3';
@@ -69,6 +70,7 @@ const tabBarOptions = {
   tabBarLabelStyle: { fontWeight: 'normal', fontSize: 10 }
 }
 
+
 function AuthStackScreen() {
   return (
     <SignUpProvider>
@@ -97,6 +99,11 @@ function ProfilStackScreen() {
       <ProfilStack.Screen name="Account" component={AccountContainer} />
       <ProfilStack.Screen name="Pendings" component={PendingsContainer} />
       <ProfilStack.Screen name="Profil" component={ProfilContainer} />
+      <ProfilStack.Screen name="UpdateProfil" component={UpdateProfil} />
+      <ProfilStack.Screen name="UpdateProfil2" component={CompletProfil2} options={{ headerShown: false, gestureEnabled: false }} />
+      <ProfilStack.Screen name="UpdateProfil3" component={CompletProfil3} options={{ headerShown: false, gestureEnabled: false }} />
+      <ProfilStack.Screen name="UpdateProfil4" component={CompletProfil4} options={{ headerShown: false, gestureEnabled: false }} />
+      <ProfilStack.Screen name="SignUpStep3" component={ SignUpStep3Container } options={{ headerShown: false, gestureEnabled: false }} />
     </ProfilStack.Navigator>
   );
 }
@@ -108,7 +115,7 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Account" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }

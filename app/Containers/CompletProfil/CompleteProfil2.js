@@ -76,9 +76,13 @@ export default function CompletProfil2({ route, navigation }) {
                     />
                 </View>
             </SafeAreaView>
-            { route.params.position === 'goback' ?
+            { route.params?.position ?
                 <TouchableOpacity
-                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 10, zIndex: 1, alignSelf: 'center'}}
+                onPress={() =>{
+                    userContext.updateUserInformation(data);
+                    navigation.goBack();
+                }}
+                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center'}}
                 >
                 <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
                 </TouchableOpacity>

@@ -14,7 +14,7 @@ import { colors } from '../../utils/colors';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 3) - 21;
 
-export default function SignUpStep3Container({ navigation }) {
+export default function SignUpStep3Container({ route,navigation }) {
 
     const userContext = useUserContext();
 
@@ -22,6 +22,13 @@ export default function SignUpStep3Container({ navigation }) {
     const [diets, setDiets] = React.useState([])
 
     React.useEffect(() => {
+
+        if(userContext.authState.user.diet.length > 0){
+            const newArray = userContext.authState.user.diet.map(element => element.id)
+            console.log(newArray)
+            setDietsSelected(newArray)
+        }
+
         getAlldiets()
     }, [])
 
@@ -86,14 +93,26 @@ export default function SignUpStep3Container({ navigation }) {
                 </View>
             </SafeAreaView>
 
-            <SignupFooterNav
-                title={"Suivant"}
-                canGoBack={true}
-                disabledButton={!(dietsSelected.length > 0)}
-                onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.navigate('UpdateProfil4')}
-                updatecontext={() => userContext.updateUserInformation({ "diet": dietsSelected })}
-            ></SignupFooterNav>
+            { route.params?.position ?
+                <TouchableOpacity
+                onPress={() =>{
+                    userContext.updateUserInformation({ "diet": dietsSelected });
+                    navigation.goBack();
+                }}
+                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center'}}
+                >
+                <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
+                </TouchableOpacity>
+            :
+                <SignupFooterNav
+                    title={"Suivant"}
+                    canGoBack={true}
+                    disabledButton={!(dietsSelected.length > 0)}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={() => navigation.navigate('UpdateProfil4')}
+                    updatecontext={() => userContext.updateUserInformation({ "diet": dietsSelected })}
+                ></SignupFooterNav>
+            }
         </View>
     );
 }

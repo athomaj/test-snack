@@ -16,7 +16,7 @@ import { colors } from '../../utils/colors';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 2) - 21;
 
-export default function SignUpStep3Container({ navigation }) {
+export default function SignUpStep3Container({ route, navigation }) {
 
     const signUpContext = useSignUpContext();
     const userContext = useUserContext();
@@ -102,6 +102,7 @@ export default function SignUpStep3Container({ navigation }) {
                     keyExtractor={item => item.id}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                 />
+                { !route.params?.position  &&
                 <Text style={{ ...sharedStyles.label, paddingTop: 15, marginBottom: 25 }}>FoodFood est en plein développement. Si tu ne trouves pas ta ville n’hésite pas à la
                     <TextLinkComponent
                         navigateTo={() => console.log("navigate to")}
@@ -109,6 +110,7 @@ export default function SignUpStep3Container({ navigation }) {
                     </TextLinkComponent>
                     .
                 </Text>
+                }
 
                 {citySelected && Platform.OS === 'ios' &&
                     <>
@@ -130,7 +132,18 @@ export default function SignUpStep3Container({ navigation }) {
                     </Picker>
                 }
             </ScrollView>
-
+            
+            { route.params?.position ?
+                <TouchableOpacity
+                onPress={() =>{
+                    userContext.updateUserInformation({ district : selectedAroddissement});
+                    navigation.goBack();
+                }}
+                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center'}}
+                >
+                <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
+                </TouchableOpacity>
+            :
             <SignupFooterNav
                 title={"S'inscrire"}
                 canGoBack={true}
@@ -142,6 +155,8 @@ export default function SignUpStep3Container({ navigation }) {
                 updatecontext={registerTapped}
             >
             </SignupFooterNav>
+            }
+            
 
             {showPicker &&
                 <View style={{ zIndex: 1, position: 'absolute', bottom: 0, width: '100%' }}>

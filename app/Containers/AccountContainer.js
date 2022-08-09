@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
@@ -13,6 +13,7 @@ export default function AccountContainer({ navigation }) {
     const [userName, setUserName] = React.useState(null)
     const [numberPendings, setNumberPendings] = React.useState(null)
     const [image, setImage] = React.useState({url: "https://i.stack.imgur.com/F6zSD.png"})
+    
 
     function ImagePickerAcount({ image, setParamImage, imageUrl }) {
 
@@ -44,8 +45,8 @@ export default function AccountContainer({ navigation }) {
       }
 
     React.useEffect(()=>{
-        setAvatarUrl(BASE_URL+userContext.authState.user.avatar?.formats.thumbnail.url)
-        setUserName(`${userContext.authState.user.firstName} ${userContext.authState.user.lastName}`)
+        setAvatarUrl(userContext.authState.user.avatar?.formats.thumbnail?.url ? BASE_URL+userContext.authState.user.avatar?.formats.thumbnail.url : null)
+        setUserName(userContext.authState.user.username)
         setNumberPendings(userContext.authState.user.pendings.length > 0 ? userContext.authState.user.pendings.length : null)
     },[])
 
@@ -59,7 +60,9 @@ export default function AccountContainer({ navigation }) {
         <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
         <ScrollView style={{width: '100%', height: '100%'}}>
             <View style={{backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25}}>
+
                 <ImagePickerAcount image={image?.uri} imageUrl={avatarUrl} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerAcount>
+
                 <Text style={{...sharedStyles.h2, paddingTop: 13}}>{userName}</Text>
                 <TouchableOpacity
                 onPress={() => { navigation.navigate('Profil',{ userId: userContext.authState.user.id })}}
@@ -83,7 +86,7 @@ export default function AccountContainer({ navigation }) {
             <View style={{paddingHorizontal: 15, paddingVertical: 20,flexDirection: 'row', ...sharedStyles.bottomCaesura}}>
                 <Image source={require('../assets/icon/iconUser.png')} style={{width: 24, height: 24, resizeMode: 'contain', marginRight: 15}}></Image>
                 <TouchableOpacity
-                onPress={() => { navigation.navigate('UpdateProfil2',{ position: 'goback' })}}
+                onPress={() => { navigation.navigate('UpdateProfil',{ position: 'Account' })}}
                 ><Text style={{...sharedStyles.shortText}}>Modifier mon profil</Text></TouchableOpacity>
             </View>
 
@@ -105,40 +108,8 @@ export default function AccountContainer({ navigation }) {
             </View>
             
         </ScrollView>
+        
+
         </SafeAreaView>
     );
 }
-
-/**
- * ALL STYLE
- * <View style={{ flexDirection: 'row',}}>
-                    <Image source={require('../assets/icon/iconUser.png')} style={{width: 24, height: 24, resizeMode: 'contain', marginRight: 15}}></Image>
-                    <Text style={{...sharedStyles.shortText, paddingBottom: 15}}>Paramètres</Text>
-                </View>
-                <View style={{width: 290, alignSelf: 'flex-end'}}>
-                    <TouchableOpacity
-                    style={{...sharedStyles.bottomCaesura, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}
-                    ><Text style={{...sharedStyles.label}}>E-mail</Text>
-                    <Image style={{width: 6, height: 10, resizeMode: 'contain'}} source={require('../assets/icon/iconNext.png')}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                    style={{...sharedStyles.bottomCaesura, paddingVertical: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}
-                    ><Text style={{...sharedStyles.label}}>Numéro de téléphone</Text>
-                    <Image style={{width: 6, height: 10, resizeMode: 'contain'}} source={require('../assets/icon/iconNext.png')}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                    style={{...sharedStyles.bottomCaesura, paddingVertical: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}
-                    ><Text style={{...sharedStyles.label}}>Mot de passe</Text>
-                    <Image style={{width: 6, height: 10, resizeMode: 'contain'}} source={require('../assets/icon/iconNext.png')}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                    style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}
-                    ><Text style={{...sharedStyles.label}}>Notifications</Text>
-                    <Image style={{width: 6, height: 10, resizeMode: 'contain'}} source={require('../assets/icon/iconNext.png')}></Image>
-                    </TouchableOpacity>
-
-                </View>
- */
