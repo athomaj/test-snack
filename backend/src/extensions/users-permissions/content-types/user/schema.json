@@ -87,9 +87,6 @@
       "target": "api::post.post",
       "mappedBy": "user"
     },
-    "numberPhone": {
-      "type": "biginteger"
-    },
     "pendings": {
       "type": "relation",
       "relation": "oneToMany",
@@ -100,6 +97,33 @@
       "relation": "manyToMany",
       "target": "api::post.post",
       "inversedBy": "participant"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "kitchen": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::kitchen.kitchen"
+    },
+    "district": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::district.district"
+    },
+    "diet": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::diet.diet"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "guiltyPleasure": {
+      "type": "text"
     }
   }
 }

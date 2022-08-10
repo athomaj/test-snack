@@ -2,8 +2,10 @@ export const colors = {
     black: "#000",
     white: "#fff",
     red: "#FF0000",
-    primaryYellow: "#F9BC0A",
-    primaryYellowDisable: "#F9BC0A99",
+    primaryYellow: "#005DB2",
+    primaryYellowDisable: "#005DB299",
+    secondaryColor: '#E6EFF7',
+    darkColor: '#0A4072',
     lightPink: "#FB87EF",
     pink: "#FB10C7",
     darkGrey: "#5D5D5D",
@@ -13,6 +15,8 @@ export const colors = {
     primaryBlue: "#0A4072",
     secondaryBlue: "#E6EFF7",
     thirdBlue: "#005DB2",
+    fourthBlue: "#337DC2",
+    fifthBlue: "#98BEE1",
     whiteBlue: "#E6EFF7",
     backBlue: "#A8CBEB"
 }

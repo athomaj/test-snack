@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 # Installing dependencies
 COPY ./package*.json /usr/src/app
 # COPY . ./
-RUN yarn
+RUN yarn --network-timeout 100000
 #RUN yarn build
 
 # Copying source files
