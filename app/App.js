@@ -7,7 +7,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
-import MembersContainer from './Containers/MembersContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
 import OnboardingContainer from './Containers/OnboardingContainer';
@@ -27,6 +26,7 @@ import { UserProvider, useUserContext } from './context/UserContext';
 import { PublishProvider } from './context/PublishContext';
 
 import { colors } from './utils/colors';
+import MealContainer from './Containers/MealContainer';
 
 //SIGNUP
 import SignUpStep1Container from './Containers/signUp/SignUpStep1Container';
@@ -93,7 +93,7 @@ function MainTabStackScreen({ navigation }) {
   return (
     <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ChatContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Account" component={AccountContainer} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'contain', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />

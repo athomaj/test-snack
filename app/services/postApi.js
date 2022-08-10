@@ -23,6 +23,16 @@ async function getPosts() {
         });
 }
 
+async function getEvent(id) {
+    return await axios.get(`${API_URL}/posts?populate=*&filters[participant][id][$contains]=${id}`)
+    .then(response => {
+        return response.data.data
+    })
+    .catch(error => {
+        return error.response
+    })
+}
+
 async function getOne(id) {
     return await axios.get(`${API_URL}/posts/${id}?populate=*`)
         .then(response => {
@@ -37,5 +47,6 @@ async function getOne(id) {
 export default {
     publish,
     getOne,
-    getPosts
+    getPosts,
+    getEvent
 }
