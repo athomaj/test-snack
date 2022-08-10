@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TextInput, View, Text, StatusBar, Image } from 'react-native';
+import { SafeAreaView, TextInput, View, Text, Image } from 'react-native';
 import PhoneInput from "react-native-phone-number-input";
 
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
@@ -13,64 +13,46 @@ import { isIphoneX } from '../../utils/isIphoneX';
 import { sharedStyles } from '../../utils/styles';
 import { colors } from '../../utils/colors';
 
-//Importation dim'age de validation
 const validateEmailicon = require('../../assets/icon/validated_color.png');
 const forbidenEmail = require('../../assets/icon/forbiden_color.png');
 
 export default function SignUpStep1Container({ navigation }) {
 
     const signUpContext = useSignUpContext();
-    const [email, setEmail] = React.useState("jean-seb2b@live.fr")
-    const [numberPhone, setNumberPhone] = React.useState("646402186")
-    const [pass, setPass] = React.useState("123456")
-    const [isvalidEmail, setValideEmail] = React.useState(false)
-    const [isvalidPass, setValidePass] = React.useState(false)
-    const [buttonDisable, setDisabledButton] = React.useState(true)
 
+    const [email, setEmail] = React.useState("");
+    const [countryCode, setCountryCode] = React.useState("33");
+    const [phone, setPhone] = React.useState("");
+    const [password, setPass] = React.useState("");
+
+    const [isvalidEmail, setValideEmail] = React.useState(false);
+    const [isvalidPass, setValidePass] = React.useState(false);
     const [validPhoneNumber, setValidPhoneNumber] = React.useState(false);
-    const [value, setValue] = React.useState("646402186");
 
     const phoneInput = React.useRef(null);
     const emailInput = React.useRef(null);
     const passwordInput = React.useRef(null);
 
-    //En cliquant sur suivant, vous acceptez les termes de nos services, et notre politique de confidentialité. 
-
-    function valideInputEmail() {
-        if (validateEmail(email)) {
-            setValideEmail(true)
-        }
-        else setValideEmail(false)
+    function onChangeEmail(text) {
+        setEmail(text)
+        setValideEmail(validateEmail(text))
     }
 
-    function calideIputPass() {
-        if (pass.length > 5) {
-            setValidePass(true)
-        }
-        else setValidePass(false)
+    function onChangePassword(text) {
+        setPass(text)
+        setValidePass(text.length > 5)
     }
 
-    React.useEffect(() => {
-        valideInputEmail()
-    }, [email])
+    function onChangeCountry(country) {
+        if (country.callingCode.length > 0) {
+            setCountryCode(country.callingCode[0])
+        }
+    }
 
-    React.useEffect(() => {
-        calideIputPass()
-    }, [pass])
-
-
-    React.useEffect(() => {
-        validPhoneNumber && email && pass ? setDisabledButton(false) : setDisabledButton(true)
-    }, [validPhoneNumber, email, pass])
-
-    React.useEffect(() => {
-        const checkValid = phoneInput.current?.isValidNumber(value);
-        const collingCode = phoneInput.current?.getNumberAfterPossiblyEliminatingZero(value)
-
-        setValidPhoneNumber(checkValid ? checkValid : false);
-
-    }, [value])
-
+    function onChangePhone(text) {
+        setPhone(text)
+        setValidPhoneNumber(phoneInput.current?.isValidNumber(text))
+    }
 
     return (
         <HideKeyboard>
@@ -78,7 +60,7 @@ export default function SignUpStep1Container({ navigation }) {
                 <SafeAreaView style={{ height: '100%', width: '100%' }}>
                     <View style={{ width: '100%', height: '100%', alignItems: 'center', paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }}>
                         <Text style={{ ...sharedStyles.h2, width: '100%' }}>Créer un compte</Text>
-                        <Text style={{ ...sharedStyles.shortText, height: 55 }}>Quelques informations pour faire partie du club...</Text>
+                        <Text style={{ ...sharedStyles.shortText, width: '100%' }}>Quelques informations pour faire partie du club...</Text>
                         <View style={{ height: 44, width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
                             <TextInput
                                 autoComplete='off'
@@ -86,7 +68,8 @@ export default function SignUpStep1Container({ navigation }) {
                                 keyboardType='email-address'
                                 returnKeyType='next'
                                 ref={emailInput}
-                                value={email} onChangeText={(text) => setEmail(text)}
+                                value={email}
+                                onChangeText={onChangeEmail}
                                 placeholder='Entrer votre email'
                                 placeholderTextColor={colors.primaryYellow}
                                 style={{ ...sharedStyles.inputText }}
@@ -101,8 +84,8 @@ export default function SignUpStep1Container({ navigation }) {
                             <TextInput
                                 textContentType='password'
                                 secureTextEntry={true}
-                                value={pass}
-                                onChangeText={(text) => setPass(text)}
+                                value={password}
+                                onChangeText={onChangePassword}
                                 placeholder='Créer un mot de passe'
                                 placeholderTextColor={colors.primaryYellow}
                                 style={{ ...sharedStyles.inputText, marginVertical: 15, }}
@@ -110,47 +93,47 @@ export default function SignUpStep1Container({ navigation }) {
                                 ref={passwordInput}
                             >
                             </TextInput>
-                            {pass.length > 0 &&
+                            {password.length > 0 &&
                                 <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15 }} source={isvalidPass ? validateEmailicon : forbidenEmail}></Image>
                             }
                         </View>
-                        <>
-                            <StatusBar barStyle="light-content" />
-                            <View style={{ ...sharedStyles.inputText, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-
-                                <PhoneInput
-                                    textInputProps={{ placeholder: 'Numéro de téléphone', placeholderTextColor: colors.primaryYellow, onEndEditing: () => { validPhoneNumber ? setNumberPhone(numberPhone) : '' } }}
-                                    containerStyle={{ backgroundColor: '#E6EFF7' }}
-                                    textContainerStyle={{ backgroundColor: '#E6EFF7' }}
-                                    codeTextStyle={{ textAlignVertical: 'center', height: 20 }}
-                                    ref={phoneInput}
-                                    defaultValue={value}
-                                    defaultCode="FR"
-                                    layout="first"
-                                    onChangeText={(text) => {
-                                        setValue(text);
-                                        setNumberPhone(text);
-                                    }}
-                                />
-
-                                {value.length > 0 &&
-                                    <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15, top: 15 }} source={validPhoneNumber ? validateEmailicon : forbidenEmail}></Image>
-                                }
-                            </View>
-                        </>
-                        <Text style={{ ...sharedStyles.label, paddingTop: 15 }}>En cliquant sur suivant, vous acceptez <TextLinkComponent navigateTo={() => console.log("navigate to")} text='termes de nos services'></TextLinkComponent> , et notre <TextLinkComponent navigateTo={() => console.log("navigate to")} text='politique de confidentialité'></TextLinkComponent>.</Text>
-
+                        <View>
+                            <PhoneInput
+                                textInputProps={{
+                                    placeholder: 'Numéro de téléphone',
+                                    placeholderTextColor: colors.primaryYellow
+                                }}
+                                containerStyle={{ ...sharedStyles.inputText }}
+                                textContainerStyle={{ height: 50, backgroundColor: "transparent" }}
+                                codeTextStyle={{ textAlignVertical: 'center', height: 20 }}
+                                ref={phoneInput}
+                                value={phone}
+                                defaultCode="FR"
+                                layout="first"
+                                onChangeCountry={onChangeCountry}
+                                onChangeText={onChangePhone}
+                            />
+                            {phone.length > 0 &&
+                                <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15, top: 15 }} source={validPhoneNumber ? validateEmailicon : forbidenEmail}></Image>
+                            }
+                        </View>
+                        <Text style={{ ...sharedStyles.label, width: '100%', marginTop: 15 }}>En cliquant sur suivant, vous acceptez
+                            <TextLinkComponent navigateTo={() => console.log("navigate to")} text=' termes de nos services '></TextLinkComponent>
+                            , et notre
+                            <TextLinkComponent navigateTo={() => console.log("navigate to")} text=' politique de confidentialité'></TextLinkComponent>
+                            .
+                        </Text>
                     </View>
-
                 </SafeAreaView>
 
                 <SignupFooterNav
                     title={"Suivant"}
                     canGoBack={true}
-                    disabledButton={buttonDisable}
+                    // disabledButton={false}
+                    disabledButton={!(validPhoneNumber && isvalidEmail && password.length > 5)}
                     onPressBack={navigation.goBack}
                     onPressContinue={() => navigation.navigate('SignUpStep2')}
-                    updatecontext={() => signUpContext.updateSignUp1(email, pass, numberPhone)}
+                    updatecontext={() => signUpContext.updateSignUp1(email, password, countryCode, phone)}
                 >
                 </SignupFooterNav>
             </View>

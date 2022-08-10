@@ -44,10 +44,10 @@ export default function CompletProfil4({ route, navigation }) {
                             heightSize={170}
                             callBackText={setDescription}
                             maxChar={400}
-                            legend='test légende'
+                            legend='Description'
                             placeholder='Un bref descriptif de qui vous êtes...'
                             ismultiline={true}
-                            onSubmitEditing={() => pleasureTexteArea.current.focus()}
+                            // onSubmitEditing={() => pleasureTexteArea.current.focus()}
                             returnKeyType={"default"}
                         ></TextAreaComponent>
 
@@ -58,7 +58,7 @@ export default function CompletProfil4({ route, navigation }) {
                             legend='Mon plaisir coupacle'
                             placeholder='Le chocolat'
                             ref={pleasureTexteArea}
-                            onSubmitEditing={() => favoriteDishTexteArea.current.focus()}
+                            // onSubmitEditing={() => favoriteDishTexteArea.current.focus()}
                             returnKeyType={"next"}
                         ></TextAreaComponent>
 
@@ -102,7 +102,6 @@ export default function CompletProfil4({ route, navigation }) {
                         "favoriteDish": favoriteDish
                     })}
                 ></SignupFooterNav>
-
             }
         </View>
     );

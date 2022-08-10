@@ -9,11 +9,10 @@ import { useUserContext } from '../../context/UserContext';
 import { isIphoneX } from '../../utils/isIphoneX';
 import { sharedStyles } from '../../utils/styles';
 
-
 export default function CompletProfil5({ navigation }) {
     const userContext = useUserContext();
 
-    const [image, setImage] = React.useState('')
+    const [image, setImage] = React.useState(null)
 
     //SignUpStep1
     return (
@@ -32,10 +31,10 @@ export default function CompletProfil5({ navigation }) {
             <SignupFooterNav
                 title={"Suivant"}
                 canGoBack={true}
-                disabledButton={image ? false : true}
+                disabledButton={false}
                 onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.replace('MainStack')}
-                updatecontext={() => userContext.updateUserInformation({ "picture": image?.uri })}
+                onPressContinue={() => navigation.navigate('MainStack')}
+                updatecontext={image ? () => userContext.updatePicture(image?.uri) : null}
             ></SignupFooterNav>
         </View>
     );

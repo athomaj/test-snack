@@ -20,8 +20,13 @@ async function getUsers() {
 }
 
 async function getUsersContactPhone() {
-    return axios.get(`${API_URL}/users?fields[0]=username&fields[1]=numberPhone&fields[3]=avatarUrl&populate[pendings][fields][0]=id`)
-        .then(res => { return res.data }).catch(err => { return err })
+    return axios.get(`${API_URL}/users?fields[0]=username&fields[1]=phone&fields[3]=avatarUrl&populate[pendings][fields][0]=id`)
+        .then(res => {
+            return res.data
+        }).catch(err => {
+            console.log("ERROR GETTING USERS CONTACT ====", err)
+            return null
+        })
 }
 
 async function getPendingsOfSponsor(idSponsor) {

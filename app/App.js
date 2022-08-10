@@ -7,8 +7,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import AuthContainer from './Containers/AuthContainer';
 import HomeContainer from './Containers/HomeContainer';
-import MembersContainer from './Containers/MembersContainer';
-import ActivityContainer from './Containers/ActivityContainer';
 import AccountContainer from './Containers/AccountContainer';
 import SearchContactContainer from './Containers/SearchContactContainer';
 import OnboardingContainer from './Containers/OnboardingContainer';
@@ -20,16 +18,18 @@ import PostPublished from './Containers/publish/PostPublished';
 
 import SplashScreen from './Components/SplashScreen';
 import PublishParentComponent from './Components/PublishParentComponent';
+import ChatContainer from './Containers/ChatContainer';
+
 import { PostDetailComponent } from './Components/PostDetailComponent';
 
-//PROFIL
 import PendingsContainer from './Containers/PendingsContainer';
 import ProfilContainer from './Containers/ProfilContainer';
 
-import { UserProvider } from './context/UserContext';
+import { UserProvider, useUserContext } from './context/UserContext';
 import { PublishProvider } from './context/PublishContext';
 
 import { colors } from './utils/colors';
+import MealContainer from './Containers/MealContainer';
 
 //SIGNUP
 import SignUpStep1Container from './Containers/signUp/SignUpStep1Container';
@@ -78,10 +78,10 @@ function AuthStackScreen() {
         <LoginStack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="onboarding" component={OnboardingContainer} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="Login" component={AuthContainer} options={{ headerShown: false, gestureEnabled: false }} />
-        <LoginStack.Screen name="SignUpStep1" component={ SignUpStep1Container } options={{ headerShown: false, gestureEnabled: false }} />
-        <LoginStack.Screen name="SignUpStep2" component={ SignUpStep2Container } options={{ headerShown: false, gestureEnabled: false }} />
-        <LoginStack.Screen name="SignUpStep3" component={ SignUpStep3Container } options={{ headerShown: false, gestureEnabled: false }} />
-        <LoginStack.Screen name="SignUpStep4" component={ SignUpStep4Container } options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep1" component={SignUpStep1Container} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep2" component={SignUpStep2Container} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep3" component={SignUpStep3Container} options={{ headerShown: false, gestureEnabled: false }} />
+        <LoginStack.Screen name="SignUpStep4" component={SignUpStep4Container} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="SearchContact" component={SearchContactContainer} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="UpdateProfil1" component={CompletProfil1} options={{ headerShown: false, gestureEnabled: false }} />
         <LoginStack.Screen name="UpdateProfil2" component={CompletProfil2} options={{ headerShown: false, gestureEnabled: false }} />
@@ -109,13 +109,15 @@ function ProfilStackScreen() {
 }
 
 function MainTabStackScreen({ navigation }) {
+  const userContext = useUserContext()
+
   return (
     <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Members" component={MembersContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Activity" component={ActivityContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={props.focused ? userIconActive : userIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Activity" component={ChatContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Account" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'contain', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }
