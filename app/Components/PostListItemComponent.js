@@ -15,7 +15,8 @@ export function PostListItemComponent({ item, index, navigateTo }) {
                 </View>
                 <View style={styles.district}>
                     <Image style={styles.pin} source={require("../assets/icon/pin.png")} />
-                    <Text style={styles.districtText}>{item.attributes.district}</Text>
+                    {/* <Text style={styles.districtText}>{item.attributes.district}</Text> */}
+                    <Text style={styles.districtText}>13002</Text>
                 </View>
                 <View style={styles.bottom}>
                     <Text style={styles.title}>{item.attributes.title}</Text>

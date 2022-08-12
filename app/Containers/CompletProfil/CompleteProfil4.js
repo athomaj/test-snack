@@ -18,15 +18,15 @@ export default function CompletProfil4({ route, navigation }) {
     const [pleasure, setPleasure] = React.useState('')
     const [favoriteDish, setFavoriteDish] = React.useState('')
 
-    const descriptionTexteArea = React.useRef(null)
-    const pleasureTexteArea = React.useRef(null)
-    const favoriteDishTexteArea = React.useRef(null)
+    const descriptionTexteArea = React.useRef("")
+    const pleasureTexteArea = React.useRef("")
+    const favoriteDishTexteArea = React.useRef("")
 
-    React.useEffect(()=>{
-        setDescription(userContext.authState.user?.presentation ? userContext.authState.user?.presentation : null)
-        setPleasure(userContext.authState.user?.presentation ? userContext.authState.user?.pleasure : null)
-        setFavoriteDish(userContext.authState.user?.presentation ? userContext.authState.user?.favoriteDish : null)
-    },[])
+    React.useEffect(() => {
+        setDescription(userContext.authState.user?.description)
+        setPleasure(userContext.authState.user?.guiltyPleasure)
+        setFavoriteDish(userContext.authState.user?.favoriteDish)
+    }, [])
 
     return (
         <View style={{ width: '100%', height: '100%' }}>
@@ -75,21 +75,21 @@ export default function CompletProfil4({ route, navigation }) {
                     </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
-            { route.params?.position ?
+            {route.params?.position ?
                 <TouchableOpacity
-                onPress={() =>{
-                    userContext.updateUserInformation({
-                        "presentation": description,
-                        "pleasure": pleasure,
-                        "favoriteDish": favoriteDish
-                    });
-                    navigation.goBack();
-                }}
-                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center'}}
+                    onPress={() => {
+                        userContext.updateUserInformation({
+                            "description": description,
+                            "guiltyPleasure": pleasure,
+                            "favoriteDish": favoriteDish
+                        });
+                        navigation.goBack();
+                    }}
+                    style={{ ...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center' }}
                 >
-                <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
+                    <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
                 </TouchableOpacity>
-            :
+                :
                 <SignupFooterNav
                     title={"Suivant"}
                     canGoBack={true}
@@ -97,8 +97,8 @@ export default function CompletProfil4({ route, navigation }) {
                     onPressBack={navigation.goBack}
                     onPressContinue={() => navigation.navigate('UpdateProfil5')}
                     updatecontext={() => userContext.updateUserInformation({
-                        "presentation": description,
-                        "pleasure": pleasure,
+                        "description": description,
+                        "guiltyPleasure": pleasure,
                         "favoriteDish": favoriteDish
                     })}
                 ></SignupFooterNav>

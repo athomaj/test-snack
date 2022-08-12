@@ -47,7 +47,10 @@ export default function PendingsContainer({ navigation, id }) {
         <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
             <FlatList
                 ListHeaderComponent={
-                    <View style={{backgroundColor: colors.secondaryColor, width: '100%', height: 100, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{backgroundColor: colors.secondaryColor, width: '100%', height: 50, alignItems: 'center', justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={navigation.goBack} style={{ position: 'absolute', left: 10, height: 30, width: 40, justifyContent: 'center' }}>
+                        <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../assets/icon/return_icon.png')}></Image>
+                    </TouchableOpacity>
                         <Text style={{...sharedStyles.shortText}}>Vos demandes en attentes</Text>
                     </View>
                 }

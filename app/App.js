@@ -95,7 +95,7 @@ function AuthStackScreen() {
 
 function ProfilStackScreen() {
   return (
-    <ProfilStack.Navigator initialRouteName={"Account"} screenOptions={{ headerTransparent: true }}>
+    <ProfilStack.Navigator initialRouteName={"Account"} screenOptions={{ headerShown: false, headerTransparent: true }}>
       <ProfilStack.Screen name="Account" component={AccountContainer} />
       <ProfilStack.Screen name="Pendings" component={PendingsContainer} />
       <ProfilStack.Screen name="Profil" component={ProfilContainer} />
@@ -117,19 +117,10 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Activity" component={ChatContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Account" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'contain', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
+      <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'cover', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }
-
-// function HomeStackScreen({ navigation }) {
-//   return (
-//     <HomeStack.Navigator initialRouteName={"Home"} screenOptions={{ headerTransparent: true, headerShown: false }}>
-//       <HomeStack.Screen name="Home" component={HomeContainer} />
-//       <HomeStack.Screen name="PostDetail" component={PostDetailComponent} />
-//     </HomeStack.Navigator>
-//   )
-// }
 
 function PublishStackScreen({ navigation }) {
   return (

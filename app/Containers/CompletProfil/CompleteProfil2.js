@@ -17,13 +17,17 @@ export default function CompletProfil2({ route, navigation }) {
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
+        if (userContext.authState.user.kitchen.length > 0) {
+            const array = userContext.authState.user.kitchen.flatMap((item) => item.id)
+            setCookingTypeSelected(array)
+        }
         getCookingType()
     }, [])
 
     async function getCookingType() {
         setLoading(true)
         const resultOfData = await kitchenApi.getAllKitchen();
-        
+
         if (resultOfData?.data) {
             setCookingType(resultOfData.data)
         } else {
@@ -35,7 +39,7 @@ export default function CompletProfil2({ route, navigation }) {
     function cookingTaped(item) {
         const arrayToEdit = [...cookingTypeSelected]
         const index = arrayToEdit.indexOf(item.id)
-        
+
         if (index === -1) {
             arrayToEdit.push(item.id)
         } else {
@@ -61,10 +65,17 @@ export default function CompletProfil2({ route, navigation }) {
                 <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
                     <FlatList
                         ListHeaderComponentStyle={{ backgroundColor: 'white' }}
-                        ListHeaderComponent={<View>
-                            <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>Type de cuisine</Text>
-                            <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Quoi que vous aimiez, vous le trouverez ici. </Text>
-                        </View>}
+                        ListHeaderComponent={
+                            <View>
+                                {route.params?.position &&
+                                    <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40}}>
+                                        <Image style={{height: '60%', width: '80%', resizeMode: 'contain'}} source={require('../../assets/icon/return_icon.png')}></Image>
+                                    </TouchableOpacity>
+                                }
+                                <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>Type de cuisine</Text>
+                                <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Quoi que vous aimiez, vous le trouverez ici. </Text>
+                            </View>
+                        }
                         style={{ width: '100%', height: '100%' }}
                         contentContainerStyle={{ paddingBottom: 80 }}
                         data={cookingType}
@@ -84,26 +95,26 @@ export default function CompletProfil2({ route, navigation }) {
                     }
                 </View>
             </SafeAreaView>
-            { route.params?.position ?
+            {route.params?.position ?
                 <TouchableOpacity
-                onPress={() =>{
-                    userContext.updateUserInformation(data);
-                    navigation.goBack();
-                }}
-                style={{...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center'}}
+                    onPress={() => {
+                        userContext.updateUserInformation({ "kitchen": cookingTypeSelected });
+                        navigation.goBack();
+                    }}
+                    style={{ ...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center' }}
                 >
-                <Text style={{...sharedStyles.textUnderPrimaryButton}}>Modifier</Text>
+                    <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
                 </TouchableOpacity>
-            :
-            <SignupFooterNav
-                title={"Suivant"}
-                canGoBack={true}
-                disabledButton={false}
-                onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.navigate('UpdateProfil3')}
-                updatecontext={() => userContext.updateUserInformation({ "kitchen": cookingTypeSelected })}
-            >
-            </SignupFooterNav>
+                :
+                <SignupFooterNav
+                    title={"Suivant"}
+                    canGoBack={true}
+                    disabledButton={false}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={() => navigation.navigate('UpdateProfil3')}
+                    updatecontext={() => userContext.updateUserInformation({ "kitchen": cookingTypeSelected })}
+                >
+                </SignupFooterNav>
             }
         </View>
     );
