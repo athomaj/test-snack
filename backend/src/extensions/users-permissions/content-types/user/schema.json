@@ -96,7 +96,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::post.post",
-      "inversedBy": "participant"
+      "mappedBy": "participant"
     },
     "phone": {
       "type": "string"

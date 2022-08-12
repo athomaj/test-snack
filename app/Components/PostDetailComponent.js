@@ -13,19 +13,20 @@ export function PostDetailComponent({ navigation, route }) {
     const [bring, setBring] = React.useState([{ 'id': 1, 'name': 'Un dessert de votre choix' }, { 'id': 2, 'name': 'Une boisson non alcooliser' }, { 'id': 3, 'name': '300g de Beurre' }])
     const [info, setInfo] = React.useState([{ 'id': 1, 'name': 'Animaux de compagnie' }, { 'id': 2, 'name': 'Non fumeur' }, { 'id': 3, 'name': 'Place de parking sur place' }])
 
+    React.useEffect(() => {
+        fetchData(route.params.index)
+    }, [])
+
     async function fetchData(id) {
         const response = await postApi.getOne(id)
+        console.log("REES", response)
         setPost(response)
-        const doubleDier = [...response.attributes.diets.data, ...response.attributes.diets.data]
+        const doubleDier = [...response.attributes.diets.data]
         // doubleDier.concat(response.attributes.diets.data)
         console.log(response.attributes.user)
         setDiet(doubleDier)
         return response
     }
-
-    React.useEffect(() => {
-        fetchData(route.params.index)
-    }, [])
 
     const renderDiet = ({ item }) => (
         <View style={styles.viewDiet}>

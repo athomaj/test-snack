@@ -30,6 +30,7 @@ export default function HomeContainer({ navigation }) {
     async function getPosts() {
         const data = await postApi.getPosts()
         if (data) {
+            // console.log(data)
             setPosts(data)
             setFilterPosts(data)
         } else {
@@ -62,9 +63,9 @@ export default function HomeContainer({ navigation }) {
             if (filterData.dateValue) {
                 data = data.filter(item => moment(item.attributes.datetime).format('D/MM/YYYY') === moment(filterData.date).format('D/MM/YYYY'))
             }
-            if (filterData.district) {
-                data = data.filter(item => item.attributes.district === parseInt(filterData.district))
-            }
+            // if (filterData.district) {
+            //     data = data.filter(item => item.attributes.district === parseInt(filterData.district))
+            // }
             if (filterData.category) {
                 data = data.filter(item => item.attributes.category.data.attributes.name === filterData.category)
             }

@@ -16,7 +16,7 @@ import { colors } from '../../utils/colors';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 2) - 21;
 
-export default function SignUpStep3Container({ navigation }) {
+export default function SignUpStep3Container({ route, navigation }) {
 
     const signUpContext = useSignUpContext();
     const userContext = useUserContext();
@@ -35,6 +35,9 @@ export default function SignUpStep3Container({ navigation }) {
     }, [])
 
     React.useEffect(() => {
+        if (route.params?.position) {
+            return
+        }
         if (userContext.authState.isConnected) {
             navigation.replace('SignUpStep4')
         }
@@ -83,6 +86,11 @@ export default function SignUpStep3Container({ navigation }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%' }}>
             <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }} scrollEnabled={false}>
+                {route.params?.position &&
+                    <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
+                        <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
+                    </TouchableOpacity>
+                }
                 <Text style={{ ...sharedStyles.h2, width: '100%' }}>Où habites-tu ? </Text>
                 <Text style={{ ...sharedStyles.shortText, height: 55 }}>Participe avec nous à développer la vie du quartier de ta ville.</Text>
                 <FlatList
@@ -94,13 +102,16 @@ export default function SignUpStep3Container({ navigation }) {
                     keyExtractor={item => item.id}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                 />
-                <Text style={{ ...sharedStyles.label, paddingTop: 15, marginBottom: 25 }}>FoodFood est en plein développement. Si tu ne trouves pas ta ville n’hésite pas à la
-                    <TextLinkComponent
-                        navigateTo={() => console.log("navigate to")}
-                        text=' suggérer ici'>
-                    </TextLinkComponent>
-                    .
-                </Text>
+                {!route.params?.position &&
+                    <Text style={{ ...sharedStyles.label, paddingTop: 15, marginBottom: 25 }}>FoodFood est en plein développement. Si tu ne trouves pas ta ville n’hésite pas à la
+                        <TextLinkComponent
+                            navigateTo={() => console.log("navigate to")}
+                            text=' suggérer ici'>
+                        </TextLinkComponent>
+                        .
+                    </Text>
+                }
+
                 {citySelected && Platform.OS === 'ios' &&
                     <>
                         <Text style={{ ...sharedStyles.h3, marginBottom: 10 }}>Quel est ton quartier ?</Text>
@@ -120,18 +131,31 @@ export default function SignUpStep3Container({ navigation }) {
                 }
             </ScrollView>
 
-            <SignupFooterNav
-                title={"S'inscrire"}
-                canGoBack={true}
-                errorMessage={errorMessage}
-                loading={userContext.authState.isLoading}
-                // disabledButton={false}
-                disabledButton={selectedAroddissement ? false : true}
-                onPressBack={navigation.goBack}
-                onPressContinue={() => console.log("continue")}
-                updatecontext={registerTapped}
-            >
-            </SignupFooterNav>
+            {route.params?.position ?
+                <TouchableOpacity
+                    onPress={() => {
+                        userContext.updateUserInformation({ district: selectedAroddissement });
+                        navigation.goBack();
+                    }}
+                    style={{ ...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center' }}
+                >
+                    <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
+                </TouchableOpacity>
+                :
+                <SignupFooterNav
+                    title={"S'inscrire"}
+                    canGoBack={true}
+                    errorMessage={errorMessage}
+                    loading={userContext.authState.isLoading}
+                    // disabledButton={false}
+                    disabledButton={selectedAroddissement ? false : true}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={() => console.log("continue")}
+                    updatecontext={registerTapped}
+                >
+                </SignupFooterNav>
+            }
+
 
             {citySelected && showPicker &&
                 <View style={{ zIndex: 1, position: 'absolute', bottom: 0, width: '100%' }}>

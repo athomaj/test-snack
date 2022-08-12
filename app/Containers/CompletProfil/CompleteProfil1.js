@@ -15,7 +15,7 @@ export default function CompletProfil1({ navigation }) {
 
 
                 <View style={{ alignSelf: 'center', position: 'absolute', bottom: isIphoneX() ? 20 : 10, width: '90%', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('UpdateProfil2')} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.push('UpdateProfil2')} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
                         <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Compléter votre profil</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.replace('MainStack')}>

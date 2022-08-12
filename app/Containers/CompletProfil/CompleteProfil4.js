@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
@@ -10,7 +10,7 @@ import { useUserContext } from '../../context/UserContext';
 import { sharedStyles } from '../../utils/styles';
 import { isIphoneX } from '../../utils/isIphoneX';
 
-export default function CompletProfil4({ navigation }) {
+export default function CompletProfil4({ route, navigation }) {
 
     const userContext = useUserContext();
 
@@ -18,9 +18,15 @@ export default function CompletProfil4({ navigation }) {
     const [pleasure, setPleasure] = React.useState('')
     const [favoriteDish, setFavoriteDish] = React.useState('')
 
-    const descriptionTexteArea = React.useRef(null)
-    const pleasureTexteArea = React.useRef(null)
-    const favoriteDishTexteArea = React.useRef(null)
+    const descriptionTexteArea = React.useRef("")
+    const pleasureTexteArea = React.useRef("")
+    const favoriteDishTexteArea = React.useRef("")
+
+    React.useEffect(() => {
+        setDescription(userContext.authState.user?.description)
+        setPleasure(userContext.authState.user?.guiltyPleasure)
+        setFavoriteDish(userContext.authState.user?.favoriteDish)
+    }, [])
 
     return (
         <View style={{ width: '100%', height: '100%' }}>
@@ -69,19 +75,34 @@ export default function CompletProfil4({ navigation }) {
                     </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
-
-            <SignupFooterNav
-                title={"Suivant"}
-                canGoBack={true}
-                disabledButton={false}
-                onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.navigate('UpdateProfil5')}
-                updatecontext={() => userContext.updateUserInformation({
-                    "description": description,
-                    "guiltyPleasure": pleasure,
-                    "favoriteDish": favoriteDish
-                })}
-            ></SignupFooterNav>
+            {route.params?.position ?
+                <TouchableOpacity
+                    onPress={() => {
+                        userContext.updateUserInformation({
+                            "description": description,
+                            "guiltyPleasure": pleasure,
+                            "favoriteDish": favoriteDish
+                        });
+                        navigation.goBack();
+                    }}
+                    style={{ ...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center' }}
+                >
+                    <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
+                </TouchableOpacity>
+                :
+                <SignupFooterNav
+                    title={"Suivant"}
+                    canGoBack={true}
+                    disabledButton={!(description.length > 1 && pleasure.length > 1 && favoriteDish.length > 1)}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={() => navigation.navigate('UpdateProfil5')}
+                    updatecontext={() => userContext.updateUserInformation({
+                        "description": description,
+                        "guiltyPleasure": pleasure,
+                        "favoriteDish": favoriteDish
+                    })}
+                ></SignupFooterNav>
+            }
         </View>
     );
 }

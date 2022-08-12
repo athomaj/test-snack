@@ -14,7 +14,7 @@ import { colors } from '../../utils/colors';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 3) - 21;
 
-export default function SignUpStep3Container({ navigation }) {
+export default function SignUpStep3Container({ route, navigation }) {
 
     const userContext = useUserContext();
 
@@ -25,6 +25,10 @@ export default function SignUpStep3Container({ navigation }) {
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
+        if (userContext.authState.user.kitchen.length > 0) {
+            const array = userContext.authState.user.diet.flatMap((item) => item.id)
+            setDietsSelected(array)
+        }
         getDiets()
     }, [])
 
@@ -80,6 +84,11 @@ export default function SignUpStep3Container({ navigation }) {
             <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
                 <View style={{ width: '100%', height: '100%', paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
                     <ScrollView style={{ width: '100%', height: '100%' }} scrollEnabled={false}>
+                        {route.params?.position &&
+                            <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
+                                <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
+                            </TouchableOpacity>
+                        }
                         <Text style={{ ...sharedStyles.h2, width: '100%' }}>Régime alimentaire</Text>
                         <Text style={{ ...sharedStyles.shortText, height: 55 }}>Phrase de description</Text>
                         {error ?
@@ -111,14 +120,26 @@ export default function SignUpStep3Container({ navigation }) {
                 </View>
             </SafeAreaView>
 
-            <SignupFooterNav
-                title={"Suivant"}
-                canGoBack={true}
-                disabledButton={false}
-                onPressBack={navigation.goBack}
-                onPressContinue={() => navigation.navigate('UpdateProfil4')}
-                updatecontext={() => userContext.updateUserInformation({ "diet": dietsSelected })}
-            ></SignupFooterNav>
+            {route.params?.position ?
+                <TouchableOpacity
+                    onPress={() => {
+                        userContext.updateUserInformation({ "diet": dietsSelected });
+                        navigation.goBack();
+                    }}
+                    style={{ ...sharedStyles.primaryButtonWithColor, width: '80%', position: 'absolute', bottom: 20, zIndex: 1, alignSelf: 'center' }}
+                >
+                    <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
+                </TouchableOpacity>
+                :
+                <SignupFooterNav
+                    title={"Suivant"}
+                    canGoBack={true}
+                    disabledButton={!(dietsSelected.length > 0)}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={() => navigation.navigate('UpdateProfil4')}
+                    updatecontext={() => userContext.updateUserInformation({ "diet": dietsSelected })}
+                ></SignupFooterNav>
+            }
         </View>
     );
 }
