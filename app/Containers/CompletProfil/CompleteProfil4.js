@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, Image } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
@@ -33,6 +33,11 @@ export default function CompletProfil4({ route, navigation }) {
             <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
                 <KeyboardAwareScrollView keyboardDismissMode="on-drag" style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
 
+                {route.params?.position &&
+                            <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
+                                <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
+                            </TouchableOpacity>
+                        }
                     <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>A propos de vous</Text>
                     <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Quoi que vous aimiez, vous le trouverez ici.</Text>
 

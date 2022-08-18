@@ -49,6 +49,18 @@ export default function SignUpStep3Container({ route, navigation }) {
     const getAllCities = async () => {
         const citiesAll = await citiesApi.getAllCities()
         citiesAll?.data ? setCities(citiesAll.data) : null
+
+        if (route.params?.position) {
+            citiesAll?.data.forEach((cityItem) => {
+                cityItem.attributes.districts.data.forEach((districtItem) => {
+                    if (districtItem.id === userContext.authState.user.district.id) {
+                        setCitySelected(cityItem)
+                        setselectedAroddissement(districtItem.id)
+                        setSelectedDisctrictLabel(districtItem.attributes.name)
+                    }
+                })
+            })
+        }
     }
 
     const generatePickerElements = () => {
@@ -85,7 +97,7 @@ export default function SignUpStep3Container({ route, navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%' }}>
-            <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }} scrollEnabled={false}>
+            <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }}>
                 {route.params?.position &&
                     <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
                         <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
@@ -101,6 +113,7 @@ export default function SignUpStep3Container({ route, navigation }) {
                     numColumns={2}
                     keyExtractor={item => item.id}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
+                    scrollEnabled={false}
                 />
                 {!route.params?.position &&
                     <Text style={{ ...sharedStyles.label, paddingTop: 15, marginBottom: 25 }}>FoodFood est en plein développement. Si tu ne trouves pas ta ville n’hésite pas à la

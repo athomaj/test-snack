@@ -52,7 +52,7 @@ export default function PublishPost4({ navigation }) {
     );
 
     async function onPressContinue() {
-        await publishContext.updatePublish4(address, bonus)
+        await publishContext.finalPost(address, bonus)
 
         navigation.navigate('PostPublished')
     }

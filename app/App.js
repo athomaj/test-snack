@@ -18,7 +18,7 @@ import PostPublished from './Containers/publish/PostPublished';
 
 import SplashScreen from './Components/SplashScreen';
 import PublishParentComponent from './Components/PublishParentComponent';
-import ChatContainer from './Containers/ChatContainer';
+import ChatContainer from './Containers/Chat/ChatContainer';
 
 import { PostDetailComponent } from './Components/PostDetailComponent';
 
@@ -44,12 +44,14 @@ import CompletProfil2 from './Containers/CompletProfil/CompleteProfil2';
 import CompletProfil3 from './Containers/CompletProfil/CompleteProfil3';
 import CompletProfil4 from './Containers/CompletProfil/CompleteProfil4';
 import CompletProfil5 from './Containers/CompletProfil/CompleteProfil5';
+import ChatDetailsContainer from './Containers/Chat/ChatDetailsContainer';
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
 const MainTabSatck = createBottomTabNavigator();
 // const HomeStack = createNativeStackNavigator();
 const PublishStack = createNativeStackNavigator();
+const ActivityStack = createNativeStackNavigator();
 const ProfilStack = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIconActive.png')
@@ -116,7 +118,7 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: 'Publier', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Activity" component={ChatContainer} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="ActivityStack" component={ActivityStackScreen} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'cover', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
@@ -131,6 +133,15 @@ function PublishStackScreen({ navigation }) {
       <PublishStack.Screen name="PublishPost4" component={PublishPost4} />
       <PublishStack.Screen name="PostPublished" component={PostPublished} />
     </PublishStack.Navigator>
+  );
+}
+
+function ActivityStackScreen({ navigation }) {
+  return (
+    <ActivityStack.Navigator initialRouteName={"Chat"} screenOptions={{ headerTransparent: true, headerShown: false }}>
+      <ActivityStack.Screen name="Chat" component={ChatContainer} />
+      <ActivityStack.Screen name="ChatDetails" component={ChatDetailsContainer} />
+    </ActivityStack.Navigator>
   );
 }
 

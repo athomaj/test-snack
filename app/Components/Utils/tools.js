@@ -6,7 +6,7 @@ import { sharedStyles } from "../../utils/styles";
 
     const Tr = ()=>{
         return(
-        <View style={{...sharedStyles.bottomCaesura, width: '100%', marginVertical: 8}}></View>
+        <View style={{...sharedStyles.bottomCaesura, width: '100%'}}></View>
         )
     }
 

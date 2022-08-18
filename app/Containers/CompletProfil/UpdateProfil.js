@@ -1,10 +1,11 @@
 import React from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Modal, TextInput, StatusBar } from 'react-native';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Modal, TextInput, StatusBar, StyleSheet } from 'react-native';
 import { sharedStyles } from '../../utils/styles';
 import { useUserContext } from '../../context/UserContext';
 import { colors } from '../../utils/colors';
 import validateEmail from '../../utils/sharedFunctions';
 import PhoneInput from 'react-native-phone-number-input';
+import { isIphoneX } from '../../utils/isIphoneX';
 
 export default function UpdateProfil({ navigation }) {
     const validateEmailicon = require('../../assets/icon/validated_color.png');
@@ -19,7 +20,7 @@ export default function UpdateProfil({ navigation }) {
         resolve: false,
     });
 
-    const [isvalidEmail, setValideEmail] = React.useState(false)
+    const [isvalidEmail, setValideEmail] = React.useState(true)
     const phoneInput = React.useRef(null);
 
     function valideInputEmail(text) {
@@ -37,21 +38,21 @@ export default function UpdateProfil({ navigation }) {
                     <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
                 </TouchableOpacity>
 
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={updateProfilStyles.blockContainer}>
                     <Image source={require('../../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('UpdateProfil4', { position: 'UpdateProfil' }) }}
                     ><Text style={{ ...sharedStyles.shortText }}>Compléter mon profil</Text></TouchableOpacity>
                 </View>
 
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={updateProfilStyles.blockContainer}>
                     <Image source={require('../../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('UpdateProfil2', { position: 'UpdateProfil' }) }}
                     ><Text style={{ ...sharedStyles.shortText }}>Mes cuisines phares</Text></TouchableOpacity>
                 </View>
 
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={updateProfilStyles.blockContainer}>
                     <Image source={require('../../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('UpdateProfil3', { position: 'UpdateProfil' }) }}
@@ -61,9 +62,9 @@ export default function UpdateProfil({ navigation }) {
 
                 <View style={{ ...sharedStyles.bottomCaesura }}>
 
-                    <View style={{ flexDirection: 'row', paddingTop: 15, paddingLeft: 15 }}>
+                    <View style={{ flexDirection: 'row', paddingVertical: 15, paddingLeft: 15, alignItems: 'center' }}>
                         <Image source={require('../../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
-                        <Text style={{ ...sharedStyles.shortText, paddingBottom: 15 }}>Mon compte</Text>
+                        <Text style={{ ...sharedStyles.shortText }}>Mon compte</Text>
                     </View>
 
                     <View style={{ width: 320, alignSelf: 'flex-end' }}>
@@ -82,7 +83,7 @@ export default function UpdateProfil({ navigation }) {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => { setModalCase({ name: 'numéro de téléphone', attribute: 'numberPhone', resolve: false, value: userContext.authState.user.numberPhone }), setModalVisible(true) }}
+                            onPress={() => { setModalCase({ name: 'numéro de téléphone', attribute: 'numberPhone', resolve: false, value: userContext.authState.user.phone }), setModalVisible(true) }}
                             style={{ ...sharedStyles.bottomCaesura, paddingVertical: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}
                         ><Text style={{ ...sharedStyles.label }}>Numero de téléphone</Text>
                             <Image style={{ width: 6, height: 10, resizeMode: 'contain', marginRight: 15 }} source={require('../../assets/icon/iconNext.png')}></Image>
@@ -103,10 +104,10 @@ export default function UpdateProfil({ navigation }) {
                 transparent={true}
                 visible={modalVisible}
             >
-                <View style={{ flex: 1, zIndex: 3, width: '100%', height: '100%', backgroundColor: 'white', padding: 15, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ zIndex: 3, width: '100%', height: '100%', backgroundColor: 'white', paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity
                         onPress={() => setModalVisible(false)}
-                        style={{ padding: 15, position: 'absolute', top: 30, left: 5, flexDirection: 'row' }}>
+                        style={{  position: 'absolute', top: isIphoneX() ? 60 :  30, left: 20, flexDirection: 'row' }}>
                         <Image source={require('../../assets/icon/return_icon.png')} style={{ width: 20, height: 20, resizeMode: 'contain' }} />
                         <Text style={{ ...sharedStyles.shortText, marginLeft: 10 }}>Revenir aux paramètre</Text>
                     </TouchableOpacity>
@@ -167,12 +168,12 @@ export default function UpdateProfil({ navigation }) {
                         modalCase.attribute === 'numberPhone' && modalCase.resolve === false &&
                         <>
                             <StatusBar barStyle="light-content" />
-                            <View style={{ ...sharedStyles.inputText, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                            <View style={{ ...sharedStyles.inputText, justifyContent: 'center', alignItems: 'flex-start' }}>
 
                                 <PhoneInput
                                     textInputProps={{ placeholder: 'numéro de téléphone', placeholderTextColor: colors.primaryYellow, returnKeyType: "done" }}
-                                    containerStyle={{ backgroundColor: '#E6EFF7' }}
-                                    textContainerStyle={{ backgroundColor: '#E6EFF7' }}
+                                    containerStyle={{ backgroundColor: '#00000000' }}
+                                    textContainerStyle={{ backgroundColor: '#00000000' }}
                                     codeTextStyle={{ textAlignVertical: 'center', height: 20 }}
                                     ref={phoneInput}
                                     defaultValue={modalCase.value}
@@ -185,8 +186,8 @@ export default function UpdateProfil({ navigation }) {
                                     }}
                                 />
 
-                                {typeof modalCase.value === 'string' && modalCase.value.length > 0 &&
-                                    <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15, top: 15 }} source={phoneInput.current?.isValidNumber(modalCase.value) ? validateEmailicon : forbidenEmail}></Image>
+                                {(modalCase.value + "").length > 0 &&
+                                    <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15, top: 15 }} source={phoneInput.current?.isValidNumber(modalCase.value + "") ? validateEmailicon : forbidenEmail}></Image>
                                 }
                             </View>
                         </>
@@ -194,7 +195,7 @@ export default function UpdateProfil({ navigation }) {
 
                     <TouchableOpacity
                         onPress={() => { userContext.updateUserInformation({ [modalCase.attribute]: modalCase.value }), setModalCase({ ...modalCase, resolve: true }) }}
-                        style={{ ...sharedStyles.primaryButtonWithColor, position: 'absolute', bottom: 20 }}>
+                        style={{ ...sharedStyles.primaryButtonWithColor, position: 'absolute', bottom: isIphoneX() ? 40 : 20 }}>
                         <Text style={{ ...sharedStyles.textUnderPrimaryButton }}>Modifier</Text>
                     </TouchableOpacity>
                 </View>
@@ -203,3 +204,14 @@ export default function UpdateProfil({ navigation }) {
     );
 }
 
+const updateProfilStyles = StyleSheet.create({  
+    blockContainer: {
+        paddingHorizontal: 15,
+        paddingVertical: 20,
+        flexDirection: 'row',
+        alignItems: 'center', 
+        borderBottomColor: colors.primaryYellow,
+        borderStyle: 'solid',
+        borderBottomWidth: 0.5
+    },
+})

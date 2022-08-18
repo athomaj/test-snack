@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Linking, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
@@ -57,8 +57,8 @@ export default function AccountContainer({ navigation }) {
     }, [userContext.authState.isConnected])
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
-            <ScrollView style={{ width: '100%', height: '100%' }}>
+        <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: colors.secondaryBlue }}>
+            <ScrollView style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
                 <View style={{ backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25 }}>
 
                     <ImagePickerAcount image={image?.uri} imageUrl={avatarUrl} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerAcount>
@@ -68,39 +68,41 @@ export default function AccountContainer({ navigation }) {
                         onPress={() => { navigation.navigate('Profil', { userId: userContext.authState.user.id }) }}
                     ><Text style={{ ...sharedStyles.shortText, textDecorationStyle: "solid", textDecorationLine: "underline", textDecorationColor: colors.primaryYellow }}>Afficher le profil</Text></TouchableOpacity>
                 </View>
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Pendings')}
                     ><Text style={{ ...sharedStyles.shortText }}>Demande de parainnage</Text></TouchableOpacity>
                     {numberPendings &&
-                        <Text style={{ position: 'absolute', top: 8, right: 8, backgroundColor: colors.primaryYellow, width: 20, height: 20, borderRadius: 10, color: 'white', textAlignVertical: 'center', textAlign: 'center' }}>{numberPendings}</Text>
+                        <View style={{ position: 'absolute', right: 8, backgroundColor: colors.primaryYellow, width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white' }}>{numberPendings}</Text>
+                        </View>
                     }
                 </View>
 
-                <TouchableOpacity style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <TouchableOpacity style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <Text style={{ ...sharedStyles.shortText }}>Mon Matèriel</Text>
                 </TouchableOpacity>
 
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('UpdateProfil', { position: 'Account' }) }}
                     ><Text style={{ ...sharedStyles.shortText }}>Modifier mon profil</Text></TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={Linking.openSettings} style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', alignItems: 'center', ...sharedStyles.bottomCaesura }}>
+                <TouchableOpacity onPress={Linking.openSettings} style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <Text style={{ ...sharedStyles.shortText }}>Paramètres</Text>
                 </TouchableOpacity>
 
-                <View style={{ paddingHorizontal: 15, paddingVertical: 20, flexDirection: 'row', ...sharedStyles.bottomCaesura }}>
+                <View style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
                     <TouchableOpacity><Text style={{ ...sharedStyles.shortText }}>Noter l’application</Text></TouchableOpacity>
                 </View>
 
-                <View style={{ height: 64, width: '100%', flexDirection: 'row', paddingHorizontal: 15, justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={accountStyles.endBlock}>
                     <TouchableOpacity onPress={userContext.disconnect}>
                         <Text style={{ ...sharedStyles.shortText }}>Me déconnecter</Text>
                     </TouchableOpacity>
@@ -113,3 +115,18 @@ export default function AccountContainer({ navigation }) {
         </SafeAreaView >
     );
 }
+
+const accountStyles = StyleSheet.create({
+    blockContainer: {
+        paddingHorizontal: 15,
+        paddingVertical: 20,
+        flexDirection: 'row',
+        alignItems: 'center', 
+        borderBottomColor: colors.primaryYellow,
+        borderStyle: 'solid',
+        borderBottomWidth: 0.5
+    },
+    endBlock: {
+        height: 64, width: '100%', flexDirection: 'row', paddingHorizontal: 15, justifyContent: 'space-between', alignItems: 'center'
+    }
+})

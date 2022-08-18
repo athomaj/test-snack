@@ -19,12 +19,17 @@ export function PostDetailComponent({ navigation, route }) {
 
     async function fetchData(id) {
         const response = await postApi.getOne(id)
-        console.log("REES", response)
+        // console.log("REES ====", JSON.parse(response.attributes.moreInfo))
         setPost(response)
-        const doubleDier = [...response.attributes.diets.data]
-        // doubleDier.concat(response.attributes.diets.data)
-        console.log(response.attributes.user)
-        setDiet(doubleDier)
+        setDiet([...response.attributes.diets.data])
+        const infoParse = JSON.parse(response.attributes.moreInfo)
+        const array = []
+        infoParse.map(item => {
+            if (item.status === true) {
+                array.push({id: item.id, name: item.title })
+            }
+        })
+        setInfo(array)
         return response
     }
 
@@ -65,7 +70,8 @@ export function PostDetailComponent({ navigation, route }) {
                         <View style={styles.topUser}>
                             <View>
                                 <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
-                                <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text>
+                                <Text style={styles.partEvent}>Votre hôte</Text>
+                                {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
                             </View>
                             <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
                         </View>
@@ -90,7 +96,7 @@ export function PostDetailComponent({ navigation, route }) {
                     <View style={styles.place}>
                         <Text style={styles.multipleTitle}>Lieu de rendez-vous</Text>
                         <Text style={styles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
-                        <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.district}</Text>
+                        <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.postalCode.data?.attributes.name}</Text>
                         <View style={styles.flatlistUser}>
                             {info.map((item) => (
                                 <View key={item.id} style={styles.badge}>

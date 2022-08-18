@@ -10,6 +10,7 @@ import { useUserContext } from '../context/UserContext';
 import postApi from '../services/postApi';
 
 import { colors } from '../utils/colors';
+import { useFocusEffect } from '@react-navigation/native';
 
 const deviceHeight = Dimensions.get('screen').height
 
@@ -23,9 +24,11 @@ export default function HomeContainer({ navigation }) {
     const [filters, setFilters] = React.useState(null)
     const [error, setError] = React.useState(false)
 
-    React.useEffect(() => {
-        getPosts()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getPosts()
+        }, [])
+    );
 
     async function getPosts() {
         const data = await postApi.getPosts()
