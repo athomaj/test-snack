@@ -8,8 +8,8 @@ import { colors } from '../utils/colors';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
-    const [email, setEmail] = React.useState("")
-    const [pass, setPass] = React.useState("")
+    const [email, setEmail] = React.useState("test@gmail.fr")
+    const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
         if (email.length > 0 && pass.length > 0) {
