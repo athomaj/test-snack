@@ -204,14 +204,26 @@ export function PostDetailComponent({ navigation, route }) {
                             'Votre demande est en attente',
                             'Vous serrez informé de votre acceptation bientôt',
                             [{
-                        text: 'Annulé',
+                        text: 'Annuler',
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                         },
                             ]
                         );
                     }
-                    else participateToEvent()
+                    else{
+                        participateToEvent()
+                        Alert.alert(
+                            'Votre demande a été envoyer',
+                            `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
+                            [{
+                        text: 'Annuler',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                        },
+                            ]
+                        );
+                    }
                         }}
                 >
                     <Text style={styles.participate}>{
