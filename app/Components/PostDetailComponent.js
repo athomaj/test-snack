@@ -93,13 +93,59 @@ export function PostDetailComponent({ navigation, route }) {
         else return 'Participer';
     }
 
-    // Change DATA by data Post
-    const renderDiet = ({ item }) => (
-        <View style={styles.viewDiet}>
-            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
-            <Text style={styles.textDiet}>{item.attributes.name}</Text>
-        </View>
-    );
+
+    function buttonParticipateByState(){
+        if(participant === 'participant'){
+            Alert.alert(
+                'Se désengager', 
+                "Vous êtes sur le point de vous désengager à l'évênnment. Votre place ne seras plus idsponnible êtes vous sur de vouloir vous désengagez ?",
+                [{
+                text: 'Se désengager',
+                onPress: () => abandonEvent()
+                },
+                {
+                    text: 'Annulé',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                ],
+            )
+        }
+        else if(participant === 'pendings')
+        {
+                Alert.alert(
+                    'Votre demande est en attente',
+                    'Vous serrez informé de votre acceptation bientôt',
+                    [{
+                text: 'Annuler',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+                },
+                    ]
+                );
+        }
+        else{
+                participateToEvent()
+                Alert.alert(
+                    'Votre demande a été envoyer',
+                    `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
+                    [{
+                text: 'Annuler',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+                },
+                    ]
+                );
+        }
+    }
+
+        // Change DATA by data Post
+        const renderDiet = ({ item }) => (
+            <View style={styles.viewDiet}>
+                <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+                <Text style={styles.textDiet}>{item.attributes.name}</Text>
+            </View>
+        );
     
 
     return (
@@ -181,50 +227,8 @@ export function PostDetailComponent({ navigation, route }) {
                     <Text style={styles.seats}>{post?.attributes.seats + ' place disponible'}</Text>
                 </View>
                 <TouchableOpacity style={participant ? styles.buttonDelete : styles.button}
-                onPress={() => {
-                    if(participant === 'participant'){
-                        Alert.alert(
-                            'Se désengager', 
-                            "Vous êtes sur le point de vous désengager à l'évênnment. Votre place ne seras plus idsponnible êtes vous sur de vouloir vous désengagez ?",
-                            [{
-                            text: 'Se désengager',
-                            onPress: () => abandonEvent()
-                            },
-                            {
-                                text: 'Annulé',
-                                onPress: () => console.log('Cancel Pressed'),
-                                style: 'cancel',
-                            },
-                            ],
-                        )
-                    }
-                    else if(participant === 'pendings')
-                    {
-                        Alert.alert(
-                            'Votre demande est en attente',
-                            'Vous serrez informé de votre acceptation bientôt',
-                            [{
-                        text: 'Annuler',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                        },
-                            ]
-                        );
-                    }
-                    else{
-                        participateToEvent()
-                        Alert.alert(
-                            'Votre demande a été envoyer',
-                            `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
-                            [{
-                        text: 'Annuler',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                        },
-                            ]
-                        );
-                    }
-                        }}
+                onPress={() => {buttonParticipateByState
+}}
                 >
                     <Text style={styles.participate}>{
                         buttonStatus()}</Text>
