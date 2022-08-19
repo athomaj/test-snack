@@ -9,6 +9,11 @@ async function getUser(id) {
         .then(res => { return res.data }).catch(err => { return err })
 }
 
+async function getUserPopulate(id) {
+    return axios.get(`${API_URL}/users/${id}?populate=*`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
 async function getUsers() {
     return axios.get(`${API_URL}/users`)
         .then(res => { return res.data }).catch(err => { return err })
@@ -31,6 +36,11 @@ async function getPendingsOfSponsor(idSponsor) {
 
 async function getMePopulate(idUser) {
     return axios.get(`${API_URL}/users/${idUser}?fields=id&populate[pendings][fields][0]=username&populate[pendings][fields][1]=avatarUrl`)
+        .then(res => { return res.data }).catch(err => { return err })
+}
+
+async function getSponsorsOf(idUser) {
+    return axios.get(`${API_URL}/users/${idUser}?fields=id&populate[sponsors][fields][0]=id`)
         .then(res => { return res.data }).catch(err => { return err })
 }
 
@@ -69,5 +79,7 @@ export default {
     updateUser,
     getUsersContactPhone,
     getPendingsOfSponsor,
-    getMePopulate
+    getMePopulate,
+    getUserPopulate,
+    getSponsorsOf
 }

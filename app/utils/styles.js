@@ -36,6 +36,11 @@ export const sharedStyles = StyleSheet.create({
         fontSize: 18,
         color: '#005DB2',
     },
+    h4: {
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#005DB2',
+    },
     primaryButtonWithoutColor: {
         border: 1,
         height: 50,
@@ -96,7 +101,12 @@ export const sharedStyles = StyleSheet.create({
         color: colors.primaryYellow,
         fontWeight: '500',
 
-    }
+    },
+    bottomCaesura: {
+        borderBottomColor: colors.primaryYellow,
+        borderStyle: 'solid',
+        borderBottomWidth: 0.5
+    },
 })
 
 export const postCreateStyles = StyleSheet.create({

@@ -36,6 +36,7 @@ const PublishProvider = ({ children }) => {
             description: desc,
             category: category,
         })
+        console.log(userContext.authState.user )
     }
 
     const updatePublish2 = async (picture) => {
@@ -71,25 +72,25 @@ const PublishProvider = ({ children }) => {
         })
     }
 
-    const updatePublish4 = async (address, bonus) => {
-        const newBonus = []
+    // const updatePublish4 = async (address, bonus) => {
+    //     const newBonus = []
 
-        bonus.filter(item => {
-            if (item.status === true) {
-                newBonus.push(item.id)
-            }
-        })
+    //     bonus.filter(item => {
+    //         if (item.status === true) {
+    //             newBonus.push(item.id)
+    //         }
+    //     })
 
-        setPublishPost({
-            ...publishPost,
-            address: address,
-            bonus: bonus
-        })
+    //     setPublishPost({
+    //         ...publishPost,
+    //         address: address,
+    //         bonus: bonus
+    //     })
 
-        await finalPost()
-    }
+    //     await finalPost()
+    // }
 
-    const finalPost = async () => {
+    const finalPost = async (address, bonus) => {
         setLoading(true)
         const newPictures = []
 
@@ -106,8 +107,9 @@ const PublishProvider = ({ children }) => {
                 kitchens: publishPost.kitchens,
                 diets: publishPost.diets,
                 level: publishPost.level,
-                address: publishPost.address,
-                // bonus: publishPost.bonus
+                address: address,
+                moreInfo: JSON.stringify(bonus),
+                user: { id: userContext.authState.user.id }
             },
             picture: newPictures,
         }
@@ -147,7 +149,7 @@ const PublishProvider = ({ children }) => {
                 updatePublish1,
                 updatePublish2,
                 updatePublish3,
-                updatePublish4,
+                // updatePublish4,
                 finalPost,
             }}
         >

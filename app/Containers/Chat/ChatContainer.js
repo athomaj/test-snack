@@ -1,15 +1,17 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { colors } from "../utils/colors";
-import { fakeMessageData } from "../fakeData/fakeMessages";
-import { fakeNotificationData } from "../fakeData/fakeNotification";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Modal } from "react-native";
+import { colors } from "../../utils/colors";
+import { fakeMessageData } from "../../fakeData/fakeMessages";
+import { fakeNotificationData } from "../../fakeData/fakeNotification";
+import ChatDetailsContainer from "./ChatDetailsContainer";
 
 export default function ChatContainer({ navigation }) {
 
     const [notification, setNotification] = React.useState(false)
+    const [chatDetailsModal, setChatDetailsModal] = React.useState(false)
 
     const renderMessage = ({ item, index }) => (
-        <View style={styles.render}>
+        <TouchableOpacity onPress={openChatDetails} style={styles.render}>
             <Image style={styles.picture} source={{uri: item.picture}}/>
             <View style={styles.containerRight}>
                 <View style={{flexDirection: 'row'}}>
@@ -19,7 +21,7 @@ export default function ChatContainer({ navigation }) {
                 <Text style={styles.description}>{item.description}</Text>
                 <Text style={styles.typeDate}>{item.type + ' - ' + item.date}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 
     const renderNotification = ({ item, index }) => (
@@ -31,6 +33,10 @@ export default function ChatContainer({ navigation }) {
             </View>
         </View>
     )
+
+    function openChatDetails() {
+        setChatDetailsModal(!chatDetailsModal)
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -74,6 +80,10 @@ export default function ChatContainer({ navigation }) {
                 </View>
                 }
             </View>
+
+            <Modal animationType="fade" visible={chatDetailsModal} transparent={false}>
+                <ChatDetailsContainer></ChatDetailsContainer>
+            </Modal>
         </SafeAreaView>
     )
 }

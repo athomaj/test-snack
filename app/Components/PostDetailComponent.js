@@ -22,16 +22,6 @@ export function PostDetailComponent({ navigation, route }) {
     const [pictureList, setPictureList] = React.useState([])
     const [carousselPitcures, setCarousselPictures] = React.useState([])
 
-    async function fetchData(id) {
-        const response = await postApi.getOne(id)
-        setPost(response)
-        const doubleDier = [...response.attributes.diets.data]
-        // doubleDier.concat(response.attributes.diets.data)
-        console.log(response.attributes.user)
-        setDiet(doubleDier)
-        return response
-    }
-
     React.useEffect(() => {
         fetchData(route.params.index)
     }, [])
@@ -138,15 +128,29 @@ export function PostDetailComponent({ navigation, route }) {
                 );
         }
     }
-
-        // Change DATA by data Post
-        const renderDiet = ({ item }) => (
-            <View style={styles.viewDiet}>
-                <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
-                <Text style={styles.textDiet}>{item.attributes.name}</Text>
-            </View>
-        );
     
+    async function fetchData(id) {
+        const response = await postApi.getOne(id)
+        // console.log("REES ====", JSON.parse(response.attributes.moreInfo))
+        setPost(response)
+        setDiet([...response.attributes.diets.data])
+        const infoParse = JSON.parse(response.attributes.moreInfo)
+        const array = []
+        infoParse.map(item => {
+            if (item.status === true) {
+                array.push({id: item.id, name: item.title })
+            }
+        })
+        setInfo(array)
+        return response
+    }
+
+    const renderDiet = ({ item }) => (
+        <View style={styles.viewDiet}>
+            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+            <Text style={styles.textDiet}>{item.attributes.name}</Text>
+        </View>
+    );
 
     return (
         <View>
@@ -177,8 +181,9 @@ export function PostDetailComponent({ navigation, route }) {
                     <View style={styles.user}>
                         <View style={styles.topUser}>
                             <View>
-                                <Text style={styles.username}>{post?.attributes.user?.data.attributes.username}</Text>
-                                <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text>
+                                <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
+                                <Text style={styles.partEvent}>Votre hôte</Text>
+                                {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
                             </View>
                             <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
                         </View>

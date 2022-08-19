@@ -10,6 +10,7 @@ import { useUserContext } from '../context/UserContext';
 import postApi from '../services/postApi';
 
 import { colors } from '../utils/colors';
+import { useFocusEffect } from '@react-navigation/native';
 
 const deviceHeight = Dimensions.get('screen').height
 
@@ -23,13 +24,16 @@ export default function HomeContainer({ navigation }) {
     const [filters, setFilters] = React.useState(null)
     const [error, setError] = React.useState(false)
 
-    React.useEffect(() => {
-        getPosts()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getPosts()
+        }, [])
+    );
 
     async function getPosts() {
         const data = await postApi.getPosts()
         if (data) {
+            // console.log(data)
             setPosts(data)
             setFilterPosts(data)
         } else {
@@ -62,9 +66,9 @@ export default function HomeContainer({ navigation }) {
             if (filterData.dateValue) {
                 data = data.filter(item => moment(item.attributes.datetime).format('D/MM/YYYY') === moment(filterData.date).format('D/MM/YYYY'))
             }
-            if (filterData.district) {
-                data = data.filter(item => item.attributes.district === parseInt(filterData.district))
-            }
+            // if (filterData.district) {
+            //     data = data.filter(item => item.attributes.district === parseInt(filterData.district))
+            // }
             if (filterData.category) {
                 data = data.filter(item => item.attributes.category.data.attributes.name === filterData.category)
             }

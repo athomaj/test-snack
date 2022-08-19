@@ -18,14 +18,10 @@
     "address": {
       "type": "string"
     },
-    "district": {
-      "type": "integer"
-    },
     "user": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "posts"
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     },
     "title": {
       "type": "string"
@@ -80,6 +76,19 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "inversedBy": "eventPendings"
+    },
+    "district": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::district.district"
+    },
+    "postalCode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::district.district"
+    },
+    "moreInfo": {
+      "type": "json"
     }
   }
 }
