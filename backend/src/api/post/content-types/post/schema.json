@@ -71,6 +71,12 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "events"
     },
+    "userPendings": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "eventPendings"
+    },
     "district": {
       "type": "relation",
       "relation": "oneToOne",

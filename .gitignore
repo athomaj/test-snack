@@ -103,5 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
+# confing
+.app/config/config.js
+
 /data
 backend/package-lock.json
