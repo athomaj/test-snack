@@ -1,0 +1,60 @@
+name: Push Backend
+
+on:   
+  push:
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - back-*
+env:
+  IMAGE_NAME: foodfood-backend
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build ./backend --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        # This is where you will update the PAT to PAT_TOKEN
+        run: echo "${{ secrets.PAT_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "deployment" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          echo "image_name=$IMAGE_ID:$VERSION" >> $GITHUB_ENV
+
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: set image deployment/foodfood-backend foodfood-backend="${{ env.image_name }}"
+      - name: Notify 
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://chat.googleapis.com/v1/spaces/AAAA9dX7jxs/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=141zq0KMOqJMUy0IscCUsJD1vSJB2IY3TEb8B4xPL2I%3D'
+          method: 'POST'
+          data: '{
+            "text": "New Backend Version available for foodfood"
+          }' 

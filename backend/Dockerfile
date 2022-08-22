@@ -7,13 +7,13 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Installing dependencies
-COPY ./package*.json /usr/src/app
+COPY ./package*.json /usr/src/app/
 # COPY . ./
-RUN yarn --network-timeout 100000
-#RUN yarn build
+RUN yarn
+RUN yarn build
 
 # Copying source files
-COPY . /usr/src/app
+COPY . /usr/src/app/
 
 # Building app
 EXPOSE 1337
