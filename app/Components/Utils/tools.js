@@ -17,7 +17,7 @@ import { sharedStyles } from "../../utils/styles";
                 style={{width: 24, height: 24, resizeMode: 'contain'}}
                 source = {require('../../assets/icon/blueCarrot.png')}
             />
-            <Text style={{color:colors.primaryYellow, width:'90%', textAlign: "center", fontSize: 12}}>{label}</Text>
+            <Text style={{color:colors.darkGreen, width:'90%', textAlign: "center", fontSize: 12}}>{label}</Text>
         </View>
         )
     }

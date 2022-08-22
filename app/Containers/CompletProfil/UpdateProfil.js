@@ -132,7 +132,7 @@ export default function UpdateProfil({ navigation }) {
                                     value={modalCase.value}
                                     onChangeText={(text) => setModalCase({ ...modalCase, value: text })}
                                     placeholder='Créer un mot de passe'
-                                    placeholderTextColor={colors.primaryYellow}
+                                    placeholderTextColor={colors.darkGreen}
                                     style={{ ...sharedStyles.inputText, marginVertical: 15, }}
                                 >
                                 </TextInput>
@@ -153,7 +153,7 @@ export default function UpdateProfil({ navigation }) {
                                     keyboardType='email-address'
                                     value={modalCase.value} onChangeText={(text) => { setModalCase({ ...modalCase, value: text }), valideInputEmail(text) }}
                                     placeholder='Entrer votre nouveau email'
-                                    placeholderTextColor={colors.primaryYellow}
+                                    placeholderTextColor={colors.darkGreen}
                                     style={{ ...sharedStyles.inputText }}
                                 >
                                 </TextInput>
@@ -171,7 +171,7 @@ export default function UpdateProfil({ navigation }) {
                             <View style={{ ...sharedStyles.inputText, justifyContent: 'center', alignItems: 'flex-start' }}>
 
                                 <PhoneInput
-                                    textInputProps={{ placeholder: 'numéro de téléphone', placeholderTextColor: colors.primaryYellow, returnKeyType: "done" }}
+                                    textInputProps={{ placeholder: 'numéro de téléphone', placeholderTextColor: colors.darkGreen, returnKeyType: "done" }}
                                     containerStyle={{ backgroundColor: '#00000000' }}
                                     textContainerStyle={{ backgroundColor: '#00000000' }}
                                     codeTextStyle={{ textAlignVertical: 'center', height: 20 }}
@@ -210,7 +210,7 @@ const updateProfilStyles = StyleSheet.create({
         paddingVertical: 20,
         flexDirection: 'row',
         alignItems: 'center', 
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.darkGreen,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },

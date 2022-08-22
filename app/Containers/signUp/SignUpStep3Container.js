@@ -66,7 +66,7 @@ export default function SignUpStep3Container({ route, navigation }) {
     const generatePickerElements = () => {
         const cityOnselected = [...citySelected.attributes.districts.data]
         const arrondissements = cityOnselected.map(element => {
-            return <Picker.Item key={element.id} style={{ color: colors.primaryYellow }} label={element.attributes.name} value={element.id} />
+            return <Picker.Item key={element.id} style={{ color: colors.darkGreen }} label={element.attributes.name} value={element.id} />
         })
         return arrondissements
     };
@@ -128,7 +128,7 @@ export default function SignUpStep3Container({ route, navigation }) {
                 {citySelected && Platform.OS === 'ios' &&
                     <>
                         <Text style={{ ...sharedStyles.h3, marginBottom: 10 }}>Quel est ton quartier ?</Text>
-                        <TouchableOpacity onPress={() => setShowPicker(true)} style={{ backgroundColor: '#E6EFF7', borderRadius: 4, height: 40, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'flex-start', color: colors.primaryYellow }}>
+                        <TouchableOpacity onPress={() => setShowPicker(true)} style={{ backgroundColor: '#E6EFF7', borderRadius: 4, height: 40, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'flex-start', color: colors.darkGreen }}>
                             <Text style={{ fontSize: 15, fontWeight: '400', color: 'black' }}>{selectedDisctrictLabel.length > 0 ? selectedDisctrictLabel : "Sélectionnez son quartier"}</Text>
                         </TouchableOpacity>
                     </>

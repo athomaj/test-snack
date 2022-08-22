@@ -60,7 +60,7 @@ export default function SignUpStep3Container({ route, navigation }) {
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return (
-                <TouchableOpacity onPress={() => dietTaped(item)} style={{ backgroundColor: dietsSelected.includes(item.id) ? colors.primaryYellow : '#E6EFF7', height: WIDTHCONTAINER, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => dietTaped(item)} style={{ backgroundColor: dietsSelected.includes(item.id) ? colors.darkGreen : '#E6EFF7', height: WIDTHCONTAINER, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent: 'center', alignItems: 'center' }}>
                     {dietsSelected.includes(item.id) ?
                         <Image source={require('../../assets/icon/whiteCarrot.png')} style={{ width: 35, height: 35, resizeMode: 'contain' }} />
                         :
@@ -68,7 +68,7 @@ export default function SignUpStep3Container({ route, navigation }) {
                     }
                     <Text style={{
                         fontSize: 13,
-                        color: dietsSelected.includes(item.id) ? 'white' : colors.primaryYellow,
+                        color: dietsSelected.includes(item.id) ? 'white' : colors.darkGreen,
                         fontWeight: '500',
                     }}
                     >{item.attributes.name}</Text>

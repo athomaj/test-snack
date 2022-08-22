@@ -47,7 +47,7 @@ export default function OnboardingContainer({ navigation, route }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: '#E6EFF7' }}>
             <View style={{ height: '100%', width: '100%' }}>
-                <Text style={{ ...sharedStyles.titleH1, position: 'absolute', top: 60, width: '100%', textAlign: 'center' }}>FoodFood</Text>
+                <Text style={{ ...sharedStyles.h1, position: 'absolute', top: 60, width: '100%', textAlign: 'center' }}>FoodFood</Text>
                 <FlatList
                     data={onBoardingData}
                     horizontal
@@ -71,7 +71,7 @@ export default function OnboardingContainer({ navigation, route }) {
                         <Text style={{ fontSize: 14, color: 'white', fontWeight: '600' }}>Démarrer</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('Login', { isLogin: true })} style={{ ...sharedStyles.secondaryButton, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primaryYellow }}>Déjà membre ?</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.darkGreen }}>Déjà membre ?</Text>
                     </TouchableOpacity>
                 </View>
             </View>

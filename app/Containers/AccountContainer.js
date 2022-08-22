@@ -34,7 +34,7 @@ export default function AccountContainer({ navigation }) {
         };
         return (
             <TouchableOpacity onPress={() => pickImage()} style={{ height: 200, width: 200, alignItems: 'center', justifyContent: 'center' }}>
-                <Image source={require('../assets/userFakeImage/imagePicker_photo.png')} style={{ position: 'absolute', width: 200, height: 200, borderRadius: 100, zIndex: 1, borderColor: colors.primaryYellow, borderWidth: 2 }} />
+                <Image source={require('../assets/userFakeImage/imagePicker_photo.png')} style={{ position: 'absolute', width: 200, height: 200, borderRadius: 100, zIndex: 1, borderColor: colors.darkGreen, borderWidth: 2 }} />
                 {image ?
                     <Image source={{ uri: image }} style={{ position: 'absolute', width: 200, height: 200, borderRadius: 100 }} />
                     :
@@ -66,7 +66,7 @@ export default function AccountContainer({ navigation }) {
                     <Text style={{ ...sharedStyles.h2, paddingTop: 13 }}>{userName}</Text>
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('Profil', { userId: userContext.authState.user.id }) }}
-                    ><Text style={{ ...sharedStyles.shortText, textDecorationStyle: "solid", textDecorationLine: "underline", textDecorationColor: colors.primaryYellow }}>Afficher le profil</Text></TouchableOpacity>
+                    ><Text style={{ ...sharedStyles.shortText, textDecorationStyle: "solid", textDecorationLine: "underline", textDecorationColor: colors.darkGreen }}>Afficher le profil</Text></TouchableOpacity>
                 </View>
                 <View style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
@@ -74,7 +74,7 @@ export default function AccountContainer({ navigation }) {
                         onPress={() => navigation.navigate('Pendings')}
                     ><Text style={{ ...sharedStyles.shortText }}>Demande de parainnage</Text></TouchableOpacity>
                     {numberPendings &&
-                        <View style={{ position: 'absolute', right: 8, backgroundColor: colors.primaryYellow, width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ position: 'absolute', right: 8, backgroundColor: colors.darkGreen, width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white' }}>{numberPendings}</Text>
                         </View>
                     }
@@ -122,7 +122,7 @@ const accountStyles = StyleSheet.create({
         paddingVertical: 20,
         flexDirection: 'row',
         alignItems: 'center', 
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.darkGreen,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },

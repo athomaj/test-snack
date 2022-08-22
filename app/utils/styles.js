@@ -1,5 +1,14 @@
 import { Platform, StyleSheet } from "react-native";
 import { colors } from '../utils/colors';
+import * as Font from "expo-font";
+
+const getFonts = () =>
+  Font.loadAsync({
+    Syne: require('../assets/fonts/Syne.ttf'),
+    Inter: require('../assets/fonts/Inter.ttf'),
+  });
+
+
 
 export const sharedStyles = StyleSheet.create({
     shadow: {
@@ -11,32 +20,36 @@ export const sharedStyles = StyleSheet.create({
     },
     borderBasic: {
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
+        borderColor: colors.darkGreen,
         borderRadius: 20,
         borderStyle: 'solid'
     },
     borderPublish: {
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
+        borderColor: colors.darkGreen,
         borderRadius: 20,
         borderStyle: 'solid'
     },
-    titleH1: {
+    h1: {
+        fontFamily: 'Syne',
         fontWeight: '700',
         fontSize: 41,
         color: '#005DB2'
     },
     h2: {
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 30,
-        color: '#005DB2',
+        color: 'red',
     },
     h3: {
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 18,
         color: '#005DB2',
     },
     h4: {
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 16,
         color: '#005DB2',
@@ -54,7 +67,7 @@ export const sharedStyles = StyleSheet.create({
         height: 50,
         width: '100%',
         borderRadius: 4,
-        backgroundColor: colors.primaryYellow,
+        backgroundColor: colors.darkGreen,
         justifyContent: 'center',
         alignItems: 'center',
         color: '#ffffff',
@@ -68,42 +81,47 @@ export const sharedStyles = StyleSheet.create({
         alignItems: 'center',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
-        color: colors.primaryYellow,
+        borderColor: colors.darkGreen,
+        color: colors.darkGreen,
     },
     textPublish: {
+        fontFamily: 'Inter',
         fontSize: 1,
         marginBottom: 10,
         fontWeight: '500'
     },
     textUnderPrimaryButton:{
+        fontFamily: 'Inter',
         fontWeight: '600', fontSize: 14, color: 'white',
     },
     shortText:{
+        fontFamily: 'Inter',
         fontSize: 15,
-        color: colors.primaryYellow,
+        color: colors.darkGreen,
         fontWeight: '500',
 
     },
     inputText: {
+        fontFamily: 'Inter',
         backgroundColor: '#E6EFF7',
         borderRadius: 4,
         height: 44,
         width: '100%',
-        color: colors.primaryYellow,
+        color: colors.darkGreen,
         fontSize: 15,
         fontWeight: '500',
         paddingHorizontal: 15,
 
     },
     label: {
+        fontFamily: 'Inter',
         fontSize: 13,
-        color: colors.primaryYellow,
+        color: colors.darkGreen,
         fontWeight: '500',
 
     },
     bottomCaesura: {
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.darkGreen,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },

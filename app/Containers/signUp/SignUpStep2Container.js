@@ -26,7 +26,7 @@ export default function SignUpStep2Container({ navigation }) {
                             value={userName}
                             onChangeText={(text) => setUsername(text)}
                             placeholder='Par ex : Nom Prénom'
-                            placeholderTextColor={colors.primaryYellow}
+                            placeholderTextColor={colors.darkGreen}
                             style={{ ...sharedStyles.inputText, marginTop: 15 }}
                         // returnKeyType='next'
                         // onSubmitEditing={() => { lastNameInput.current.focus(); }}

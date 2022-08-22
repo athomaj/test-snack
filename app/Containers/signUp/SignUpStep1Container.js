@@ -71,7 +71,7 @@ export default function SignUpStep1Container({ navigation }) {
                                 value={email}
                                 onChangeText={onChangeEmail}
                                 placeholder='Entrer votre email'
-                                placeholderTextColor={colors.primaryYellow}
+                                placeholderTextColor={colors.darkGreen}
                                 style={{ ...sharedStyles.inputText }}
                                 onSubmitEditing={() => { passwordInput.current.focus(); }}
                             >
@@ -87,7 +87,7 @@ export default function SignUpStep1Container({ navigation }) {
                                 value={password}
                                 onChangeText={onChangePassword}
                                 placeholder='Créer un mot de passe'
-                                placeholderTextColor={colors.primaryYellow}
+                                placeholderTextColor={colors.darkGreen}
                                 style={{ ...sharedStyles.inputText, marginVertical: 15, }}
                                 returnKeyType='next'
                                 ref={passwordInput}
@@ -101,7 +101,7 @@ export default function SignUpStep1Container({ navigation }) {
                             <PhoneInput
                                 textInputProps={{
                                     placeholder: 'Numéro de téléphone',
-                                    placeholderTextColor: colors.primaryYellow
+                                    placeholderTextColor: colors.darkGreen
                                 }}
                                 containerStyle={{ ...sharedStyles.inputText }}
                                 textContainerStyle={{ height: 50, backgroundColor: "transparent" }}

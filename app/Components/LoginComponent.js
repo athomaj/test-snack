@@ -8,7 +8,7 @@ import { colors } from '../utils/colors';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
 
-    const [email, setEmail] = React.useState("test@test.fr")
+    const [email, setEmail] = React.useState("test@gmail.fr")
     const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
@@ -43,7 +43,7 @@ export default function LoginComponent({ loading, error, requestLogin, loginStat
             </View>
 
             <View style={{ width: '90%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
+                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.darkGreen, marginBottom: 10 }}>
                     <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Connexion</Text>
                     <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'white'}></ActivityIndicator>
                 </TouchableOpacity>

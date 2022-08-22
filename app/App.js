@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Image } from 'react-native';
+import { useFonts } from 'expo-font/build/FontHooks';
+import AppLoading from 'expo-app-loading';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -45,6 +47,7 @@ import CompletProfil3 from './Containers/CompletProfil/CompleteProfil3';
 import CompletProfil4 from './Containers/CompletProfil/CompleteProfil4';
 import CompletProfil5 from './Containers/CompletProfil/CompleteProfil5';
 import ChatDetailsContainer from './Containers/Chat/ChatDetailsContainer';
+
 
 const RootStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -146,6 +149,18 @@ function ActivityStackScreen({ navigation }) {
 }
 
 export default function App() {
+
+    const [loadedFonts] = useFonts({
+      Inter: require("./assets/fonts/Inter.ttf"),
+      Syne: require("./assets/fonts/Syne.ttf")
+
+  });
+
+  if (!loadedFonts) {
+      return <AppLoading />;
+  }
+
+
   return (
     <UserProvider>
       <PublishProvider>

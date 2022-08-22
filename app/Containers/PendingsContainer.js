@@ -27,7 +27,7 @@ export default function PendingsContainer({ navigation, id }) {
                 <Text style={{...sharedStyles.h3}}>{item.firstName} {item.lastName}</Text>
                 <TouchableOpacity
                 onPress={() => { navigation.navigate('Profil',{ userId: item.id })}}
-                ><Text style={{...sharedStyles.label, textDecorationStyle: 'solid', textDecorationColor: colors.primaryYellow, textDecorationLine: 'underline'}}>Consulter le profil</Text></TouchableOpacity>
+                ><Text style={{...sharedStyles.label, textDecorationStyle: 'solid', textDecorationColor: colors.darkGreen, textDecorationLine: 'underline'}}>Consulter le profil</Text></TouchableOpacity>
             </View>
             <TouchableOpacity style={{padding: 15, backgroundColor: colors.secondaryColor, borderRadius:8}}>
                 <Text>Accepter</Text>

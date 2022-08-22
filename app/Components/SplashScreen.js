@@ -42,7 +42,7 @@ export default function SplashScreen({ navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ ...sharedStyles.titleH1 }}>FoodFood</Text>
+            <Text style={{ ...sharedStyles.h1 }}>FoodFood</Text>
             <Text style={{ ...sharedStyles.shortText, textAlign: 'center' }}>Texte de baseline ?</Text>
             <Text style={{ ...sharedStyles.shortText, textAlign: 'center' }}>(facultatif)</Text>
         </SafeAreaView>
