@@ -23,9 +23,11 @@ export default function CompletProfil4({ route, navigation }) {
     const favoriteDishTexteArea = React.useRef("")
 
     React.useEffect(() => {
-        setDescription(userContext.authState.user?.description)
-        setPleasure(userContext.authState.user?.guiltyPleasure)
-        setFavoriteDish(userContext.authState.user?.favoriteDish)
+        if (route.params?.position) {
+            setDescription(userContext.authState.user?.description ? userContext.authState.user?.description : "")
+            setPleasure(userContext.authState.user?.guiltyPleasure ? userContext.authState.user?.guiltyPleasure : "")
+            setFavoriteDish(userContext.authState.user?.favoriteDish ? userContext.authState.user?.favoriteDish : "")
+        }
     }, [])
 
     return (

@@ -1,19 +1,36 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Modal } from "react-native";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
+
 import { colors } from "../../utils/colors";
 import { fakeMessageData } from "../../fakeData/fakeMessages";
 import { fakeNotificationData } from "../../fakeData/fakeNotification";
 import ChatDetailsContainer from "./ChatDetailsContainer";
+import notificationService from "../../services/notificationService";
+
+const defaultNotificationPicture = require('../../assets/bell.png')
 
 export default function ChatContainer({ navigation }) {
 
     const [notification, setNotification] = React.useState(false)
     const [chatDetailsModal, setChatDetailsModal] = React.useState(false)
+    const [notificationsData, setNotificationsData] = React.useState([])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData()
+        }, [])
+    );
+
+    async function fetchData() {
+        const res = await notificationService.getNotifications()
+        setNotificationsData(res)
+    }
 
     const renderMessage = ({ item, index }) => (
-        <TouchableOpacity onPress={openChatDetails} style={styles.render}>
+        <TouchableOpacity onPress={openChatDetails} style={{flexDirection: 'row', marginBottom: 30}}>
             <Image style={styles.picture} source={{uri: item.picture}}/>
-            <View style={styles.containerRight}>
+            <View style={{justifyContent: 'center'}}>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles.name}>{item.name}</Text>
                     <Text style={styles.title}>{' - ' +item.title}</Text>
@@ -26,10 +43,26 @@ export default function ChatContainer({ navigation }) {
 
     const renderNotification = ({ item, index }) => (
         <View style={styles.render}>
-            <Image style={styles.picture} source={{uri: item.picture}}/>
+            {item.type != "default" ?
+                <Image style={styles.picture} source={{uri: item.users_permissions_user.avatarUrl}}/>
+            :
+                <Image style={styles.pictureDefault} source={defaultNotificationPicture}/>
+            }
             <View style={styles.containerRight}>
-                <Text style={styles.title2}>{'Hey ' + item.name + ' vous demande de le/la parrainer. Le/La recommendez-vous ?'}</Text>
-                <Text style={styles.typeDate}>{'Il y a ' + item.date + ' jours'}</Text>
+                <View style={{paddingTop: 5}}>
+                    <Text style={styles.title2}>{item.title}</Text>
+                    <Text style={styles.typeDate}>{item.description}</Text>
+                </View>
+                {item.type != "default" &&
+                    <View style={{height: 54, flexDirection: 'row', alignItems: 'center'}}>
+                        <TouchableOpacity style={{height: 34, width: 34, borderRadius: 17, marginRight: 3, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.white}}>
+                            <Image style={{height: 15, width: 15, resizeMode: 'contain'}} source={require('../../assets/icon/cross.png')}></Image>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{height: 34, width: 34, borderRadius: 17, marginLeft: 3, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F2B94F'}}>
+                            <Image style={{height: 20, width: 20, resizeMode: 'contain'}} source={require('../../assets/icon/validated.png')}></Image>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         </View>
     )
@@ -39,13 +72,13 @@ export default function ChatContainer({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{...styles.container, backgroundColor: '#F4F3E7'}}>
             <View style={{width: '100%', height: '100%'}}>
                 <View style={styles.top}>
                     <Text style={styles.h1}>Boite de réception</Text>
                 </View>
                 {notification === false ?
-                <View>
+                <View style={{width: '100%', alignItems: 'center'}}>
                     <View style={styles.falseTrue}>
                         <View style={styles.isTrue}>
                             <Text style={styles.textTrue}>Message</Text>
@@ -62,7 +95,7 @@ export default function ChatContainer({ navigation }) {
                     </View>
                 </View>
                 :
-                <View>
+                <View style={{width: '100%', alignItems: 'center'}}>
                     <View style={styles.falseTrue}>
                         <TouchableOpacity style={styles.isFalse} onPress={() => setNotification(false)}>
                             <Text style={styles.textFalse}>Message</Text>
@@ -73,7 +106,7 @@ export default function ChatContainer({ navigation }) {
                     </View>
                     <View style={styles.flatlist}>
                         <FlatList
-                            data={fakeNotificationData}
+                            data={notificationsData}
                             renderItem={renderNotification}
                         />
                     </View>
@@ -82,7 +115,7 @@ export default function ChatContainer({ navigation }) {
             </View>
 
             <Modal animationType="fade" visible={chatDetailsModal} transparent={false}>
-                <ChatDetailsContainer></ChatDetailsContainer>
+                <ChatDetailsContainer closeModal={() => setChatDetailsModal(false)}></ChatDetailsContainer>
             </Modal>
         </SafeAreaView>
     )
@@ -137,12 +170,13 @@ const styles = StyleSheet.create({
     },
 
     flatlist: {
-        marginLeft: 20,
+        width: '95%',
         marginTop: 30
     },
 
     render: {
         flexDirection: "row",
+        alignItems: 'center',
         marginBottom: 30
     },
 
@@ -152,6 +186,13 @@ const styles = StyleSheet.create({
         borderRadius: 27,
         borderWidth: 1.6,
         borderColor: colors.thirdBlue,
+        marginRight: 20
+    },
+
+    pictureDefault: {
+        width: 54,
+        height: 40,
+        resizeMode: 'contain',
         marginRight: 20
     },
 
@@ -184,11 +225,15 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 10,
         color: colors.fifthBlue,
-        marginTop: 5
+        marginTop: 2
     },
 
     containerRight: {
-        justifyContent: "center"
+        height: 54,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        width: (Dimensions.get('screen').width * 0.95) - 74
     },
 })
 

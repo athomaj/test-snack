@@ -13,12 +13,12 @@ import { BASE_URL } from '../config/config';
 export function PostDetailComponent({ navigation, route }) {
 
     const userContext = useUserContext()
-    const [participant, setParticipant] = React.useState(false)
+    const [participant, setParticipant] = React.useState("")
     const [post, setPost] = React.useState(null)
     const [diet, setDiet] = React.useState(null)
     const [badge, setBadge] = React.useState([{ 'id': 1, 'name': 'Super organisateur' }, { 'id': 2, 'name': 'Badge 2' }, { 'id': 3, 'name': 'Badge 3' }])
     const [bring, setBring] = React.useState([{ 'id': 1, 'name': 'Un dessert de votre choix' }, { 'id': 2, 'name': 'Une boisson non alcooliser' }, { 'id': 3, 'name': '300g de Beurre' }])
-    const [info, setInfo] = React.useState([{ 'id': 1, 'name': 'Animaux de compagnie' }, { 'id': 2, 'name': 'Non fumeur' }, { 'id': 3, 'name': 'Place de parking sur place' }])
+    const [info, setInfo] = React.useState([])
     const [pictureList, setPictureList] = React.useState([])
     const [carousselPitcures, setCarousselPictures] = React.useState([])
 
@@ -73,11 +73,11 @@ export function PostDetailComponent({ navigation, route }) {
         setParticipant(true)
     }
 
-    function buttonStatus(){
-        if(participant === 'participant'){
+    function buttonStatus(text){
+        if(text === 'participant'){
             return 'Se désengager';
         }
-        else if(participant === 'pendings'){
+        else if(text === 'pendings'){
                 return 'en attente';
         }
         else return 'Participer';
@@ -107,7 +107,7 @@ export function PostDetailComponent({ navigation, route }) {
                     'Votre demande est en attente',
                     'Vous serrez informé de votre acceptation bientôt',
                     [{
-                text: 'Annuler',
+                text: 'Ok',
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
                 },
@@ -117,10 +117,10 @@ export function PostDetailComponent({ navigation, route }) {
         else{
                 participateToEvent()
                 Alert.alert(
-                    'Votre demande a été envoyer',
+                    'Votre demande a été envoyé',
                     `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
                     [{
-                text: 'Annuler',
+                text: 'Ok',
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
                 },
@@ -131,17 +131,16 @@ export function PostDetailComponent({ navigation, route }) {
     
     async function fetchData(id) {
         const response = await postApi.getOne(id)
-        // console.log("REES ====", JSON.parse(response.attributes.moreInfo))
         setPost(response)
         setDiet([...response.attributes.diets.data])
-        const infoParse = JSON.parse(response.attributes.moreInfo)
-        const array = []
-        infoParse.map(item => {
-            if (item.status === true) {
-                array.push({id: item.id, name: item.title })
-            }
-        })
-        setInfo(array)
+        
+        if (response.attributes.moreInfo) {
+            const array = []
+            response.attributes.moreInfo.data.map(item => {
+                array.push({id: item.id, name: item.name })
+            })
+            setInfo(array)
+        }
         return response
     }
 
@@ -231,12 +230,11 @@ export function PostDetailComponent({ navigation, route }) {
                     <Text style={styles.date}>{moment(post?.attributes.datetime).format("MMMM Do à h") + 'h'}</Text>
                     <Text style={styles.seats}>{post?.attributes.seats + ' place disponible'}</Text>
                 </View>
-                <TouchableOpacity style={participant ? styles.buttonDelete : styles.button}
-                onPress={() => {buttonParticipateByState
-}}
+                <TouchableOpacity 
+                    style={participant ? styles.buttonDelete : styles.button}
+                    onPress={buttonParticipateByState}
                 >
-                    <Text style={styles.participate}>{
-                        buttonStatus()}</Text>
+                    <Text style={styles.participate}>{buttonStatus(participant)}</Text>
                 </TouchableOpacity>
             </View>
         </View>

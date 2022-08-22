@@ -75,7 +75,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "eventPendings"
+      "mappedBy": "eventPendings"
     },
     "district": {
       "type": "relation",
@@ -89,6 +89,12 @@
     },
     "moreInfo": {
       "type": "json"
+    },
+    "chat": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chat.chat",
+      "mappedBy": "post"
     }
   }
 }
