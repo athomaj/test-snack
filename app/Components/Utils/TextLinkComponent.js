@@ -1,9 +1,10 @@
 import React from 'react';
 import {  Text } from 'react-native';
+import { colors } from '../../utils/colors';
 
 export default function TextLinkComponent({ text, navigateTo }) {
 
     return (
-            <Text onPress={navigateTo} style={{fontWeight: '700', fontSize: 13, color: '#0A4072'}}>{text}</Text>
+            <Text onPress={navigateTo} style={{fontWeight: 'bold', fontSize: 13, color: colors.darkGreen}}>{text}</Text>
     );
 }

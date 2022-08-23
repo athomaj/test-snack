@@ -29,6 +29,7 @@ export default function AuthContainer({ navigation, route }) {
                 error={errorMessage}
                 requestLogin={(email, pass) => userContext.login(email, pass)}
                 loginStatus={() => navigation.navigate('SignUpStep1')}
+                goBack={() => navigation.goBack()}
             >
             </LoginComponent>
         </SafeAreaView>

@@ -11,6 +11,12 @@ const getFonts = () =>
 
 
 export const sharedStyles = StyleSheet.create({
+    wrapperHeaderSpace:{
+        height: '100%',
+        width: '100%',
+        backgroundColor: colors.backgroundColor,
+        paddingTop: '8%'
+    },
     shadow: {
         shadowColor: 'black',
         shadowOpacity: 0.2,
@@ -30,17 +36,24 @@ export const sharedStyles = StyleSheet.create({
         borderRadius: 20,
         borderStyle: 'solid'
     },
+    bigTitle:{
+        fontFamily: 'Syne',
+        fontWeight: '600',
+        fontSize: 30,
+        color: colors.darkGreen
+    },
     h1: {
         fontFamily: 'Syne',
-        fontWeight: '700',
-        fontSize: 41,
-        color: '#005DB2'
+        fontWeight: '600',
+        fontSize: 25,
+        lineHeight: 30,
+        color: colors.darkGreen
     },
     h2: {
         fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 30,
-        color: 'red',
+        color: colors.darkGreen,
     },
     h3: {
         fontFamily: 'Syne',
@@ -67,7 +80,7 @@ export const sharedStyles = StyleSheet.create({
         height: 50,
         width: '100%',
         borderRadius: 4,
-        backgroundColor: colors.darkGreen,
+        backgroundColor: colors.orange1,
         justifyContent: 'center',
         alignItems: 'center',
         color: '#ffffff',
@@ -92,8 +105,10 @@ export const sharedStyles = StyleSheet.create({
     },
     textUnderPrimaryButton:{
         fontFamily: 'Inter',
-        fontWeight: '600', fontSize: 14, color: 'white',
+        fontWeight: '600', fontSize: 14,
+        color: colors.darkGreen,
     },
+
     shortText:{
         fontFamily: 'Inter',
         fontSize: 15,
@@ -103,13 +118,13 @@ export const sharedStyles = StyleSheet.create({
     },
     inputText: {
         fontFamily: 'Inter',
-        backgroundColor: '#E6EFF7',
+        backgroundColor: 'white',
         borderRadius: 4,
         height: 44,
         width: '100%',
         color: colors.darkGreen,
-        fontSize: 15,
-        fontWeight: '500',
+        fontSize: 16,
+        fontWeight: 'bold',
         paddingHorizontal: 15,
 
     },
@@ -125,6 +140,13 @@ export const sharedStyles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },
+    p:{
+        fontFamily: 'Inter',
+        fontSize: 16,
+        fontWeight: "400",
+        lineHeight: 24,
+        color: colors.black
+    }
 })
 
 export const postCreateStyles = StyleSheet.create({

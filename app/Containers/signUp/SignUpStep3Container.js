@@ -85,26 +85,26 @@ export default function SignUpStep3Container({ route, navigation }) {
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return (
-                <TouchableOpacity key={item.id} onPress={() => cityTapped(item)} style={{ backgroundColor: '#E6EFF7', height: 87, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12 }}>
+                <TouchableOpacity key={item.id} onPress={() => cityTapped(item)} style={{ backgroundColor: '#E6EFF7', width: WIDTHCONTAINER, height:WIDTHCONTAINER, borderRadius: 4, marginBottom: 12 }}>
                     {citySelected && item.attributes.name === citySelected.attributes.name &&
-                        <Image source={require('../../assets/icon/validate_icon.png')} style={{ position: 'absolute', top: 8, right: 8, width: 21, height: 21, }} />
+                        <Image source={require('../../assets/icon/validate_icon.png')} style={{ position: 'absolute', top: 30, left: 8, width: 21, height: 21, }} />
                     }
-                    <Text style={{ ...sharedStyles.shortText, position: 'absolute', bottom: 0, left: 0, paddingLeft: 10, paddingBottom: 10 }}>{item.attributes.name}</Text>
+                    <Text style={{ ...sharedStyles.p, position: 'absolute', top: 5, left: 0, paddingLeft: 10, paddingBottom: 10 }}>{item.attributes.name}</Text>
                 </TouchableOpacity>)
         },
         [citySelected]
     );
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%' }}>
-            <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }}>
+        <SafeAreaView style={{...sharedStyles.wrapperHeaderSpace}}>
+            <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingHorizontal: 15, paddingTop: isIphoneX() ? 40 : '8%' }}>
                 {route.params?.position &&
                     <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
                         <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
                     </TouchableOpacity>
                 }
                 <Text style={{ ...sharedStyles.h2, width: '100%' }}>Où habites-tu ? </Text>
-                <Text style={{ ...sharedStyles.shortText, height: 55 }}>Participe avec nous à développer la vie du quartier de ta ville.</Text>
+                {/* <Text style={{ ...sharedStyles.shortText, height: 55 }}>Participe avec nous à développer la vie du quartier de ta ville.</Text> */}
                 <FlatList
                     data={cities}
                     renderItem={renderItem}
