@@ -5,6 +5,7 @@ import { useUserContext } from '../../context/UserContext';
 import kitchenApi from '../../services/kitchenApi';
 import { sharedStyles } from '../../utils/styles';
 import { isIphoneX } from '../../utils/isIphoneX';
+import { colors } from '../../utils/colors';
 
 export default function CompletProfil2({ route, navigation }) {
 
@@ -51,7 +52,7 @@ export default function CompletProfil2({ route, navigation }) {
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return (
-                <TouchableOpacity onPress={() => cookingTaped(item)} style={{ ...sharedStyles.inputText, marginBottom: 13, justifyContent: 'center' }}><Text style={{ ...sharedStyles.shortText, textAlignVertical: 'center' }}>{item.attributes.name}</Text>
+                <TouchableOpacity onPress={() => cookingTaped(item)} style={{ ...sharedStyles.inputText, marginBottom: 13, justifyContent: 'center', backgroundColor: cookingTypeSelected.includes(item.id) ? colors.green1 : 'white' }}><Text style={{ ...sharedStyles.shortText, textAlignVertical: 'center', color: cookingTypeSelected.includes(item.id) ? 'black' : colors.darkGreen }}>{item.attributes.name}</Text>
                     {cookingTypeSelected.includes(item.id) &&
                         <Image source={require('../../assets/icon/validate_icon.png')} style={{ position: 'absolute', right: 8, width: 21, height: 21, }} />
                     }
@@ -61,10 +62,10 @@ export default function CompletProfil2({ route, navigation }) {
 
     return (
         <View style={{ width: '100%', height: '100%' }}>
-            <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
-                <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
+            <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: colors.backgroundColor }}>
+                <View style={{...sharedStyles.wrapperHeaderSpace, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 15 }}>
                     <FlatList
-                        ListHeaderComponentStyle={{ backgroundColor: 'white' }}
+                        ListHeaderComponentStyle={{ backgroundColor: colors.backgroundColor }}
                         ListHeaderComponent={
                             <View>
                                 {route.params?.position &&
@@ -73,7 +74,7 @@ export default function CompletProfil2({ route, navigation }) {
                                     </TouchableOpacity>
                                 }
                                 <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>Type de cuisine</Text>
-                                <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Quoi que vous aimiez, vous le trouverez ici. </Text>
+                                <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Tu peux en sélectionner autant que tu veux ! </Text>
                             </View>
                         }
                         style={{ width: '100%', height: '100%' }}

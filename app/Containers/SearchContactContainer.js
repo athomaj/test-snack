@@ -90,7 +90,7 @@ export default function SearchContactContainer({ navigation, route }) {
     ({ item, index }) =>
       <View style={{ width: '100%', height: 90, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', borderColor: 'black', borderStyle: 'solid', borderTopWidth: 0.3 }}>
         <View style={{ height: '100%', width: '20%', alignItems: 'center', justifyContent: 'center' }}>
-          <Image source={{ uri: item.avatarUrl }} style={{ maxWidth: '90%', width: 54, height: 54, borderRadius: 27, backgroundColor: colors.thirdBlue }}></Image>
+          <Image source={item.avatarUrl ? { uri: item.avatarUrl } : require('../assets/userFakeImage/avatar_blue.png')} style={{ maxWidth: '90%', width: 54, height: 54, borderRadius: 27, backgroundColor: colors.thirdBlue }}></Image>
         </View>
         <View style={{ width: '50%' }}>
           <Text style={{ fontWeight: 'bold' }}>{item.username}</Text>
@@ -98,14 +98,14 @@ export default function SearchContactContainer({ navigation, route }) {
         </View>
         <View style={{ width: '30%', alignItems: 'flex-end' }}>
           <TouchableOpacity
-            style={{ ...searchContactStyles.contactButton, backgroundColor: selectedSponsor.includes(item.id) ? "#a2a2a2" : "#F9BC0A" }}
+            style={{ ...searchContactStyles.contactButton, backgroundColor: selectedSponsor.includes(item.id) ? `${colors.orange1}55` : colors.orange1  }}
             disabled={selectedSponsor.includes(item.id) ? true : false} value={item.id}
             onPress={() => addSelectedSponsor(item.id, item.username)}
           >
             {selectedSponsor.includes(item.id) ?
               <Text style={{ color: 'white' }}> Envoyé </Text>
               :
-              <Text> Demander </Text>
+              <Text style={{...sharedStyles.textUnderPrimaryButton}}> Demander </Text>
             }
           </TouchableOpacity>
         </View>
@@ -114,9 +114,9 @@ export default function SearchContactContainer({ navigation, route }) {
   );
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', paddingHorizontal: 15 }}>
+    <SafeAreaView style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', paddingHorizontal: 15, backgroundColor: colors.backgroundColor }}>
       <FlatList
-        ListHeaderComponentStyle={{ backgroundColor: 'white' }}
+        ListHeaderComponentStyle={{ backgroundColor: colors.backgroundColor }}
         ListHeaderComponent={(
           <View style={{ width: '100%', height: 90, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Mes Contacts</Text>
@@ -136,7 +136,7 @@ export default function SearchContactContainer({ navigation, route }) {
         <TouchableOpacity
           style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}
           onPress={onClickNext}>
-          <Text style={{ fontWeight: '600', fontSize: 14, color: 'white' }}>Poursuivre</Text>
+          <Text style={{...sharedStyles.textUnderPrimaryButton }}>Poursuivre</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

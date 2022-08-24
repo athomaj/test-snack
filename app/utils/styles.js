@@ -15,7 +15,7 @@ export const sharedStyles = StyleSheet.create({
         height: '100%',
         width: '100%',
         backgroundColor: colors.backgroundColor,
-        paddingTop: '8%'
+        paddingTop: '10%'
     },
     shadow: {
         shadowColor: 'black',
@@ -52,14 +52,14 @@ export const sharedStyles = StyleSheet.create({
     h2: {
         fontFamily: 'Syne',
         fontWeight: '600',
-        fontSize: 30,
+        fontSize: 24,
         color: colors.darkGreen,
     },
     h3: {
         fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 18,
-        color: '#005DB2',
+        color: colors.darkGreen,
     },
     h4: {
         fontFamily: 'Syne',
@@ -105,7 +105,8 @@ export const sharedStyles = StyleSheet.create({
     },
     textUnderPrimaryButton:{
         fontFamily: 'Inter',
-        fontWeight: '600', fontSize: 14,
+        fontWeight: 'bold',
+        fontSize: 14,
         color: colors.darkGreen,
     },
 

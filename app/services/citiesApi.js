@@ -3,7 +3,7 @@ import { API_URL } from "../config/config";
 import { storeData, deleteData, getData } from "../utils/storage";
 
 async function getAllCities() {
-    return await axios.get(`${API_URL}/cities?fields[0]=name&populate[districts][fields][0]=name`)
+    return await axios.get(`${API_URL}/cities?fields[0]=name&populate[districts][fields][0]=name&populate[image][fields][1]=url`)
         .then(async response => {
             return response.data
         })

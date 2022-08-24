@@ -23,14 +23,14 @@ export default function CompletProfil4({ route, navigation }) {
     const favoriteDishTexteArea = React.useRef("")
 
     React.useEffect(() => {
-        setDescription(userContext.authState.user?.description)
-        setPleasure(userContext.authState.user?.guiltyPleasure)
-        setFavoriteDish(userContext.authState.user?.favoriteDish)
+        setDescription(userContext.authState.user?.description ? userContext.authState.user?.description : null)
+        setPleasure(userContext.authState.user?.guiltyPleasure ? userContext.authState.user?.guiltyPleasure : null)
+        setFavoriteDish(userContext.authState.user?.favoriteDish ? userContext.authState.user?.favoriteDish : null)
     }, [])
 
     return (
         <View style={{ width: '100%', height: '100%' }}>
-            <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
+            <SafeAreaView style={{...sharedStyles.wrapperHeaderSpace, paddingHorizontal: 15 }}>
                 <KeyboardAwareScrollView keyboardDismissMode="on-drag" style={{ width: '100%', height: '100%' }} contentContainerStyle={{ paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
 
                 {route.params?.position &&
@@ -38,8 +38,8 @@ export default function CompletProfil4({ route, navigation }) {
                                 <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
                             </TouchableOpacity>
                         }
-                    <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>A propos de vous</Text>
-                    <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>Quoi que vous aimiez, vous le trouverez ici.</Text>
+                    <Text style={{ ...sharedStyles.h2, marginBottom: 15 }}>Dis-nous tout!</Text>
+                    <Text style={{ ...sharedStyles.shortText, marginBottom: 25 }}>enfin presque...</Text>
 
                     <View style={{ width: '100%' }}>
 
@@ -98,7 +98,7 @@ export default function CompletProfil4({ route, navigation }) {
                 <SignupFooterNav
                     title={"Suivant"}
                     canGoBack={true}
-                    disabledButton={!(description.length > 1 && pleasure.length > 1 && favoriteDish.length > 1)}
+                    disabledButton={!(description && description.length > 1 && pleasure && pleasure.length > 1 && favoriteDish && favoriteDish.length > 1)}
                     onPressBack={navigation.goBack}
                     onPressContinue={() => navigation.navigate('UpdateProfil5')}
                     updatecontext={() => userContext.updateUserInformation({

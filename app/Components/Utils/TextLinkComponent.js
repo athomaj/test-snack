@@ -5,6 +5,6 @@ import { colors } from '../../utils/colors';
 export default function TextLinkComponent({ text, navigateTo }) {
 
     return (
-            <Text onPress={navigateTo} style={{fontWeight: 'bold', fontSize: 13, color: colors.darkGreen}}>{text}</Text>
+            <Text onPress={navigateTo} style={{fontWeight: 'bold', fontSize: 16, color: colors.darkGreen, textDecorationLine: 'underline'}}>{text}</Text>
     );
 }

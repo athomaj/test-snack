@@ -29,7 +29,7 @@ export default function AccountContainer({ navigation }) {
             if (!result.cancelled) {
                 console.log(result);
                 setParamImage(result);
-                userContext.updatePicture({ picture: result.uri })
+                userContext.updatePicture(result.uri)
             }
         };
         return (
