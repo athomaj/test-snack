@@ -10,7 +10,7 @@ export default function PostPicturePickerComponent({ image, setParamImage }) {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [1, 1],
+            aspect: [4, 3],
             quality: 1,
         });
 
@@ -24,7 +24,7 @@ export default function PostPicturePickerComponent({ image, setParamImage }) {
                 <Image source={{ uri: image }} style={styles.picture} />
                 :
                 <TouchableOpacity style={styles.noPicture} onPress={() => pickImage()}>
-                    <Image style={styles.defaultImage} source={require("../../assets/icon/defaultImage.png")}/>
+                    <Image style={styles.defaultImage} source={require("../../assets/icon/addElement.png")}/>
                 </TouchableOpacity>
             }
         </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     noPicture: {
         width: 110,
         height: 110,
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.green1,
         borderRadius: 4,
         justifyContent: "center",
         alignItems: "center",
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
 
     defaultImage: {
         width: 48,
-        height: 38.46
+        height: 38.46,
+        resizeMode: 'contain'
     },
 
     picture: {

@@ -60,7 +60,7 @@ export default function SignUpStep3Container({ route, navigation }) {
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return (
-                <TouchableOpacity onPress={() => dietTaped(item)} style={{ backgroundColor: dietsSelected.includes(item.id) ? colors.primaryYellow : '#E6EFF7', height: WIDTHCONTAINER, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => dietTaped(item)} style={{ backgroundColor: dietsSelected.includes(item.id) ? colors.darkGreen : colors.green1, height: WIDTHCONTAINER, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent: 'flex-end', alignItems: 'center' }}>
                     {dietsSelected.includes(item.id) ?
                         <Image source={require('../../assets/icon/whiteCarrot.png')} style={{ width: 35, height: 35, resizeMode: 'contain' }} />
                         :
@@ -68,8 +68,9 @@ export default function SignUpStep3Container({ route, navigation }) {
                     }
                     <Text style={{
                         fontSize: 13,
-                        color: dietsSelected.includes(item.id) ? 'white' : colors.primaryYellow,
+                        color: dietsSelected.includes(item.id) ? 'white' : colors.darkGreen,
                         fontWeight: '500',
+                        marginVertical: 12
                     }}
                     >{item.attributes.name}</Text>
 
@@ -81,8 +82,8 @@ export default function SignUpStep3Container({ route, navigation }) {
     //SignUpStep1
     return (
         <View style={{ width: '100%', height: '100%' }}>
-            <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: 'white' }}>
-                <View style={{ width: '100%', height: '100%', paddingTop: isIphoneX() ? 40 : 20, paddingHorizontal: 10 }}>
+            <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: colors.backgroundColor }}>
+                <View style={{ width: '100%', height: '100%', paddingTop: '8%', paddingHorizontal: 15 }}>
                     <ScrollView style={{ width: '100%', height: '100%' }} scrollEnabled={false}>
                         {route.params?.position &&
                             <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40 }}>
@@ -90,7 +91,7 @@ export default function SignUpStep3Container({ route, navigation }) {
                             </TouchableOpacity>
                         }
                         <Text style={{ ...sharedStyles.h2, width: '100%' }}>Régime alimentaire</Text>
-                        <Text style={{ ...sharedStyles.shortText, height: 55 }}>Phrase de description</Text>
+                        <Text style={{ ...sharedStyles.p, height: 55, marginBottom: 15 }}>Bon à savoir pour organiser un diner ou un atelier avec toi...</Text>
                         {error ?
                             <View style={{ alignItems: 'center' }}>
                                 <Text style={{ color: 'red' }}>Une Erreur est survenue, veuillez réessayer</Text>
@@ -109,8 +110,12 @@ export default function SignUpStep3Container({ route, navigation }) {
                                     keyExtractor={item => item.id}
                                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                                 />
-                                <Text style={{ ...sharedStyles.label, paddingTop: 15 }}>Votre régime alimentaire n’est dans la liste ?</Text>
-                                <Text style={{ ...sharedStyles.label, marginBottom: 25 }}>N’hésitez pas à nous <TextLinkComponent navigateTo={() => console.log("navigate to")} text='contacter'></TextLinkComponent>. pour qu’on l’ajoute </Text>
+                                {!route.params?.position &&
+                                <>
+                                <Text style={{ ...sharedStyles.p, paddingTop: 15 }}>Votre régime alimentaire n’est dans la liste ?</Text>
+                                <Text style={{ ...sharedStyles.p, marginBottom: 25 }}>N’hésitez pas à nous <TextLinkComponent navigateTo={() => console.log("navigate to")} text='contacter'></TextLinkComponent>. pour qu’on l’ajoute </Text>
+                                </>
+                                }
                             </>
                         }
                         {loading &&

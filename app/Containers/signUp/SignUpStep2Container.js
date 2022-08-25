@@ -18,22 +18,18 @@ export default function SignUpStep2Container({ navigation }) {
     return (
         <HideKeyboard>
             <View style={{ height: '100%', width: '100%' }}>
-                <SafeAreaView style={{ height: '100%', width: '100%' }}>
-                    <View style={{ width: '100%', height: '100%', paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }}>
+                <SafeAreaView style={{...sharedStyles.wrapperHeaderSpace}}>
+                    <View style={{ width: '100%', height: '100%', paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : '8%' }}>
                         <Text style={{ ...sharedStyles.h2, width: '100%' }}>Quel est ton nom ?</Text>
-                        <Text style={{ ...sharedStyles.shortText, height: 55 }}>{'Comment doit-on vous appeler 😊'}</Text>
+                        <Text style={{ ...sharedStyles.p, height: 55 }}>{'Comment doit-on vous appeler 😊'}</Text>
                         <TextInput
                             value={userName}
                             onChangeText={(text) => setUsername(text)}
-                            placeholder='Par ex : Nom Prénom'
-                            placeholderTextColor={colors.primaryYellow}
+                            placeholder='Ex : Nom Prénom (nom utilisateur)'
+                            placeholderTextColor={colors.darkGreen}
                             style={{ ...sharedStyles.inputText, marginTop: 15 }}
-                        // returnKeyType='next'
-                        // onSubmitEditing={() => { lastNameInput.current.focus(); }}
                         ></TextInput>
-                        {/* <Text style={{ ...sharedStyles.label, paddingTop: 15 }}>Ton nom de famille ne sera partagé uniquement qu’avec tes correspondances.</Text>
-                        <TextLinkComponent navigateTo={() => console.log("navigate to")} text='Pourquoi ?'></TextLinkComponent> */}
-                        {/* <TextLinkComponent navigateTo={() => console.log("navigate to")} text='termes de nos services'></TextLinkComponent> */}
+                       
                     </View>
                 </SafeAreaView>
 

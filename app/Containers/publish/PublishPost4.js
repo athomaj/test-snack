@@ -1,14 +1,15 @@
 import React from "react";
 import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-
 import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-
+import { BASE_URL } from "../../config/config";
 import { usePublishContext } from "../../context/PublishContext";
-
 import { bonusData } from "../../fakeData/bonus";
+import infoApi from "../../services/infoApi";
 import { colors } from "../../utils/colors";
-import { postCreateStyles } from "../../utils/styles";
-
+import { postCreateStyles, sharedStyles } from "../../utils/styles";
+import { Dimensions } from "react-native";
+import SignupFooterNav from "../../Components/Utils/SignupFooterNav";
+const WIDTHCONTAINER = (Dimensions.get('window').width / 3) - 21;
 export default function PublishPost4({ navigation }) {
 
     const publishContext = usePublishContext()
@@ -16,21 +17,26 @@ export default function PublishPost4({ navigation }) {
     const [address, setAddress] = React.useState('')
     const [bonus, setBonus] = React.useState([])
 
-    React.useEffect(() => {
-        createBonus()
-    }, [])
-
-    function createBonus() {
-        const cBonus = bonusData.map((data, index) => {
-            data["status"] = false
-            data['id'] = index
-            return data
-        })
-        setBonus(cBonus)
+    async function callDiet(){
+        const response = await infoApi.getAllinfo()
+        if (response) {
+            console.log(response)
+            const infos =  response.data.map((info) => { return {'id': info.id, 'title': info.attributes.name, 'image': BASE_URL+info.attributes.image.data.attributes.url }})
+                console.log(infos)
+            setBonus(infos)
+        } else {
+            setError(true)
+        }
     }
 
+    React.useEffect(() => {
+        callDiet()
+        
+    }, [])
+
+
     function bonusChange(index) {
-        const data = [...bonusData]
+        const data = [...bonus]
         data[index].status = !data[index].status
         setBonus(data)
     }
@@ -39,12 +45,12 @@ export default function PublishPost4({ navigation }) {
         <TouchableOpacity onPress={() => bonusChange(index)}>
             {item.status === true ?
                 <View style={styles.viewBonusTrue}>
-                    <Image style={styles.imageBonus} source={require('../../assets/icon/whiteCarrot.png')} />
+                    <Image style={styles.imageBonus} source={{uri : item.image}} />
                     <Text style={styles.textBonusTrue}>{item.title}</Text>
                 </View>
                 :
                 <View style={styles.viewBonus}>
-                    <Image style={styles.imageBonus} source={require('../../assets/icon/blueCarrot.png')} />
+                    <Image style={styles.imageBonus} source={{uri : item.image}} />
                     <Text style={styles.textBonus}>{item.title}</Text>
                 </View>
             }
@@ -58,7 +64,7 @@ export default function PublishPost4({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <SafeAreaView style={{ backgroundColor:  colors.backgroundColor }}>
             <View style={{ height: '100%', width: '100%' }}>
                 <View style={styles.container}>
                     <View style={styles.address}>
@@ -84,14 +90,22 @@ export default function PublishPost4({ navigation }) {
                         <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
                     </TouchableOpacity>
                 </View>
-                <PublishFooterNav
+                {/* <PublishFooterNav
                     firstScreen={false}
                     lastScreen={true}
                     loading={publishContext.loading}
                     disabledButton={buttonDisable}
                     onPressBack={navigation.goBack}
                     onPressContinue={onPressContinue}
-                />
+                /> */}
+                <SignupFooterNav
+                    loading={publishContext.loading}
+                    disabledButton={buttonDisable}
+                    onPressBack={navigation.goBack}
+                    onPressContinue={onPressContinue}
+                    title="Publier"
+                    canGoBack={true}
+                ></SignupFooterNav>
             </View>
         </SafeAreaView>
     )
@@ -100,10 +114,8 @@ export default function PublishPost4({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: colors.white,
-        paddingHorizontal: 10
+        ...sharedStyles.wrapperHeaderSpace,
+        paddingHorizontal: 15
     },
 
     title: {
@@ -115,7 +127,7 @@ const styles = StyleSheet.create({
     input: {
         width: '100%',
         height: 44,
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: 'white',
         borderRadius: 4,
         padding: 10,
         marginTop: 10
@@ -127,9 +139,9 @@ const styles = StyleSheet.create({
     },
 
     viewBonus: {
-        backgroundColor: colors.secondaryBlue,
-        width: 110,
-        height: 110,
+        backgroundColor: colors.green1,
+        width: WIDTHCONTAINER,
+        height: WIDTHCONTAINER,
         margin: 5,
         justifyContent: "center",
         alignItems: "center",
@@ -137,8 +149,9 @@ const styles = StyleSheet.create({
     },
 
     imageBonus: {
-        width: 46,
-        height: 46
+        width: 50,
+        height: 50,
+        resizeMode: 'contain'
     },
 
     textBonus: {
@@ -149,9 +162,9 @@ const styles = StyleSheet.create({
     },
 
     viewBonusTrue: {
-        backgroundColor: colors.thirdBlue,
-        width: 110,
-        height: 110,
+        backgroundColor: colors.orange1,
+        width: WIDTHCONTAINER,
+        height: WIDTHCONTAINER,
         margin: 5,
         justifyContent: "center",
         alignItems: "center",

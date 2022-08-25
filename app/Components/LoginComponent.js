@@ -5,10 +5,11 @@ import validateEmail from '../utils/sharedFunctions';
 import { displayAlert } from '../utils/displayAlert';
 import { sharedStyles } from '../utils/styles';
 import { colors } from '../utils/colors';
+import SignupFooterNav from './Utils/SignupFooterNav';
 
-export default function LoginComponent({ loading, error, requestLogin, loginStatus }) {
+export default function LoginComponent({ loading, error, requestLogin, loginStatus, goBack }) {
 
-    const [email, setEmail] = React.useState("test@test.fr")
+    const [email, setEmail] = React.useState("test@gmail.fr")
     const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {
@@ -32,27 +33,23 @@ export default function LoginComponent({ loading, error, requestLogin, loginStat
     }
 
     return (
-        <View style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: 'white' }}>
-            <View style={{ height: '20%', width: '60%', justifyContent: 'flex-end' }}>
-                <Image style={{ height: '80%', width: '100%', resizeMode: 'contain' }} source={require('../assets/logo_typo.png')}></Image>
-            </View>
-            <View style={{ height: '60%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <TextInput autoCorrect={false} autoCapitalize='none' autoComplete='email' keyboardType='email-address' value={email} onChangeText={(text) => changeText(text, 0)} placeholder='Email*' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15, marginBottom: 20 }}></TextInput>
-                <TextInput secureTextEntry={true} value={pass} onChangeText={(text) => changeText(text, 1)} placeholder='Mot de passe*' style={{ ...sharedStyles.shadow, height: 50, width: '80%', borderRadius: 10, backgroundColor: colors.white, paddingHorizontal: 15 }}></TextInput>
+        <View style={{...sharedStyles.wrapperHeaderSpace, alignItems: 'center',paddingHorizontal: 15  }}>
+            <View style={{ height: '100%', width: '100%'}}>
+                <Text style={{...sharedStyles.bigTitle}}>Bienvenue</Text>
+                <Text style={{...sharedStyles.p, marginBottom: 30}}>Content de vous revoir. Nous comptons sur vous pour qu’une atmosphère de bienveillance et de partage règne!</Text>
+                <TextInput autoCorrect={false} autoCapitalize='none' autoComplete='email' keyboardType='email-address' value={email} onChangeText={(text) => changeText(text, 0)} placeholder='Email*' placeholderTextColor={colors.darkGreen} style={{ ...sharedStyles.inputText, marginBottom: 10 }}></TextInput>
+                <TextInput secureTextEntry={true} value={pass} onChangeText={(text) => changeText(text, 1)} placeholder='Mot de passe*' style={{...sharedStyles.inputText, marginBottom: 24 }}></TextInput>
+                <Text style={{...sharedStyles.p, color: colors.darkGreen}}>Mot de passe oublier ?</Text>
                 <Text style={{ marginTop: 10, fontSize: 13, color: colors.red }}>{error}</Text>
             </View>
 
-            <View style={{ width: '90%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                <TouchableOpacity onPress={sendLogin} style={{ ...sharedStyles.primaryButtonWithoutColor, backgroundColor: colors.primaryYellow, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>Connexion</Text>
-                    <ActivityIndicator style={{ position: 'absolute', right: 15 }} animating={loading} color={'white'}></ActivityIndicator>
-                </TouchableOpacity>
+            <SignupFooterNav
+            title = 'Connexion'
+            canGoBack = {true}
+            onPressContinue = {sendLogin}
+            onPressBack = {goBack}
+            ></SignupFooterNav>
 
-                <TouchableOpacity onPress={loginStatus} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 12, fontWeight: 'normal', color: 'black' }}>Pas encore membre ? <Text style={{ fontWeight: 'bold' }}>S'inscrire</Text></Text>
-                </TouchableOpacity>
-
-            </View>
         </View>
     );
 }

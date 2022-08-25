@@ -90,6 +90,11 @@
     "moreInfo": {
       "type": "json"
     },
+    "infos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::info.info"
+    },
     "chat": {
       "type": "relation",
       "relation": "oneToOne",

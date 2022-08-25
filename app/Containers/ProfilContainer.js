@@ -102,11 +102,11 @@ export default function ProfilContainer({ route, navigation }) {
                     <Text style={{...sharedStyles.h2, paddingTop: 13}}>{userData.username}</Text>
                     { pendingsUser &&
                         <View style={{width: '100%', paddingTop: 8, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                        <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 8, borderRadius: 4, borderStyle: 'solid', borderWidth: 1, borderColor:  colors.primaryYellow}}>
-                            <Text style={{color: colors.primaryYellow}}>Refuser</Text>
+                        <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 8, borderRadius: 4, borderStyle: 'solid', borderWidth: 1, borderColor:  colors.darkGreen}}>
+                            <Text style={{color: colors.darkGreen}}>Refuser</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                        style={{paddingVertical: 8, backgroundColor: colors.primaryYellow, borderRadius: 4, paddingHorizontal: 20}}
+                        style={{paddingVertical: 8, backgroundColor: colors.darkGreen, borderRadius: 4, paddingHorizontal: 20}}
                         ><Text style={{color: 'white'}}>Accepter</Text></TouchableOpacity>
                         </View>
                     }
@@ -187,12 +187,12 @@ const profilStyles = StyleSheet.create({
         backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25
     },
     userPicture: {
-        width: 156, height: 156, borderRadius: 78, borderColor: colors.primaryYellow, borderWidth: 3
+        width: 156, height: 156, borderRadius: 78, borderColor: colors.darkGreen, borderWidth: 3
     },
     blockContainer: {
         paddingHorizontal: 10,
         paddingVertical:8,
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.darkGreen,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },
