@@ -9,7 +9,7 @@ import SignupFooterNav from './Utils/SignupFooterNav';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus, goBack }) {
 
-    const [email, setEmail] = React.useState("test@gmail.fr")
+    const [email, setEmail] = React.useState("jean-rennet@gmail.com")
     const [pass, setPass] = React.useState("123456")
 
     function sendLogin() {

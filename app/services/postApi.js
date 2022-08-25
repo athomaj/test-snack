@@ -43,10 +43,20 @@ async function getOne(id) {
             return null
         })
 }
-
+async function getDietOfOne(id){
+    return await axios.get(`${API_URL}/posts/${id}?populate[0]=*&populate[1]=diets.image`)
+        .then(response => {
+            return response.data.data
+        })
+        .catch(error => {
+            console.log("ERROR FIND ONE POST ====", error.response)
+            return null
+        })
+}
 export default {
     publish,
     getOne,
     getPosts,
-    getEvent
+    getEvent,
+    getDietOfOne
 }
