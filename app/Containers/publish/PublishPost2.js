@@ -6,8 +6,9 @@ import PostPicturePickerComponent from "../../Components/Utils/PostPicturePicker
 
 import { usePublishContext } from "../../context/PublishContext";
 
-import { postCreateStyles } from "../../utils/styles";
+import { postCreateStyles, sharedStyles } from "../../utils/styles";
 import { colors } from "../../utils/colors";
+import SignupFooterNav from "../../Components/Utils/SignupFooterNav";
 
 export default function PublishPost2({ navigation }) {
 
@@ -38,12 +39,13 @@ export default function PublishPost2({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundColor }}>
             <View style={{ height: '100%', width: '100%' }}>
                 <View style={{ paddingHorizontal: 10 }}>
                     <View style={styles.allText}>
-                        <Text style={styles.text}>Choisit une photo pour l’évènement.</Text>
-                        <Text style={styles.text}>Conseil pour prendre de bonne photo et rassurer... (jusqu’à 6 photos) Possibilité de le faire plus tard.</Text>
+                    <Text style={{...sharedStyles.bigTitle, marginBottom: 5}}>Photo</Text>
+                        <Text style={{...sharedStyles.p}}>Choisis une ou plusieurs photos pour illustrer ce que tu proposes. </Text>
+                        <Text style={{...sharedStyles.p}}>Voir nos conseils pour réussir ta photo.</Text>
                     </View>
                     <View style={styles.flatlist}>
                         <FlatList
@@ -55,12 +57,18 @@ export default function PublishPost2({ navigation }) {
                     </View>
                 </View>
                 <View style={postCreateStyles.header}>
-                    <Text style={postCreateStyles.titleHeader}>Photo</Text>
                     <TouchableOpacity style={postCreateStyles.crossView} onPress={() => navigation.navigate('Home')}>
                         <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
                     </TouchableOpacity>
                 </View>
-                <PublishFooterNav firstScreen={false} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} />
+                {/* <PublishFooterNav firstScreen={false} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} /> */}
+                <SignupFooterNav
+                disabledButton={buttonDisable}
+                title="Suivant"
+                onPressBack={navigation.goBack}
+                onPressContinue={onPressContinue}
+                canGoBack = {true}
+                ></SignupFooterNav>
             </View>
         </SafeAreaView>
     )

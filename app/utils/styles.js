@@ -157,13 +157,13 @@ export const postCreateStyles = StyleSheet.create({
         position: "absolute",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colors.white
+        backgroundColor: colors.backgroundColor
     },
 
     titleHeader: {
         fontWeight: '500',
         fontSize: 15,
-        color: colors.primaryBlue
+        color: colors.darkGreen
     },
 
     cross: {

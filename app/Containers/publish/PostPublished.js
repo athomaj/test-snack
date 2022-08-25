@@ -1,21 +1,21 @@
 import React from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 import { colors } from "../../utils/colors";
+import { sharedStyles } from "../../utils/styles";
 
 export default function PostPublished({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ height: 200, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <Image style={styles.image} source={require('../../assets/icon/defaultImage.png')} />
+            <View style={{ height: '60%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <Image style={styles.image} source={require('../../assets/onboarding/pictureOnboarding.png')} />
             </View>
-            <View style={{ width: '90%' }}>
-                <Text style={styles.title}>Bravo votre{"\n"}évènements...</Text>
-                <Text style={styles.text}>Super vous êtes inscrit maintenant il est temps de configurer votre profil pour avoir plus de chance de recevoir et de participer à des évènements.</Text>
+            <View style={{ width: '90%', justifyContent: 'flex-end', marginBottom: 40}}>
+                <Text style={{...sharedStyles.bigTitle}}>C’est en ligne...</Text>
+                <Text style={{...sharedStyles.p}}>Super ton annonce est maintenant visible par la communauté Food Food. Surveille tes messages pour répondre aux demandes...</Text>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Voir votre annonce</Text>
+                <TouchableOpacity style={{...sharedStyles.primaryButtonWithColor}}>
+                    <Text style={{...sharedStyles.textUnderPrimaryButton}}>Voir votre annonce</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Text style={styles.link} onPress={() => navigation.navigate('Home')}>Retour à l'accueil</Text>
@@ -28,17 +28,15 @@ export default function PostPublished({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: colors.white,
+        ...sharedStyles.wrapperHeaderSpace,
         padding: 15,
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "flex-end"
     },
 
     image: {
-        width: '50%',
-        height: 120,
+        width: '100%',
+        height: '90%',
         resizeMode: 'contain'
     },
 
@@ -79,13 +77,15 @@ const styles = StyleSheet.create({
     },
 
     link: {
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         textDecorationLine: "underline",
         fontWeight: '500',
         fontSize: 13
     },
 
     footer: {
+        paddingHorizontal: 15,
+        marginBottom: 30,
         width: '100%',
         alignItems: "center",
         justifyContent: "space-between",

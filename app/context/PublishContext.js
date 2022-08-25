@@ -131,7 +131,7 @@ const PublishProvider = ({ children }) => {
 
                 const response = await postApi.publish(formData)
 
-                console.log("RES PROMISE ===", response)
+                console.log("RES PROMISE ===", response.status)
                 console.log("YOOOOOOOOOOOOO ===")
                 setLoading(false)
             }
