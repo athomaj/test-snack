@@ -137,9 +137,9 @@ export const sharedStyles = StyleSheet.create({
 
     },
     bottomCaesura: {
-        borderBottomColor: colors.darkGreen,
+        borderBottomColor: colors.orange1,
         borderStyle: 'solid',
-        borderBottomWidth: 0.5
+        borderBottomWidth: 1
     },
     p:{
         fontFamily: 'Inter',

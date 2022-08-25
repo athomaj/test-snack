@@ -6,6 +6,7 @@ import moment from "moment";
 import { useUserContext } from "../context/UserContext";
 import { PostListItemComponent } from "../Components/PostListItemComponent";
 import { PostListLilItemComponent } from "../Components/PostListItemLilComponent";
+import { sharedStyles } from "../utils/styles";
 
 export default function MealContainer({ navigation }) {
 
@@ -25,16 +26,18 @@ export default function MealContainer({ navigation }) {
         const postFuture = []
         const postPast = []
         posts.map((data) => {
-            if(moment(data.attributes.datetime).format('L') === moment().format('L')){
-                if(moment(data.attributes.datetime).format('LT') > moment().format('LT')){
+            const dateOfPost = moment(data.attributes.datetime).format('LT').includes('PM') ? parseInt(moment(data.attributes.datetime).format('LT').slice(0, data.attributes.datetime.indexOf(':')-1))+12 : parseInt(moment(data.attributes.datetime).format('LT').slice(0, data.attributes.datetime.indexOf(':')-1))
+            const dateNow = moment().format('LT').includes('PM') ? parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))+12 : parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))
+
+            console.log(moment().format('LT').indexOf(':')-1)
+            if(moment(data.attributes.datetime).format('L') === moment().format('L') && dateOfPost > dateNow){
                     postToday.push(data)
-                }else{
-                    postPast.push(data)
-                }
+               
             }else if(moment(data.attributes.datetime).format('L') > moment().format('L')){
                 postFuture.push(data)
-            }else if(moment(data.attributes.datetime).format('L') < moment().format('L')){
+            }else{
                 postPast.push(data)
+                console.log(data.attributes.title, dateOfPost, 'AND', dateNow)
             }
         })
         setTodayEvent(postToday)
@@ -60,7 +63,7 @@ export default function MealContainer({ navigation }) {
                 :
                     <></>
                 }
-                <View style={{marginTop: 30}}>
+                <View style={{marginTop: 30, paddingHorizontal: 15}}>
                     <Text style={styles.eventTitle}>Mes prochains évènements</Text>
                     {futureEvent.length > 0 ?
                         <View>
@@ -74,7 +77,7 @@ export default function MealContainer({ navigation }) {
                         <Text>Vous n'avez pas d'évènements à venir</Text>
                     }
                 </View>
-                <View style={{marginTop: 30, marginBottom: 30}}>
+                <View style={{marginTop: 30, marginBottom: 30, paddingHorizontal: 15}}>
                     <Text style={styles.eventTitle}>Archives</Text>
                     {futureEvent.length > 0 ?
                         <View>
@@ -96,16 +99,14 @@ export default function MealContainer({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
+        ...sharedStyles.wrapperHeaderSpace,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.white
     },
 
     h1: {
-        fontWeight: '600',
-        fontSize: 30,
-        color: colors.primaryBlue
+        ...sharedStyles.h1
     },
 
     top: {
@@ -113,13 +114,16 @@ const styles = StyleSheet.create({
     },
 
     nextEvent: {
+        width: '100%',
+        backgroundColor: colors.beige1,
         marginTop: 30,
+        padding:  15
     },
 
     eventTitle: {
         fontWeight: '600',
         fontSize: 18,
-        color: colors.primaryBlue
+        color: colors.darkGreen
     },
 
     picture: {
@@ -136,7 +140,6 @@ const styles = StyleSheet.create({
     scroll: {
         width: '100%',
         height: '100%',
-        padding: 20,
     }
 
 })

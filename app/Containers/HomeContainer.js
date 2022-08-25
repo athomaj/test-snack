@@ -1,14 +1,10 @@
 import React from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Dimensions, Modal, StyleSheet } from 'react-native';
 import moment from 'moment';
-
 import { PostListItemComponent } from '../Components/PostListItemComponent';
 import FilterComponent from '../Components/FilterComponent';
-
 import { useUserContext } from '../context/UserContext';
-
 import postApi from '../services/postApi';
-
 import { colors } from '../utils/colors';
 import { useFocusEffect } from '@react-navigation/native';
 import { sharedStyles } from '../utils/styles';
@@ -34,9 +30,16 @@ export default function HomeContainer({ navigation }) {
     async function getPosts() {
         const data = await postApi.getPosts()
         if (data) {
-            // console.log(data)
-            setPosts(data)
-            setFilterPosts(data)
+            const postValide = data.filter((post) => {
+                const dateOfPost = moment(post.attributes.datetime).format('LT').includes('PM') ? parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))+12 : parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))
+                const dateNow = moment().format('LT').includes('PM') ? parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))+12 : parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))
+                if(moment(post.attributes.datetime).format('L') > moment().format('L') || (moment(post.attributes.datetime).format('L') === moment().format('L') && dateOfPost > dateNow)){
+                    return true
+                } else false
+            })
+            console.log('POST VALIDE ====>',postValide)
+            setPosts(postValide)
+            setFilterPosts(postValide)
         } else {
             setError(true)
         }
