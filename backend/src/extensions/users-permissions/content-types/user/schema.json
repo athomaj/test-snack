@@ -118,6 +118,17 @@
     },
     "guiltyPleasure": {
       "type": "text"
+    },
+    "eventPendings": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "userPendings"
+    },
+    "notifications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::notification.notification"
     }
   }
 }

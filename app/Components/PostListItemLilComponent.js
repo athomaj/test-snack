@@ -19,8 +19,10 @@ export function PostListLilItemComponent({ item, index, navigateTo }) {
             <View style={styles.container}>
                 <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures?.data[0].attributes.url }} />
                 <View style={styles.right}>
-                    <Text style={styles.title}>{item.attributes.title}</Text>
-                    <Text style={styles.userdate}>{moment((item.attributes.datetime)).format('DD MMM à H:mm')}</Text>
+                    <View>
+                        <Text style={styles.title}>{item.attributes.title}</Text>
+                        <Text style={styles.userdate}>{moment((item.attributes.datetime)).format('DD MMM à H:mm')}</Text>
+                    </View>
                     <View style={styles.userAndDate}>
                         <Image style={styles.avatarUrl} source={{ uri: item.attributes.user.data?.attributes.avatarUrl }} />
                         <Text style={styles.userdate}>{`Avec ${ShortName(item.attributes.user.data?.attributes.username)} et ${item.attributes.participant.data.length} autres personnes`}</Text>
@@ -41,8 +43,9 @@ const styles = StyleSheet.create({
 
     imagePost: {
         height: 76,
-        width: 105,
+        width: '30%',
         borderRadius: 8,
+        resizeMode: 'contain'
     },
 
     right: {
@@ -62,9 +65,8 @@ const styles = StyleSheet.create({
         width: 27.5,
         height: 27.5,
         borderRadius: 14,
-        borderWidth: 1,
-        marginRight: 6,
-        borderColor: colors.orange1
+        borderWidth: 0.7,
+        borderColor: colors.thirdBlue
     },
 
     user: {
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '50%',
+        width: '33%'
     },
 
 })

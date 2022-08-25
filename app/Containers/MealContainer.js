@@ -11,10 +11,12 @@ import { sharedStyles } from "../utils/styles";
 export default function MealContainer({ navigation }) {
 
     const userContext = useUserContext()
+    const [event, setEvent] = React.useState({ todayEvent: [],futureEvent: [], pastEvent: []})
 
-    const [todayEvent, setTodayEvent] = React.useState([])
-    const [futureEvent, setFutureEvent] = React.useState([])
-    const [pastEvent, setPastEvent] = React.useState([])
+    //On ajoute un state event qui rassemblera les trois tableau (facilite la lisibilité et évite le rerender sur les trois states ?)
+    // const [todayEvent, setTodayEvent] = React.useState([])
+    // const [futureEvent, setFutureEvent] = React.useState([])
+    // const [pastEvent, setPastEvent] = React.useState([])
 
     React.useEffect(() => {
         getPosts()
@@ -40,9 +42,10 @@ export default function MealContainer({ navigation }) {
                 console.log(data.attributes.title, dateOfPost, 'AND', dateNow)
             }
         })
-        setTodayEvent(postToday)
-        setFutureEvent(postFuture)
-        setPastEvent(postPast)
+        setEvent({todayEvent: postToday, futureEvent: postFuture, pastEvent:postPast})
+        // setTodayEvent(postToday)
+        // setFutureEvent(postFuture)
+        // setPastEvent(postPast)
     }
 
     return (
@@ -51,23 +54,21 @@ export default function MealContainer({ navigation }) {
                 <View style={styles.top}>
                     <Text style={styles.h1}>Mes Foods</Text>
                 </View>
-                {todayEvent.length > 0 ?
+                {event.todayEvent.length > 0 &&
                     <View style={styles.nextEvent}>
                         <Text style={styles.eventTitle}>C'est pour bientôt !</Text>
-                        {todayEvent.map((data, index) => (
+                        {event.todayEvent.map((data, index) => (
                             <View key={index}>
                                 <PostListItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
                             </View>
                         ))}
                     </View>
-                :
-                    <></>
                 }
                 <View style={{marginTop: 30, paddingHorizontal: 15}}>
                     <Text style={styles.eventTitle}>Mes prochains évènements</Text>
-                    {futureEvent.length > 0 ?
+                    {event.futureEvent.length > 0 ?
                         <View>
-                            {futureEvent.map((data, index) => (
+                            {event.futureEvent.map((data, index) => (
                                 <View key={index}>
                                     <PostListLilItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
                                 </View>
@@ -79,9 +80,9 @@ export default function MealContainer({ navigation }) {
                 </View>
                 <View style={{marginTop: 30, marginBottom: 30, paddingHorizontal: 15}}>
                     <Text style={styles.eventTitle}>Archives</Text>
-                    {futureEvent.length > 0 ?
+                    {event.pastEvent.length > 0 ?
                         <View>
-                            {pastEvent.map((data, index) => (
+                            {event.pastEvent.map((data, index) => (
                                 <View key={index}>
                                     <PostListLilItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
                                 </View>
