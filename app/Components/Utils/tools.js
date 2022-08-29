@@ -11,7 +11,6 @@ import { sharedStyles } from "../../utils/styles";
     }
 
     const SmallIcon = ({label, image}) => {
-        console.log(image)
         return(
         <View style={{width: 100, height: 100, borderRadius: 4, backgroundColor: colors.green1, justifyContent: 'center', alignItems: "center"}}>
             <Image

@@ -8,6 +8,7 @@ import { PostListItemComponent } from "../Components/PostListItemComponent";
 import { PostListLilItemComponent } from "../Components/PostListItemLilComponent";
 import { sharedStyles } from "../utils/styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function MealContainer({ navigation }) {
 
@@ -20,9 +21,11 @@ export default function MealContainer({ navigation }) {
     // const [futureEvent, setFutureEvent] = React.useState([])
     // const [pastEvent, setPastEvent] = React.useState([])
 
-    React.useEffect(() => {
-        getPosts()
-    }, [myEnvent])
+    useFocusEffect(
+        React.useCallback(() => {
+            getPosts()
+        }, [])
+    )
 
     async function getPosts() {
         const posts = myEnvent ? await postApi.getMyEvent(userContext.authState.user.id) : await postApi.getEvent(userContext.authState.user.id)
@@ -50,6 +53,10 @@ export default function MealContainer({ navigation }) {
         // setPastEvent(postPast)
     }
 
+    function navigateToPostDetail(id) {
+        navigation.navigate("Profil", {index: id})
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scroll}>
@@ -70,7 +77,7 @@ export default function MealContainer({ navigation }) {
                         <Text style={styles.eventTitle}>C'est pour bientôt !</Text>
                         {event.todayEvent.map((data, index) => (
                             <View key={index}>
-                                <PostListItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
+                                <PostListItemComponent item={data} index={index} navigateTo={() =>  navigateToPostDetail(data.id)}/>
                             </View>
                         ))}
                     </View>
@@ -81,7 +88,7 @@ export default function MealContainer({ navigation }) {
                         <View>
                             {event.futureEvent.map((data, index) => (
                                 <View key={index}>
-                                    <PostListLilItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
+                                    <PostListLilItemComponent item={data} index={index} navigateTo={() => navigateToPostDetail(data.id)}/>
                                 </View>
                             ))}
                         </View>
@@ -95,7 +102,7 @@ export default function MealContainer({ navigation }) {
                         <View>
                             {event.pastEvent.map((data, index) => (
                                 <View key={index}>
-                                    <PostListLilItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
+                                    <PostListLilItemComponent item={data} index={index} navigateTo={() => navigateToPostDetail(data.id)}/>
                                 </View>
                             ))}
                         </View>

@@ -56,6 +56,7 @@ const MainTabSatck = createBottomTabNavigator();
 const PublishStack = createNativeStackNavigator();
 const ActivityStack = createNativeStackNavigator();
 const ProfilStack = createNativeStackNavigator();
+const PostStack  = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIconActive.png')
 const homeIconInactive = require('./assets/tabBar/loupeIcon.png')
@@ -148,6 +149,15 @@ function ActivityStackScreen({ navigation }) {
   );
 }
 
+function PostStackScreen({ navigation }) {
+  return (
+    <PostStack.Navigator initialRouteName={"Post"} screenOptions={{ headerTransparent: true, headerShown: false }}>
+      <PostStack.Screen name="Post" component={PostDetailComponent} />
+      <PostStack.Screen name="Profil" component={ProfilContainer} />
+    </PostStack.Navigator>
+  );
+}
+
 export default function App() {
 
     const [loadedFonts] = useFonts({
@@ -189,8 +199,8 @@ export default function App() {
                 options={{ headerShown: false, gestureEnabled: false }}
               />
               <RootStack.Screen
-                name="PostDetail"
-                component={PostDetailComponent}
+                name="PostStack"
+                component={PostStackScreen}
                 options={{ headerShown: false, gestureEnabled: false }}
               />
             </RootStack.Group>

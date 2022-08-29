@@ -48,7 +48,7 @@ export default function AccountContainer({ navigation }) {
     React.useEffect(() => {
         setAvatarUrl(userContext.authState.user.avatarUrl ? userContext.authState.user.avatarUrl : null)
         setUserName(userContext.authState.user.username)
-        setNumberPendings(userContext.authState.user.pendings.length > 0 ? userContext.authState.user.pendings.length : null)
+        setNumberPendings(userContext.authState.user.pendings?.length > 0 ? userContext.authState.user.pendings.length : null)
     }, [userContext.authState.user])
 
     React.useEffect(() => {
