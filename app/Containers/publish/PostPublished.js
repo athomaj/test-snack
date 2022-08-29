@@ -14,7 +14,7 @@ export default function PostPublished({ navigation }) {
                 <Text style={{...sharedStyles.p}}>Super ton annonce est maintenant visible par la communauté Food Food. Surveille tes messages pour répondre aux demandes...</Text>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={{...sharedStyles.primaryButtonWithColor}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{...sharedStyles.primaryButtonWithColor}}>
                     <Text style={{...sharedStyles.textUnderPrimaryButton}}>Voir votre annonce</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>

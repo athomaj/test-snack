@@ -16,5 +16,19 @@ module.exports = ({ env }) => ({
         defaultToName: "Johnny Bravodoe",
       },
     },
-  }
+  },upload: {
+    config: {
+      provider: "strapi-provider-upload-minio-ce",
+      providerOptions: {
+        accessKey: "DUtA8gb8YAatJVLb2Vuq",
+        secretKey: "gqMsVKeSbqflRQHQVbydo3e8Cr4nGpzUSzZe8JYz",
+        bucket: "bucket1",
+        endPoint: "minio.new-atelier.athomas.io",
+        port: "443",
+        useSSL:  "true",
+        host: "minio.new-atelier.athomas.io",
+        folder: "cms",
+      },
+    },
+  },
 });

@@ -73,24 +73,6 @@ const PublishProvider = ({ children }) => {
         })
     }
 
-    // const updatePublish4 = async (address, bonus) => {
-    //     const newBonus = []
-
-    //     bonus.filter(item => {
-    //         if (item.status === true) {
-    //             newBonus.push(item.id)
-    //         }
-    //     })
-
-    //     setPublishPost({
-    //         ...publishPost,
-    //         address: address,
-    //         bonus: bonus
-    //     })
-
-    //     await finalPost()
-    // }
-
     const finalPost = async (address, bonus) => {
         setLoading(true)
         const newPictures = []
@@ -111,6 +93,7 @@ const PublishProvider = ({ children }) => {
                 address: address,
                 moreInfo: JSON.stringify(bonus),
                 user: { id: userContext.authState.user.id },
+                district: {id: userContext.authState.user.district.id},
                 postalCode: {id: userContext.authState.user.district.id}
             },
             picture: newPictures,

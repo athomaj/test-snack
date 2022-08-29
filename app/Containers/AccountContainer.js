@@ -1,10 +1,8 @@
 import React from 'react';
-import { Image, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Image, Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
-import { BASE_URL } from '../config/config';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function AccountContainer({ navigation }) {
@@ -83,7 +81,7 @@ export default function AccountContainer({ navigation }) {
 
                 <TouchableOpacity style={accountStyles.blockContainer}>
                     <Image source={require('../assets/icon/iconUser.png')} style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 15 }}></Image>
-                    <Text style={{ ...sharedStyles.shortText }}>Mon Matèriel</Text>
+                    <Text style={{ ...sharedStyles.shortText }}>Mon Matériel</Text>
                 </TouchableOpacity>
 
                 <View style={accountStyles.blockContainer}>

@@ -73,7 +73,7 @@ export default function PublishPost4({ navigation }) {
                 <View style={styles.container}>
                     <View style={styles.address}>
                         <Text style={styles.title}>Lieux du rendez-vous ?</Text>
-                        <TextInput style={styles.input} placeholder={'2 place paul Cézanne 13006'} placeholderTextColor={colors.primaryBlue} value={address} onChangeText={(e) => setAddress(e)} />
+                        <TextInput style={styles.input} placeholder={'Ex : 2 place paul Cézanne'} placeholderTextColor={colors.grey2} value={address} onChangeText={(text) => setAddress(text)} />
                     </View>
                     <View style={styles.bonus}>
                         <Text style={styles.title}>Le lieux de rendez-vous comprends...</Text>

@@ -19,14 +19,16 @@ export function PostListItemComponent({ item, index, navigateTo }) {
     return (
         <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
-                <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}} />
+                {item.attributes.pictures.data &&
+                    <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}} />
+                }
                 <View style={styles.category}>
                     <Text style={styles.categoryText}>{item.attributes.category.data?.attributes.name}</Text>
                 </View>
                 <View style={styles.district}>
                     <Image style={styles.pin} source={require("../assets/icon/pin.png")} />
                     {/* <Text style={styles.districtText}>{item.attributes.district}</Text> */}
-                    <Text style={styles.districtText}>13002</Text>
+                    <Text style={styles.districtText}>{item.attributes.postalCode.data?.attributes.name}</Text>
                 </View>
                 <View style={styles.bottom}>
                     <Text style={styles.title}>{item.attributes.title}</Text>
