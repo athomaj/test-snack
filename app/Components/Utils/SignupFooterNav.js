@@ -37,7 +37,7 @@ export default function SignupFooterNav({ title, errorMessage, onPressContinue, 
                 }
                 <TouchableOpacity onPress={whenContinueIsPress} disabled={disabledButton} style={{ width: 130, height: 44, borderRadius: 4, justifyContent: 'center', alignItems: 'center', backgroundColor: disabledButton ? `${colors.orange1}33` : colors.orange1 }}>
                     {loading &&
-                        <ActivityIndicator style={{ position: 'absolute', right: 5 }} animating={loading} hidesWhenStopped={true} color={"white"}></ActivityIndicator>
+                        <ActivityIndicator style={{ position: 'absolute', right: 5 }} animating={loading} hidesWhenStopped={true} color={colors.darkGreen}></ActivityIndicator>
                     }
                     <Text style={{ fontSize: 16, color: colors.darkGreen, fontWeight: 'bold' }}>{title}</Text>
                 </TouchableOpacity>

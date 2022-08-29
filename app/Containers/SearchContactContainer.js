@@ -8,6 +8,7 @@ import { useUserContext } from '../context/UserContext';
 
 import { sharedStyles } from '../utils/styles';
 import { colors } from '../utils/colors';
+import notificationApi from '../services/notificationApi';
 
 export default function SearchContactContainer({ navigation, route }) {
 
@@ -15,7 +16,6 @@ export default function SearchContactContainer({ navigation, route }) {
 
   const [memberMatch, setMemberMatch] = React.useState([])
   const [selectedSponsor, setSelectedSponsor] = React.useState([])
-  const [sendAsk, setSendAsk] = React.useState(false)
 
   React.useEffect(() => {
     fetchMembers()
@@ -58,22 +58,43 @@ export default function SearchContactContainer({ navigation, route }) {
   }
 
   async function addSelectedSponsor(value, username) {
-    const arrayToEdit = [...selectedSponsor]
-    
-    arrayToEdit.push(value)
-    setSelectedSponsor(arrayToEdit)
+    try {
+      const arrayToEdit = [...selectedSponsor]
+      
+      arrayToEdit.push(value)
+      setSelectedSponsor(arrayToEdit)
+  
+      const arrayOfpendings = memberMatch.filter(element => element.id === value)[0]
+      const arrayToedditpendings = arrayOfpendings.pendings
+      arrayToedditpendings.push({ "id": userContext.authState.user.id })
+  
+      const data = new Object
+      data.pendings = arrayToedditpendings
+        
+      await userApi.updateUser(data, value)
+      
+      sendNotification(value)
+    } catch (error) {
+      console.log(error, "ERR SEND SPONSOR ====")
+    }
 
-    const arrayOfpendings = memberMatch.filter(element => element.id === value)[0]
-    const arrayToedditpendings = arrayOfpendings.pendings
-    arrayToedditpendings.push({ "id": userContext.authState.user.id })
+  }
 
-    const data = new Object
-    data.pendings = arrayToedditpendings
-    await userApi.updateUser(data, value).then(response => {
-      if (!response.status) {
-        setSendAsk(true)
-      }
-    })
+  async function sendNotification(id) {
+    try {
+      const res = await notificationApi.createNotification({
+        data: {
+            title: userContext.authState.user.username,
+            description: 'Vous a demandé votre parrainage.',
+            type: 'sponsor',
+            user: {id: id},
+            userRequest: {id: userContext.authState.user.id}
+        }
+      })
+      console.log(res, "NOTIF RES ====")
+    } catch (error) {
+      console.log(error, "ERR SEND NOTIF ====")
+    }
   }
 
   function onClickNext() {

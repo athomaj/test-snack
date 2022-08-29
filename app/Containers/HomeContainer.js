@@ -37,7 +37,6 @@ export default function HomeContainer({ navigation }) {
                     return true
                 } else false
             })
-            console.log('POST VALIDE ====>',postValide)
             setPosts(postValide)
             setFilterPosts(postValide)
         } else {

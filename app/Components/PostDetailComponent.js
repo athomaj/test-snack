@@ -8,6 +8,9 @@ import { useUserContext } from '../context/UserContext';
 import { onBoardingData } from '../utils/onBoardingData';
 import Caroussel from './Utils/Caroussel';
 import { BASE_URL } from '../config/config';
+import { postDetailStyles } from '../styles/postDetailStyles';
+import { displayAlert } from '../utils/displayAlert';
+import notificationApi from '../services/notificationApi';
 
 
 export function PostDetailComponent({ navigation, route }) {
@@ -57,10 +60,10 @@ export function PostDetailComponent({ navigation, route }) {
             }
         })
         const abadonState = await userContext.updateUserInformation({events : data})
-        setParticipant(false)
+        setParticipant('')
     }
 
-    const participateToEvent = ()=>{
+    async function participateToEvent () {
         const data = []
         userContext.authState.user.events ? userContext.authState.user?.events.forEach((element)=>{
             if(element?.id && element.id !== post.id)
@@ -69,8 +72,24 @@ export function PostDetailComponent({ navigation, route }) {
             }
         }) : null
         data.push(post.id)
-        userContext.updateUserInformation({eventPendings : data})
-        setParticipant(true)
+        await userContext.updateUserInformation({eventPendings : data})
+
+        await notificationApi.createNotification({
+            data: {
+                title: userContext.authState.user.username,
+                description: `Veux participer à votre atelier "${post.attributes.title}"`,
+                type: 'event',
+                user: {id: post?.attributes.user.data.id},
+                post: post.id,
+                userRequest: {id: userContext.authState.user.id}
+            }
+        })
+
+        setParticipant('pendings')
+        displayAlert(
+            'Votre demande a été envoyé',
+            `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`
+            )
     }
 
     function buttonStatus(text){
@@ -115,17 +134,7 @@ export function PostDetailComponent({ navigation, route }) {
                 );
         }
         else{
-                participateToEvent()
-                Alert.alert(
-                    'Votre demande a été envoyé',
-                    `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
-                    [{
-                text: 'Ok',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-                },
-                    ]
-                );
+            participateToEvent()
         }
     }
     
@@ -145,30 +154,30 @@ export function PostDetailComponent({ navigation, route }) {
     }
 
     const renderDiet = ({ item }) => (
-        <View style={styles.viewDiet}>
-            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
-            <Text style={styles.textDiet}>{item.attributes.name}</Text>
+        <View style={postDetailStyles.viewDiet}>
+            <Image style={postDetailStyles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+            <Text style={postDetailStyles.textDiet}>{item.attributes.name}</Text>
         </View>
     );
 
     return (
         <View>
-            <ScrollView style={styles.container}>
-                <View style={styles.top}>
+            <ScrollView style={postDetailStyles.container}>
+                <View style={postDetailStyles.top}>
                     {post &&
                         <Caroussel data={carousselPitcures} height={273}></Caroussel>
                     }
-                    <TouchableOpacity onPress={navigation.goBack} style={styles.backBox}>
+                    <TouchableOpacity onPress={navigation.goBack} style={postDetailStyles.backBox}>
                         <Image source={require('../assets/icon/return_icon.png')} style={{width: '80%', height:'80%', resizeMode:'contain'}}/>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.body}>
+                <View style={postDetailStyles.body}>
                     <View>
-                        <Text style={styles.title}>{post?.attributes.title}</Text>
-                        <Text style={styles.desc}>{post?.attributes.description}</Text>
+                        <Text style={postDetailStyles.title}>{post?.attributes.title}</Text>
+                        <Text style={postDetailStyles.desc}>{post?.attributes.description}</Text>
                     </View>
-                    <View style={styles.diet}>
-                        <Text style={styles.multipleTitle}>Régime alimentaire</Text>
+                    <View style={postDetailStyles.diet}>
+                        <Text style={postDetailStyles.multipleTitle}>Régime alimentaire</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={diet}
@@ -177,274 +186,66 @@ export function PostDetailComponent({ navigation, route }) {
                             keyExtractor={item => item.id}
                         />
                     </View>
-                    <View style={styles.user}>
-                        <View style={styles.topUser}>
+                    <View style={postDetailStyles.user}>
+                        <View style={postDetailStyles.topUser}>
                             <View>
-                                <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
-                                <Text style={styles.partEvent}>Votre hôte</Text>
-                                {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
+                                <Text style={postDetailStyles.username}>{post?.attributes.user.data.attributes.username}</Text>
+                                <Text style={postDetailStyles.partEvent}>Votre hôte</Text>
+                                {/* <Text style={postDetailStyles.partEvent}>Participation à 'undefined' évènement</Text> */}
                             </View>
-                            <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
+                            <Image style={postDetailStyles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
                         </View>
-                        <View style={styles.flatlistUser}>
+                        <View style={postDetailStyles.flatlistUser}>
                             {badge.map((item) => (
-                                <View key={item.id} style={styles.badge}>
-                                    <Image style={styles.man} source={require('../assets/icon/man.png')} />
-                                    <Text style={styles.badgeText}>{item.name}</Text>
+                                <View key={item.id} style={postDetailStyles.badge}>
+                                    <Image style={postDetailStyles.man} source={require('../assets/icon/man.png')} />
+                                    <Text style={postDetailStyles.badgeText}>{item.name}</Text>
                                 </View>
                             ))}
                         </View>
                     </View>
-                    <View styles={styles.bring}>
-                        <Text style={styles.multipleTitle}>Note supplémentaire</Text>
-                        <Text style={styles.badgeText}>{post?.attributes.bonus ? post.attributes.bonus : 'Aucune'}</Text>
+                    <View styles={postDetailStyles.bring}>
+                        <Text style={postDetailStyles.multipleTitle}>Note supplémentaire</Text>
+                        <Text style={postDetailStyles.badgeText}>{post?.attributes.bonus ? post.attributes.bonus : 'Aucune'}</Text>
                         {/* {bring.map((item) => (
-                            <View key={item.id} style={styles.badge}>
-                                <View style={styles.dot} />
-                                <Text style={styles.badgeText}>{item.name}</Text>
+                            <View key={item.id} style={postDetailStyles.badge}>
+                                <View style={postDetailStyles.dot} />
+                                <Text style={postDetailStyles.badgeText}>{item.name}</Text>
                             </View>
                         ))} */}
                     </View>
-                    <View style={styles.place}>
-                        <Text style={styles.multipleTitle}>Lieu de rendez-vous</Text>
+                    <View style={postDetailStyles.place}>
+                        <Text style={postDetailStyles.multipleTitle}>Lieu de rendez-vous</Text>
                         { participant === 'participant' ?
                         <>
-                        <Text style={styles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
-                        <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.district}</Text>
+                        <Text style={postDetailStyles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
+                        <Text style={postDetailStyles.placeText}>{post?.attributes.address + ', ' + '13002 Marseille'}</Text>
                         </> :
-                        <Text style={styles.placeText}>Adresse indisponnible</Text>
+                        <Text style={postDetailStyles.placeText}>Adresse indisponnible</Text>
                         }
-                        <View style={styles.flatlistUser}>
+                        <View style={postDetailStyles.flatlistUser}>
                             {info.map((item) => (
-                                <View key={item.id} style={styles.badge}>
-                                    <Image style={styles.man} source={require('../assets/icon/man.png')} />
-                                    <Text style={styles.badgeText}>{item.name}</Text>
+                                <View key={item.id} style={postDetailStyles.badge}>
+                                    <Image style={postDetailStyles.man} source={require('../assets/icon/man.png')} />
+                                    <Text style={postDetailStyles.badgeText}>{item.name}</Text>
                                 </View>
                             ))}
                         </View>
                     </View>
                 </View>
             </ScrollView>
-            <View style={styles.footer}>
+            <View style={postDetailStyles.footer}>
                 <View>
-                    <Text style={styles.date}>{moment(post?.attributes.datetime).format("MMMM Do à h") + 'h'}</Text>
-                    <Text style={styles.seats}>{post?.attributes.seats + ' place disponible'}</Text>
+                    <Text style={postDetailStyles.date}>{moment(post?.attributes.datetime).format("MMMM Do à h") + 'h'}</Text>
+                    <Text style={postDetailStyles.seats}>{post?.attributes.seats + ' place disponible'}</Text>
                 </View>
                 <TouchableOpacity 
-                    style={participant ? styles.buttonDelete : styles.button}
+                    style={participant ? postDetailStyles.buttonDelete : postDetailStyles.button}
                     onPress={buttonParticipateByState}
                 >
-                    <Text style={styles.participate}>{buttonStatus(participant)}</Text>
+                    <Text style={postDetailStyles.participate}>{buttonStatus(participant)}</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: colors.white
-    },
-
-    back: {
-        fontWeight: '500',
-        fontSize: 22,
-        color: colors.primaryBlue,
-    },
-
-    backBox: {
-        position: 'absolute',
-        top: isIphoneX() ? 60 : 30,
-        left: 20,
-        height: 25,
-        width: 25,
-        alignItems: 'center',
-        backgroundColor: colors.white,
-        borderRadius: 40,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    top: {
-        height: 375,
-        width: '100%',
-        backgroundColor: colors.backBlue,
-    },
-
-    body: {
-        paddingTop: 20,
-        paddingBottom: 20,
-        paddingHorizontal: 10
-    },
-
-    title: {
-        fontWeight: '600',
-        fontSize: 22,
-        color: colors.primaryBlue,
-    },
-
-    desc: {
-        fontWeight: '400',
-        fontSize: 12,
-        color: colors.thirdBlue,
-        marginTop: 5
-    },
-
-    diet: {
-        marginTop: 30,
-        marginBottom: 30
-    },
-
-    multipleTitle: {
-        fontWeight: '600',
-        fontSize: 18,
-        color: colors.primaryBlue,
-        height: 35
-    },
-
-    viewDiet: {
-        backgroundColor: colors.secondaryBlue,
-        width: Dimensions.get('window').width * 0.3,
-        height: 110,
-        margin: 5,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 4,
-    },
-
-    imageDiet: {
-        width: 46,
-        height: 46
-    },
-
-    textDiet: {
-        fontWeight: '500',
-        fontSize: 13,
-        color: colors.primaryBlue,
-        marginTop: 10
-    },
-
-    user: {
-        marginBottom: 40
-    },
-
-    topUser: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-
-    userPicture: {
-        width: 46,
-        height: 46,
-        borderRadius: 23,
-        borderWidth: 1,
-        borderColor: colors.thirdBlue,
-        backgroundColor: colors.thirdBlue
-    },
-
-    username: {
-        textTransform: 'capitalize',
-        fontWeight: '600',
-        fontSize: 18,
-        color: colors.primaryBlue,
-    },
-
-    badge: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-
-    man: {
-        width: 14,
-        height: 15,
-        marginRight: 10
-    },
-
-    badgeText: {
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue,
-        lineHeight: 30
-    },
-
-    flatlistUser: {
-        marginTop: 20
-    },
-
-    dot: {
-        width: 4,
-        height: 4,
-        backgroundColor: colors.primaryBlue,
-        borderRadius: 2,
-        margin: 5
-    },
-
-    partEvent: {
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue
-    },
-
-    placeText: {
-        textTransform: 'capitalize',
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue,
-        lineHeight: 18,
-    },
-
-    place: {
-        marginTop: 40,
-        marginBottom: 90,
-    },
-
-    footer: {
-        height: 95,
-        width: '100%',
-        position: 'absolute',
-        backgroundColor: colors.white,
-        bottom: 0,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 20
-    },
-
-    date: {
-        fontWeight: '600',
-        fontSize: 14,
-        color: colors.thirdBlue,
-    },
-
-    seats: {
-        fontWeight: '400',
-        fontSize: 10,
-        color: colors.thirdBlue
-    },
-
-    button: {
-        height: 43,
-        width: 114,
-        backgroundColor: colors.thirdBlue,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-    },
-
-    participate: {
-        fontWeight: '600',
-        fontSize: 14,
-        color: colors.white
-    },
-    buttonDelete:{
-        height: 43,
-        width: 114,
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-    }
-})

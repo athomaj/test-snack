@@ -34,8 +34,8 @@ export default function UpdateProfil({ navigation }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', alrignItems: 'center', backgroundColor: 'white' }}>
             <ScrollView style={{ width: '100%', height: '100%' }}>
-                <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40, justifyContent: 'center', marginLeft: 10 }}>
-                    <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
+                <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40, marginTop: 10, justifyContent: 'center', marginLeft: 20 }}>
+                    <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
                 </TouchableOpacity>
 
                 <View style={updateProfilStyles.blockContainer}>
@@ -107,7 +107,7 @@ export default function UpdateProfil({ navigation }) {
                 <View style={{ zIndex: 3, width: '100%', height: '100%', backgroundColor: 'white', paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity
                         onPress={() => setModalVisible(false)}
-                        style={{  position: 'absolute', top: isIphoneX() ? 60 :  30, left: 20, flexDirection: 'row' }}>
+                        style={{  position: 'absolute', top: isIphoneX() ? 60 : 30, left: 20, flexDirection: 'row' }}>
                         <Image source={require('../../assets/icon/return_icon.png')} style={{ width: 20, height: 20, resizeMode: 'contain' }} />
                         <Text style={{ ...sharedStyles.shortText, marginLeft: 10 }}>Revenir aux paramètre</Text>
                     </TouchableOpacity>
