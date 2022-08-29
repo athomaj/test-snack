@@ -1,9 +1,6 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-import { BASE_URL } from "../../config/config";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { usePublishContext } from "../../context/PublishContext";
-import { bonusData } from "../../fakeData/bonus";
 import infoApi from "../../services/infoApi";
 import { colors } from "../../utils/colors";
 import { postCreateStyles, sharedStyles } from "../../utils/styles";
@@ -21,7 +18,7 @@ export default function PublishPost4({ navigation }) {
         const response = await infoApi.getAllinfo()
         if (response) {
             console.log(response)
-            const infos =  response.data.map((info) => { return {'id': info.id, 'title': info.attributes.name, 'image': BASE_URL+info.attributes.image.data.attributes.url }})
+            const infos =  response.data.map((info) => { return {'id': info.id, 'title': info.attributes.name, 'image': info.attributes.image.data.attributes.url }})
                 console.log(infos)
             setBonus(infos)
         } else {
@@ -73,7 +70,7 @@ export default function PublishPost4({ navigation }) {
                 <View style={styles.container}>
                     <View style={styles.address}>
                         <Text style={styles.title}>Lieux du rendez-vous ?</Text>
-                        <TextInput style={styles.input} placeholder={'2 place paul Cézanne 13006'} placeholderTextColor={colors.primaryBlue} value={address} onChangeText={(e) => setAddress(e)} />
+                        <TextInput style={styles.input} placeholder={'Ex : 2 place paul Cézanne'} placeholderTextColor={colors.grey2} value={address} onChangeText={(text) => setAddress(text)} />
                     </View>
                     <View style={styles.bonus}>
                         <Text style={styles.title}>Le lieux de rendez-vous comprends...</Text>

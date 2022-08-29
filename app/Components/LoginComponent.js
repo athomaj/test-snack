@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, TextInput, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 
 import validateEmail from '../utils/sharedFunctions';
 import { displayAlert } from '../utils/displayAlert';
@@ -9,8 +9,8 @@ import SignupFooterNav from './Utils/SignupFooterNav';
 
 export default function LoginComponent({ loading, error, requestLogin, loginStatus, goBack }) {
 
-    const [email, setEmail] = React.useState("test@test.fr")
-    const [pass, setPass] = React.useState("123456")
+    const [email, setEmail] = React.useState("")
+    const [pass, setPass] = React.useState("")
 
     function sendLogin() {
         if (email.length > 0 && pass.length > 0) {

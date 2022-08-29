@@ -19,6 +19,11 @@
     ],
     "ios": {
       "bundleIdentifier": "com.laplateforme.foodfood"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7858f0c7-d218-47b3-9f03-c23f328e1fed"
+      }
     }
   }
 }

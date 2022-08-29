@@ -9,7 +9,6 @@ import { levelData } from "../fakeData/level";
 import { categoryData } from "../fakeData/category";
 import { sharedStyles } from "../utils/styles";
 import dietApi from "../services/dietApi";
-import { BASE_URL } from "../config/config";
 import kitchenApi from "../services/kitchenApi";
 
 
@@ -31,7 +30,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     async function callDiet(){
         const response = await dietApi.getAllDiets()
         if (response) {
-            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': BASE_URL+diet.attributes.image.data.attributes.url }})
+            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': diet.attributes.image.data.attributes.url }})
             setDiet(diets)
         } else {
             setError(true)

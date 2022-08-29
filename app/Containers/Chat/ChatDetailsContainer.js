@@ -1,12 +1,8 @@
 import React from "react";
 import { ActivityIndicator, Dimensions, FlatList, Image, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { colors } from "../../utils/colors";
-import { fakeMessageData } from "../../fakeData/fakeMessages";
-import { fakeNotificationData } from "../../fakeData/fakeNotification";
-import { isIphoneX } from "../../utils/isIphoneX";
 import chatApi from "../../services/chatApi";
 import { useUserContext } from "../../context/UserContext";
-import { BASE_URL } from "../../config/config";
 
 export default function ChatDetailsContainer({ chatId, closeModal }) {
     const userContext = useUserContext()
@@ -92,7 +88,7 @@ export default function ChatDetailsContainer({ chatId, closeModal }) {
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingHorizontal: '10%'}}>
                     <View style={{height: 70, width: '25%', justifyContent: 'center', alignItems: 'center'}}>
                         {chat &&
-                            <Image style={{height: 50, width: '90%', borderRadius: 4, resizeMode: 'cover'}} source={{uri: BASE_URL + chat.post.data.attributes.pictures.data[0].attributes.url}}/>
+                            <Image style={{height: 50, width: '90%', borderRadius: 4, resizeMode: 'cover'}} source={{uri: chat.post.data.attributes.pictures.data[0].attributes.url}}/>
                         }
                     </View>
                     <View style={{width: '75%', paddingLeft: 10}}>

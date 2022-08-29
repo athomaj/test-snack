@@ -1,6 +1,5 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { BASE_URL } from '../config/config';
 import authApi from '../services/authApi';
 import uploadApi from '../services/uploadApi';
 import userApi from '../services/userApi';
@@ -112,7 +111,7 @@ const UserProvider = ({ children }) => {
         const uploadResponse = await uploadApi.uploadPicture(formData)
 
         if (uploadResponse[0]?.url) {
-            const pictureURL = BASE_URL + uploadResponse[0].url
+            const pictureURL = uploadResponse[0].url
 
             const updateAvatar = {
                 "avatarUrl": pictureURL

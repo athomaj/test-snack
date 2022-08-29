@@ -9,9 +9,7 @@ import { useUserContext } from '../../context/UserContext';
 import dietApi from '../../services/dietApi';
 
 import { sharedStyles } from '../../utils/styles';
-import { isIphoneX } from '../../utils/isIphoneX';
 import { colors } from '../../utils/colors';
-import { BASE_URL } from '../../config/config';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 3) - 21;
 
@@ -63,7 +61,7 @@ export default function SignUpStep3Container({ route, navigation }) {
             return (
                 <TouchableOpacity onPress={() => dietTaped(item)} style={{ backgroundColor: dietsSelected.includes(item.id) ? colors.orange1 : colors.green1, height: WIDTHCONTAINER, width: WIDTHCONTAINER, borderRadius: 4, marginBottom: 12, justifyContent: 'flex-end', alignItems: 'center' }}>
                     {item.attributes.image.data &&
-                        <Image source={{uri : BASE_URL+item.attributes.image.data.attributes.url}} style={{ width: 35, height: 35, resizeMode: 'contain' }} />
+                        <Image source={{uri : item.attributes.image.data.attributes.url}} style={{ width: 35, height: 35, resizeMode: 'contain' }} />
                     }
                     <Text style={{
                         fontSize: 13,

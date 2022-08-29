@@ -118,7 +118,7 @@ function MainTabStackScreen({ navigation }) {
   const userContext = useUserContext()
 
   return (
-    <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ tabBarStyle: { height: 70,paddingTop: 5 },headerTransparent: true, tabBarBackground: (() => (<View style={{backgroundColor: colors.backgroundColor, width: '100%', height: 70}}></View>)) }}>
+    <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ tabBarStyle: { height: 70, borderTopWidth: 0,paddingTop: 5 },headerTransparent: true, tabBarBackground: (() => (<View style={{backgroundColor: colors.backgroundColor, width: '100%', height: 70}}></View>)) }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 30, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: '', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 50, width: 50, resizeMode: 'contain', position: 'absolute' }}></Image>) }} />

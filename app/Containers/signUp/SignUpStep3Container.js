@@ -3,7 +3,6 @@ import { SafeAreaView, TouchableOpacity, Text, Image, Dimensions, FlatList, Scro
 import { Picker } from '@react-native-picker/picker';
 
 import SignupFooterNav from '../../Components/Utils/SignupFooterNav';
-import TextLinkComponent from '../../Components/Utils/TextLinkComponent';
 
 import { useSignUpContext } from '../../context/SignUpContext';
 import { useUserContext } from '../../context/UserContext';
@@ -13,7 +12,6 @@ import citiesApi from '../../services/citiesApi';
 import { sharedStyles } from '../../utils/styles';
 import { isIphoneX } from '../../utils/isIphoneX';
 import { colors } from '../../utils/colors';
-import { BASE_URL } from '../../config/config';
 
 const WIDTHCONTAINER = (Dimensions.get('window').width / 2) - 21;
 
@@ -89,7 +87,7 @@ export default function SignUpStep3Container({ route, navigation }) {
             return (
                 <TouchableOpacity key={item.id} onPress={() => cityTapped(item)} style={{ backgroundColor: '#E6EFF7', width: WIDTHCONTAINER, height:WIDTHCONTAINER*0.828, borderRadius: 4, marginBottom: 12 }}>
                     {item.attributes.image.data && 
-                        <Image source={{uri: BASE_URL+item.attributes.image.data.attributes.url }} style={{width: '100%', height: '100%'}}/>
+                        <Image source={{uri: item.attributes.image.data.attributes.url }} style={{width: '100%', height: '100%'}}/>
                     }
                     {citySelected && item.attributes.name === citySelected.attributes.name &&
                         <Image source={require('../../assets/icon/validate_icon.png')} style={{ position: 'absolute', top: 30, left: 8, width: 21, height: 21, }} />
