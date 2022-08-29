@@ -18,5 +18,9 @@ module.exports = ({ env }) => ({
       password: env('DATABASE_PASSWORD', ''),
       ssl: env.bool('DATABASE_SSL', false),
     },
+    acquireConnectionTimeout: env.int(
+      "DATABASE_ACQUIRE_CONNECTION_TIMEOUT",
+      300000
+    ),
   },
 });
