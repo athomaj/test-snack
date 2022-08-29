@@ -70,7 +70,7 @@ export default function MealContainer({ navigation }) {
                         <Text style={styles.eventTitle}>C'est pour bientôt !</Text>
                         {event.todayEvent.map((data, index) => (
                             <View key={index}>
-                                <PostListItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id, author: item.attributes.user.data.id})}/>
+                                <PostListItemComponent item={data} index={index} navigateTo={() => navigation.navigate("PostDetail", {index: data.id})}/>
                             </View>
                         ))}
                     </View>

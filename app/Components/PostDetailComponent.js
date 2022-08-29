@@ -136,7 +136,7 @@ export function PostDetailComponent({ navigation, route }) {
         {screen : 'AccountStack',
         params:{ 
             screen: 'Profil',
-            params: {userId: route.params.author}
+            params: {userId: post.attributes.user.data.id}
         }})}
     
     async function fetchData(id) {

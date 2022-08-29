@@ -15,7 +15,7 @@ export default function ProfilContainer({ route, navigation }) {
 
     React.useEffect(()=>{
         getData(route.params.userId)
-    },[])
+    },[route.params.userId])
 
     React.useEffect(()=>{
          userData ? setPendingsUser(userContext.authState.user.pendings.find(element => element.id === userData.id )? true : false) : null
