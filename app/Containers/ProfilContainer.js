@@ -1,11 +1,8 @@
 import React from 'react';
 import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import { SmallIcon, Tr } from '../Components/Utils/tools';
-
 import { useUserContext } from '../context/UserContext';
 import userApi from '../services/userApi';
-
 import { sharedStyles } from '../utils/styles';
 import { colors } from '../utils/colors';
 
@@ -129,7 +126,7 @@ export default function ProfilContainer({ route, navigation }) {
                 </View>
 
                 <View style={profilStyles.blockContainer}>
-                        <Text style={profilStyles.h4}>Quelques mot sur {userData.firstName}</Text>
+                        <Text style={profilStyles.h4}>Quelques mot sur {userData.username}</Text>
                         <Text style={profilStyles.p}>{userData.description}</Text>
                 </View>
 
@@ -163,7 +160,7 @@ export default function ProfilContainer({ route, navigation }) {
                             renderItem = {({item, index}) => {
                                 return(
                                     <View style={{marginRight: 8}}>
-                                    <SmallIcon label={item.name}></SmallIcon>
+                                    <SmallIcon label={item.name} image={item}></SmallIcon>
                                     </View>
                                 )
                             }}
@@ -181,10 +178,10 @@ const profilStyles = StyleSheet.create({
         height: '100%', width: '100%', alignItems: 'center', backgroundColor: colors.white 
     },
     scrollView: {
-        width: '100%', height:'100%', backgroundColor: 'white'
+        width: '100%', height:'100%', backgroundColor: colors.backgroundColor
     },
     userPictureContainer: {
-        backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25
+        backgroundColor: colors.beige1, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25
     },
     userPicture: {
         width: 156, height: 156, borderRadius: 78, borderColor: colors.darkGreen, borderWidth: 3
@@ -197,14 +194,10 @@ const profilStyles = StyleSheet.create({
         borderBottomWidth: 0.5
     },
     h4: {
-        fontWeight: '600',
-        fontSize: 16,
-        color: '#005DB2',
+        ...sharedStyles.h3,
         paddingBottom:8
     },
     p : {
-        fontSize: 14,
-        fontWeight: '400',
-        width:'100%',
+        ...sharedStyles.p
     }
 })

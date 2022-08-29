@@ -10,9 +10,10 @@ import { sharedStyles } from "../../utils/styles";
         )
     }
 
-    const SmallIcon = ({label}) => {
+    const SmallIcon = ({label, image}) => {
+        console.log(image)
         return(
-        <View style={{width: 100, height: 100, borderRadius: 4, backgroundColor: colors.secondaryColor, justifyContent: 'center', alignItems: "center"}}>
+        <View style={{width: 100, height: 100, borderRadius: 4, backgroundColor: colors.green1, justifyContent: 'center', alignItems: "center"}}>
             <Image
                 style={{width: 24, height: 24, resizeMode: 'contain'}}
                 source = {require('../../assets/icon/blueCarrot.png')}

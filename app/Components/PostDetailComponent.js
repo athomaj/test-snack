@@ -28,6 +28,7 @@ export function PostDetailComponent({ navigation, route }) {
     }, [])
 
     React.useEffect(()=>{
+        //console.log('DISTRICT ======>',post?.attributes.postalCode)
        //post ? console.log('MY POST ______________________________________________>',post.attributes.pictures.data) : null
        if(post){
         let idOfpicture = -1;
@@ -129,6 +130,14 @@ export function PostDetailComponent({ navigation, route }) {
                 );
         }
     }
+
+    function navigateToProfilAuthor(){
+        navigation.navigate('MainStack',
+        {screen : 'AccountStack',
+        params:{ 
+            screen: 'Profil',
+            params: {userId: route.params.author}
+        }})}
     
     async function fetchData(id) {
         const response = await postApi.getOne(id)
@@ -174,11 +183,13 @@ export function PostDetailComponent({ navigation, route }) {
                     <View style={styles.user}>
                         <View style={styles.topUser}>
                             <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
-                            <View>
+                            <TouchableOpacity
+                            onPress = {navigateToProfilAuthor}
+                            >
                                 <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
                                 <Text style={{...sharedStyles.p, fontSize: 14}}>Organisation de <Text style={{...sharedStyles.shortText, fontSize: 14}}>5 Ateliers</Text></Text>
                                 {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.diet}>
@@ -206,7 +217,8 @@ export function PostDetailComponent({ navigation, route }) {
                         { participant === 'participant' ?
                         <>
                         <Text style={styles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
-                        <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.district}</Text>
+                        <Text style={styles.placeText}>{post?.attributes.address}{post?.attributes.address.includes(post?.attributes.postalCode.data.attributes.name) ? null : ', '+post?.attributes.postalCode.data.attributes.name }</Text>
+                        <Text style={{...styles.seats, color: colors.darkGreen}}>Obtenir l’itinaire</Text>
                         </> :
                         <Text style={styles.placeText}>Adresse indisponnible</Text>
                         }

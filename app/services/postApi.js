@@ -53,10 +53,33 @@ async function getDietOfOne(id){
             return null
         })
 }
+
+async function getMyEvent(id) {
+    return await axios.get(`${API_URL}/posts?filters[user][id][$in]=${id}&populate=*`)
+    .then(response => {
+        return response.data.data
+    })
+    .catch(error => {
+        return error.response
+    })
+}
+
+async function getEventbyCity(city) {
+    return await axios.get(`${API_URL}/posts?filters[postalCode][city][name][$eq]=${city}&sort[0]=datetime&populate=*`)
+    .then(response => {
+        return response.data.data
+    })
+    .catch(error => {
+        return error.response
+    })
+}
+///?filters[postalCode][city][name][$eq]=Marseille&sort[0]=datetime&populate=*
 export default {
     publish,
     getOne,
     getPosts,
     getEvent,
-    getDietOfOne
+    getDietOfOne,
+    getMyEvent,
+    getEventbyCity
 }
