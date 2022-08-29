@@ -1,9 +1,6 @@
 import React from "react";
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-import { BASE_URL } from "../../config/config";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { usePublishContext } from "../../context/PublishContext";
-import { bonusData } from "../../fakeData/bonus";
 import infoApi from "../../services/infoApi";
 import { colors } from "../../utils/colors";
 import { postCreateStyles, sharedStyles } from "../../utils/styles";
@@ -21,7 +18,7 @@ export default function PublishPost4({ navigation }) {
         const response = await infoApi.getAllinfo()
         if (response) {
             console.log(response)
-            const infos =  response.data.map((info) => { return {'id': info.id, 'title': info.attributes.name, 'image': BASE_URL+info.attributes.image.data.attributes.url }})
+            const infos =  response.data.map((info) => { return {'id': info.id, 'title': info.attributes.name, 'image': info.attributes.image.data.attributes.url }})
                 console.log(infos)
             setBonus(infos)
         } else {

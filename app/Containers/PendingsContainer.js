@@ -1,10 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { ActivityIndicator, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useUserContext } from '../context/UserContext';
 import { colors } from '../utils/colors';
 import { sharedStyles } from '../utils/styles';
-import { BASE_URL } from '../config/config';
 import userApi from '../services/userApi';
 
 export default function PendingsContainer({ navigation }) {

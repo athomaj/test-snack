@@ -3,14 +3,13 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
 import { colors } from '../utils/colors';
-import { BASE_URL } from '../config/config';
 
 export function PostListItemComponent({ item, index, navigateTo }) {
     function avatarSource(item){
         if(item.attributes.user.data?.attributes.avatarUrl){
             if(item.attributes.user.data.attributes.avatarUrl.indexOf('/uploads/') === 0)
             {
-                return BASE_URL+item.attributes.user.data.attributes.avatarUrl
+                return item.attributes.user.data.attributes.avatarUrl
             }
             else return item.attributes.user.data.attributes.avatarUrl
         }
@@ -20,7 +19,7 @@ export function PostListItemComponent({ item, index, navigateTo }) {
         <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
                 {item.attributes.pictures.data &&
-                    <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}} />
+                    <Image style={styles.imagePost} source={{uri: item.attributes.pictures.data[0].attributes.url}} />
                 }
                 <View style={styles.category}>
                     <Text style={styles.categoryText}>{item.attributes.category.data?.attributes.name}</Text>

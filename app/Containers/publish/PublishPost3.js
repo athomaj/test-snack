@@ -1,20 +1,15 @@
 import React from "react";
-import { FlatList, Image, InteractionManager, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
-import PublishFooterNav from "../../Components/Utils/PublishFooterNav";
-
 import { usePublishContext } from "../../context/PublishContext";
 
-import { kitchenTypeData } from "../../fakeData/kitchenType";
-import { dietData } from "../../fakeData/diet";
 import { levelData } from "../../fakeData/level";
 
 import { postCreateStyles, sharedStyles } from "../../utils/styles";
 import { colors } from "../../utils/colors";
 import dietApi from "../../services/dietApi";
-import { BASE_URL } from "../../config/config";
 import kitchenApi from "../../services/kitchenApi";
 import SignupFooterNav from "../../Components/Utils/SignupFooterNav";
 
@@ -34,7 +29,7 @@ export default function PublishPost3({ navigation }) {
     async function callDiet(){
         const response = await dietApi.getAllDiets()
         if (response) {
-            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': BASE_URL+diet.attributes.image.data?.attributes.url }})
+            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': diet.attributes.image.data?.attributes.url }})
             setDiet(diets)
         } else {
             setError(true)

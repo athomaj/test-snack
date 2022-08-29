@@ -6,7 +6,6 @@ import moment from 'moment';
 import { isIphoneX } from '../utils/isIphoneX';
 import { useUserContext } from '../context/UserContext';
 import Caroussel from './Utils/Caroussel';
-import { BASE_URL } from '../config/config';
 import { sharedStyles } from '../utils/styles';
 import { displayAlert } from '../utils/displayAlert';
 import notificationApi from '../services/notificationApi';
@@ -35,7 +34,7 @@ export function PostDetailComponent({ navigation, route }) {
         let idOfpicture = -1;
         const listOfpictures = post?.attributes.pictures.data.map((element) => {
             idOfpicture++
-            return {id: idOfpicture,image: BASE_URL+element.attributes.url}
+            return {id: idOfpicture,image: element.attributes.url}
         })
         setCarousselPictures(listOfpictures)
          }

@@ -1,9 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
-import { BASE_URL } from "../config/config";
 import chatApi from "../services/chatApi";
 import postApi from "../services/postApi";
-import uploadApi from "../services/uploadApi";
 import { randomId } from "../utils/sharedFunctions";
 import { useUserContext } from "./UserContext";
 

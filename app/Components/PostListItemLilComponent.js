@@ -3,7 +3,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
 import { colors } from '../utils/colors';
-import { BASE_URL } from '../config/config';
 
 export function PostListLilItemComponent({ item, index, navigateTo }) {
 
@@ -18,7 +17,7 @@ export function PostListLilItemComponent({ item, index, navigateTo }) {
         <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
                 {item.attributes.pictures.data ?
-                    <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures.data[0].attributes.url }} />
+                    <Image style={styles.imagePost} source={{ uri: item.attributes.pictures.data[0].attributes.url }} />
                     :
                     <View style={{height: 76, width: '30%'}}></View>
                 }

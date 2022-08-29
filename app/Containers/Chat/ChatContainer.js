@@ -3,13 +3,10 @@ import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View
 import { useFocusEffect } from '@react-navigation/native';
 
 import { colors } from "../../utils/colors";
-import { fakeMessageData } from "../../fakeData/fakeMessages";
-import { fakeNotificationData } from "../../fakeData/fakeNotification";
 import ChatDetailsContainer from "./ChatDetailsContainer";
 import notificationApi from "../../services/notificationApi";
 import chatApi from "../../services/chatApi";
 import { useUserContext } from "../../context/UserContext";
-import { BASE_URL } from "../../config/config";
 import { isIphoneX } from "../../utils/isIphoneX";
 import postApi from "../../services/postApi";
 import userApi from "../../services/userApi";
@@ -133,7 +130,7 @@ export default function ChatContainer({ navigation }) {
         ({ item }) => {
         return (
             <TouchableOpacity onPress={() => openChat(item)} style={{flexDirection: 'row', marginBottom: 30, padding: 10}}>
-                <Image style={styles.picture} source={{uri: BASE_URL + item.attributes.post.data.attributes.pictures.data[0].attributes.url}}/>
+                <Image style={styles.picture} source={{uri: item.attributes.post.data.attributes.pictures.data[0].attributes.url}}/>
                 <View style={{justifyContent: 'space-between', paddingBottom: 5}}>
                     <View style={{paddingLeft: 10}}>
                         <Text style={styles.name}>{item.attributes.post.data.attributes.user.data.attributes.username}</Text>
