@@ -1,15 +1,19 @@
 import React from "react";
-import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, SafeAreaView, Platform } from 'react-native';
+import { View, TouchableOpacity, Image, Text, StyleSheet, ScrollView, FlatList, SafeAreaView, Platform, Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 import moment from "moment";
-
 import { colors } from "../utils/colors";
-
 import { kitchenTypeData } from "../fakeData/kitchenType";
-import { dietData } from "../fakeData/diet";
 import { levelData } from "../fakeData/level";
 import { categoryData } from "../fakeData/category";
+import { sharedStyles } from "../utils/styles";
+import dietApi from "../services/dietApi";
+import { BASE_URL } from "../config/config";
+import kitchenApi from "../services/kitchenApi";
+
+
+const WIDTHCONTAINER = (Dimensions.get('window').width / 3) - 21;
 
 export default function FilterComponent({ filters, closeModal, updateFilters }) {
 
@@ -21,18 +25,37 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     const [diet, setDiet] = React.useState([])
     const [level, setLevel] = React.useState([])
     const [category, setCategory] = React.useState(null)
-
+    
     const districts = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008", "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"]
 
+    async function callDiet(){
+        const response = await dietApi.getAllDiets()
+        if (response) {
+            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': BASE_URL+diet.attributes.image.data.attributes.url }})
+            setDiet(diets)
+        } else {
+            setError(true)
+        }
+    }
+
+    async function callKitchen(){
+        const response = await kitchenApi.getAllKitchen()
+        if(response){
+            const kitchens = response.data.map((item)=>{ return {'id': item.id, 'title': item.attributes.name, 'status': false}})
+            setKitchen(kitchens)
+        } else {
+        setError(true)
+        }
+    }
+
     React.useEffect(() => {
-        console.log("FILTERS HOEM ====", filters)
+        callDiet()
+        callKitchen()
         if (filters) {
             const filtersCopy = JSON.parse(JSON.stringify(filters))
             setDate(new Date(filtersCopy.date))
             setDateValue(filtersCopy.dateValue)
             setDistrict(filtersCopy.district)
-            setKitchen(filtersCopy.kitchen)
-            setDiet(filtersCopy.diet)
             setLevel(filtersCopy.level)
             setCategory(filtersCopy.category)
             return
@@ -80,12 +103,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     }
 
     const renderKitchenType = ({ item, index }) => (
-        <TouchableOpacity style={styles.renderKitchenType} onPress={() => kitchenTypeChange(index)}>
-            <Text style={styles.textKitchenType}>{item.title}</Text>
-            {item.status === true ?
-                <Image style={styles.checkImage} source={require('../assets/icon/check.png')} />
-                : null
-            }
+        <TouchableOpacity style={{...sharedStyles.inputText, marginVertical: 5, justifyContent: 'center', backgroundColor: item.status ? colors.purple1 : 'white'}} onPress={() => kitchenTypeChange(index)}>
+            <Text style={{...sharedStyles.shortText, color: item.status ? 'black' : colors.darkGreen}}>{item.title}</Text>
         </TouchableOpacity>
     );
 
@@ -107,12 +126,8 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
     }
 
     const renderLevel = ({ item, index }) => (
-        <TouchableOpacity style={styles.renderKitchenType} onPress={() => levelChange(index)}>
-            <Text style={styles.textKitchenType}>{item.title}</Text>
-            {item.status === true ?
-                <Image style={styles.checkImage} source={require('../assets/icon/check.png')} />
-                : null
-            }
+        <TouchableOpacity style={{...sharedStyles.inputText, marginBottom: 10, justifyContent: 'center', backgroundColor: item.status ? colors.blue1 : 'white'}} onPress={() => levelChange(index)}>
+            <Text style={{...sharedStyles.shortText, color: item.status ? 'black' : colors.darkGreen}}>{item.title}</Text>
         </TouchableOpacity>
     );
 
@@ -124,7 +139,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
 
 
     function createDiet() {
-        const copy = [...dietData]
+        const copy = [...diet]
         const cDiet = copy.map((data, index) => {
             data["status"] = false
             data['id'] = index
@@ -137,12 +152,12 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
         <TouchableOpacity style={styles.renderDiet} onPress={() => dietChange(index)}>
             {item.status === true ?
                 <View style={styles.viewDietTrue}>
-                    <Image style={styles.imageDiet} source={require('../assets/icon/whiteCarrot.png')} />
+                    <Image style={styles.imageDiet} source={{uri : item.image}} />
                     <Text style={styles.textDietTrue}>{item.title}</Text>
                 </View>
                 :
                 <View style={styles.viewDiet}>
-                    <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+                    <Image style={styles.imageDiet} source={{uri : item.image}} />
                     <Text style={styles.textDiet}>{item.title}</Text>
                 </View>
             }
@@ -190,37 +205,42 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                         <Text style={styles.back}>{'<'}</Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView style={{ height: '100%', width: '100%' }} contentContainerStyle={{ paddingTop: 68, paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
+                <ScrollView style={{...sharedStyles.wrapperHeaderSpace}} contentContainerStyle={{paddingBottom: 20, paddingLeft: 20, paddingRight: 20 }}>
                     <View style={styles.category}>
+                        <Text style={{...sharedStyles.h1}}>Envie de quoi aujourd’hui?</Text>
+                        <Text style={{...sharedStyles.p, marginBottom: 10}}>Véritables moments de convivialité partagée, ils peuvent être thématiques, chez un membre ou à l’extérieur, le midi ou le soir...</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={categoryData}
                             renderItem={renderCategory}
                             numColumns={3}
                             keyExtractor={item => item.id}
+                            columnWrapperStyle={{ justifyContent: 'space-between' }}
                         />
                     </View>
                     <View style={styles.date}>
-                        <Text style={styles.textDate}>Quelle date vous interesse ?</Text>
+                        <Text style={{...sharedStyles.h3}}>Quelle date vous interesse ?</Text>
                         {Platform.OS === 'ios' ?
-                            <View style={{ alignItems: 'flex-start', width: '100%', paddingTop: 5 }}>
+                            <View style={{...sharedStyles.bottomCaesura, alignItems: 'flex-start', width: '100%', paddingVertical: 7, flexDirection: 'row', justifyContent: "space-between"}}>
+                                <Text style={{...sharedStyles.shortText, color: colors.darkGreen, paddingBottom: 5}}>{show ? moment(date).format('D/MM/YYYY') :'Choisir une date'}</Text>
+                                <Image source={require('../assets/icon/iconNext.png')} style={{width: 6, height: 10, resizeMode: 'contain'}}/>
                                 <DateTimePicker
                                     display="compact"
                                     mode="date"
-                                    style={{ width: 132 }}
+                                    style={{ opacity: 0.02, width: 115, position: "absolute", left: 0 }}
                                     value={date}
-                                    onChange={onChange}
+                                    onChange={() => (onChange, setShow(true))}
                                 />
                             </View>
                             :
                             <TouchableOpacity style={styles.containerDate} onPress={showDatePicker}>
                                 {dateValue === null ?
-                                    <Text style={styles.chooseTextDate}>Choisir une date</Text>
+                                    <Text style={{...sharedStyles.shortText, color: colors.darkGreen}}>Choisir une date</Text>
                                     :
-                                    <Text style={styles.chooseTextDate}>{moment(date).format('D/MM/YYYY')}</Text>
+                                    <Text style={{...sharedStyles.shortText, color: colors.darkGreen}}>{moment(date).format('D/MM/YYYY')}</Text>
                                 }
                                 {/* <TouchableOpacity style={styles.containerSelectDate} onPress={showDatePicker}> */}
-                                <Image style={styles.selectDate} source={require('../assets/icon/select.png')} />
+                                <Image style={styles.selectDate} source={require('../assets/icon/iconNext.png')} />
                                 {/* </TouchableOpacity> */}
                                 {show &&
                                     <DateTimePicker
@@ -234,7 +254,7 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                         }
                     </View>
                     <View style={styles.kitchenType}>
-                        <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
+                        <Text style={{...sharedStyles.h3, marginBottom: 10}}>Type(s) de cuisine(s)</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={kitchen}
@@ -243,24 +263,25 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                         />
                     </View>
                     <View style={styles.diet}>
-                        <Text style={styles.titles}>Un régime alimentaire en particulier ?</Text>
+                        <Text style={{...sharedStyles.h3, marginBottom: 10}}>Un régime alimentaire en particulier ?</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={diet}
                             numColumns={3}
                             renderItem={renderDiet}
                             keyExtractor={item => item.id}
+                            columnWrapperStyle={{ justifyContent: 'space-between' }}
                         />
                     </View>
                     <View style={styles.date}>
-                        <Text style={styles.textDate}>Dans quelle quartier ?</Text>
+                        <Text style={{...sharedStyles.h3, marginBottom: 10}}>Dans quelle quartier ?</Text>
                         <View style={styles.containerDate}>
                             <SelectDropdown
                                 data={districts}
                                 defaultValue={district}
                                 defaultButtonText={"Clique pour choisir un quartier"}
-                                buttonStyle={{ backgroundColor: colors.white, height: 30, width: '100%' }}
-                                buttonTextStyle={{ color: colors.thirdBlue, fontWeight: '500', fontSize: 14, textAlign: 'left', width: '100%' }}
+                                buttonStyle={{ backgroundColor: colors.backgroundColor, height: 30, width: '100%'}}
+                                buttonTextStyle={{ color: colors.darkGreen, fontWeight: '500', fontSize: 14, textAlign: 'left', width: '100%', marginLeft: 0 }}
                                 onSelect={(selectedItem, index) => {
                                     setDistrict(selectedItem)
                                 }}
@@ -271,10 +292,11 @@ export default function FilterComponent({ filters, closeModal, updateFilters }) 
                                     return item
                                 }}
                             />
+                            <Image style={styles.selectDate} source={require('../assets/icon/iconNext.png')} />
                         </View>
                     </View>
                     <View style={styles.level}>
-                        <Text style={styles.titles}>Type(s) de cuisine(s)</Text>
+                        <Text style={{...sharedStyles.h3, paddingBottom: 10}}>Type(s) de cuisine(s)</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={level}
@@ -316,7 +338,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
     },
 
     textHeader: {
@@ -346,7 +368,7 @@ const styles = StyleSheet.create({
 
     date: {
         height: 90,
-        marginTop: 10
+        marginBottom: 60
     },
 
     textDate: {
@@ -357,10 +379,11 @@ const styles = StyleSheet.create({
 
     containerDate: {
         flexDirection: "row",
+        justifyContent: 'space-between',
         alignItems: "center",
         height: 40,
         borderBottomWidth: 1,
-        borderBottomColor: colors.thirdBlue
+        borderBottomColor: colors.orange1
     },
 
     chooseTextDate: {
@@ -372,7 +395,9 @@ const styles = StyleSheet.create({
 
     selectDate: {
         width: 6,
-        height: 10
+        height: 10,
+        position: 'absolute',
+        right: 0
     },
 
     containerSelectDate: {
@@ -384,7 +409,7 @@ const styles = StyleSheet.create({
 
 
     kitchenType: {
-        height: 450
+        marginBottom: 60
     },
 
     titles: {
@@ -417,17 +442,18 @@ const styles = StyleSheet.create({
 
 
     diet: {
-        height: 400
+        marginBottom: 60
     },
 
     viewDiet: {
-        backgroundColor: colors.secondaryBlue,
-        width: 110,
-        height: 110,
-        margin: 5,
+        backgroundColor: colors.green1,
+        width: WIDTHCONTAINER,
+        height: WIDTHCONTAINER,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 4
+        borderRadius: 4,
+        marginVertical: 6
+        
     },
 
     imageDiet: {
@@ -438,30 +464,30 @@ const styles = StyleSheet.create({
     textDiet: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.primaryBlue,
+        color: 'black',
         marginTop: 10
     },
 
     viewDietTrue: {
-        backgroundColor: colors.thirdBlue,
-        width: 110,
-        height: 110,
-        margin: 5,
+        backgroundColor: colors.orange1,
+        width: WIDTHCONTAINER,
+        height: WIDTHCONTAINER,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 4
+        borderRadius: 4,
+        marginVertical: 6
     },
 
     textDietTrue: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.white,
+        color: colors.darkGreen,
         marginTop: 10
     },
 
 
     level: {
-        height: 350
+        marginBottom: 40
     },
 
 
@@ -469,6 +495,7 @@ const styles = StyleSheet.create({
     footer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingBottom: 30
     },
 
     deleteAll: {
@@ -491,7 +518,7 @@ const styles = StyleSheet.create({
     searchAll: {
         width: 147,
         height: 43,
-        backgroundColor: colors.thirdBlue,
+        backgroundColor: colors.darkGreen,
         borderRadius: 4,
         flexDirection: "row",
         justifyContent: "center",
@@ -502,7 +529,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 14,
         textDecorationLine: "underline",
-        color: colors.thirdBlue
+        color: colors.darkGreen
     },
 
     textSearch: {
@@ -513,6 +540,6 @@ const styles = StyleSheet.create({
 
     category: {
         marginTop: 40,
-        marginBottom: 30
+        marginBottom: 60
     }
 })

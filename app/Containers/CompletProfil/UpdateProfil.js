@@ -34,8 +34,8 @@ export default function UpdateProfil({ navigation }) {
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', alrignItems: 'center', backgroundColor: 'white' }}>
             <ScrollView style={{ width: '100%', height: '100%' }}>
-                <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40, justifyContent: 'center', marginLeft: 10 }}>
-                    <Image style={{ height: '60%', width: '80%', resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
+                <TouchableOpacity onPress={navigation.goBack} style={{ height: 30, width: 40, marginTop: 10, justifyContent: 'center', marginLeft: 20 }}>
+                    <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../assets/icon/return_icon.png')}></Image>
                 </TouchableOpacity>
 
                 <View style={updateProfilStyles.blockContainer}>
@@ -107,7 +107,7 @@ export default function UpdateProfil({ navigation }) {
                 <View style={{ zIndex: 3, width: '100%', height: '100%', backgroundColor: 'white', paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity
                         onPress={() => setModalVisible(false)}
-                        style={{  position: 'absolute', top: isIphoneX() ? 60 :  30, left: 20, flexDirection: 'row' }}>
+                        style={{  position: 'absolute', top: isIphoneX() ? 60 : 30, left: 20, flexDirection: 'row' }}>
                         <Image source={require('../../assets/icon/return_icon.png')} style={{ width: 20, height: 20, resizeMode: 'contain' }} />
                         <Text style={{ ...sharedStyles.shortText, marginLeft: 10 }}>Revenir aux paramètre</Text>
                     </TouchableOpacity>
@@ -132,7 +132,7 @@ export default function UpdateProfil({ navigation }) {
                                     value={modalCase.value}
                                     onChangeText={(text) => setModalCase({ ...modalCase, value: text })}
                                     placeholder='Créer un mot de passe'
-                                    placeholderTextColor={colors.primaryYellow}
+                                    placeholderTextColor={colors.darkGreen}
                                     style={{ ...sharedStyles.inputText, marginVertical: 15, }}
                                 >
                                 </TextInput>
@@ -153,7 +153,7 @@ export default function UpdateProfil({ navigation }) {
                                     keyboardType='email-address'
                                     value={modalCase.value} onChangeText={(text) => { setModalCase({ ...modalCase, value: text }), valideInputEmail(text) }}
                                     placeholder='Entrer votre nouveau email'
-                                    placeholderTextColor={colors.primaryYellow}
+                                    placeholderTextColor={colors.darkGreen}
                                     style={{ ...sharedStyles.inputText }}
                                 >
                                 </TextInput>
@@ -171,7 +171,7 @@ export default function UpdateProfil({ navigation }) {
                             <View style={{ ...sharedStyles.inputText, justifyContent: 'center', alignItems: 'flex-start' }}>
 
                                 <PhoneInput
-                                    textInputProps={{ placeholder: 'numéro de téléphone', placeholderTextColor: colors.primaryYellow, returnKeyType: "done" }}
+                                    textInputProps={{ placeholder: 'numéro de téléphone', placeholderTextColor: colors.darkGreen, returnKeyType: "done" }}
                                     containerStyle={{ backgroundColor: '#00000000' }}
                                     textContainerStyle={{ backgroundColor: '#00000000' }}
                                     codeTextStyle={{ textAlignVertical: 'center', height: 20 }}
@@ -210,7 +210,7 @@ const updateProfilStyles = StyleSheet.create({
         paddingVertical: 20,
         flexDirection: 'row',
         alignItems: 'center', 
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.darkGreen,
         borderStyle: 'solid',
         borderBottomWidth: 0.5
     },

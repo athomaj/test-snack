@@ -1,6 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { BASE_URL } from "../config/config";
+import chatApi from "../services/chatApi";
 import postApi from "../services/postApi";
 import uploadApi from "../services/uploadApi";
 import { randomId } from "../utils/sharedFunctions";
@@ -109,7 +110,8 @@ const PublishProvider = ({ children }) => {
                 level: publishPost.level,
                 address: address,
                 moreInfo: JSON.stringify(bonus),
-                user: { id: userContext.authState.user.id }
+                user: { id: userContext.authState.user.id },
+                postalCode: {id: userContext.authState.user.district.id}
             },
             picture: newPictures,
         }
@@ -131,8 +133,14 @@ const PublishProvider = ({ children }) => {
 
                 const response = await postApi.publish(formData)
 
-                console.log("RES PROMISE ===", response)
-                console.log("YOOOOOOOOOOOOO ===")
+                const chatRes = await chatApi.create({
+                    data: {
+                        users: [userContext.authState.user.id],
+                        post: response.data.data.id
+                    }
+                })
+
+                console.log(chatRes, "CHAT RES======")
                 setLoading(false)
             }
         } catch (error) {

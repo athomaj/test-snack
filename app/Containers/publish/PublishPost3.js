@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, InteractionManager, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
@@ -11,8 +11,12 @@ import { kitchenTypeData } from "../../fakeData/kitchenType";
 import { dietData } from "../../fakeData/diet";
 import { levelData } from "../../fakeData/level";
 
-import { postCreateStyles } from "../../utils/styles";
+import { postCreateStyles, sharedStyles } from "../../utils/styles";
 import { colors } from "../../utils/colors";
+import dietApi from "../../services/dietApi";
+import { BASE_URL } from "../../config/config";
+import kitchenApi from "../../services/kitchenApi";
+import SignupFooterNav from "../../Components/Utils/SignupFooterNav";
 
 export default function PublishPost3({ navigation }) {
 
@@ -27,6 +31,26 @@ export default function PublishPost3({ navigation }) {
     const [diet, setDiet] = React.useState([])
     const [levelSelected, setLevelSelected] = React.useState(1)
 
+    async function callDiet(){
+        const response = await dietApi.getAllDiets()
+        if (response) {
+            const diets =  response.data.map((diet) => { return {'id': diet.id, 'title': diet.attributes.name, 'image': BASE_URL+diet.attributes.image.data?.attributes.url }})
+            setDiet(diets)
+        } else {
+            setError(true)
+        }
+    }
+
+    async function callKitchen(){
+        const response = await kitchenApi.getAllKitchen()
+        if(response){
+            const kitchens = response.data.map((item)=>{ return {'id': item.id, 'title': item.attributes.name, 'status': false}})
+            setKitchen(kitchens)
+        } else {
+        setError(true)
+        }
+    }
+
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDateValue(1)
@@ -39,46 +63,27 @@ export default function PublishPost3({ navigation }) {
     };
 
     React.useEffect(() => {
-        createKitchen()
-        createDiet()
+        callKitchen()
+        callDiet()
     }, [])
 
-    function createKitchen() {
-        const cKitchen = kitchenTypeData.map((data, index) => {
-            data["status"] = false
-            return data
-        })
-        setKitchen(cKitchen)
-    }
-
-    function createDiet() {
-        const cDiet = dietData.map((data, index) => {
-            data["status"] = false
-            return data
-        })
-        setDiet(cDiet)
-    }
 
 
     function kitchenTypeChange(index) {
-        const data = [...kitchenTypeData]
+        const data = [...kitchen]
         data[index].status = !data[index].status
         setKitchen(data)
     }
 
     function dietChange(index) {
-        const data = [...dietData]
+        const data = [...diet]
         data[index].status = !data[index].status
         setDiet(data)
     }
 
     const renderKitchenType = ({ item, index }) => (
-        <TouchableOpacity style={styles.renderKitchenType} onPress={() => kitchenTypeChange(index)}>
+        <TouchableOpacity style={{...styles.renderKitchenType, backgroundColor : item.status  ?  colors.blue1 : 'white'}} onPress={() => kitchenTypeChange(index)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
-            {item.status === true ?
-                <Image style={styles.checkImage} source={require('../../assets/icon/check.png')} />
-                : null
-            }
         </TouchableOpacity>
     );
 
@@ -86,12 +91,12 @@ export default function PublishPost3({ navigation }) {
         <TouchableOpacity onPress={() => dietChange(index)}>
             {item.status === true ?
                 <View style={styles.viewDietTrue}>
-                    <Image style={styles.imageDiet} source={require('../../assets/icon/whiteCarrot.png')} />
+                    <Image style={styles.imageDiet} source={{uri : item.image}} />
                     <Text style={styles.textDietTrue}>{item.title}</Text>
                 </View>
                 :
                 <View style={styles.viewDiet}>
-                    <Image style={styles.imageDiet} source={require('../../assets/icon/blueCarrot.png')} />
+                    <Image style={styles.imageDiet} source={{uri : item.image}} />
                     <Text style={styles.textDiet}>{item.title}</Text>
                 </View>
             }
@@ -99,12 +104,8 @@ export default function PublishPost3({ navigation }) {
     );
 
     const renderLevel = ({ item, index }) => (
-        <TouchableOpacity style={styles.renderKitchenType} onPress={() => setLevelSelected(item.id)}>
+        <TouchableOpacity style={{...styles.renderKitchenType, backgroundColor: item.id === levelSelected ? colors.blue1 : 'white'}} onPress={() => setLevelSelected(item.id)}>
             <Text style={styles.textKitchenType}>{item.title}</Text>
-            {item.id === levelSelected ?
-                <Image style={styles.checkImage} source={require('../../assets/icon/check.png')} />
-                : null
-            }
         </TouchableOpacity>
     );
 
@@ -115,10 +116,11 @@ export default function PublishPost3({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <SafeAreaView style={{ backgroundColor: colors.backgroundColor }}>
             <View style={{ height: '100%', width: '100%' }}>
                 <ScrollView style={styles.container} contentContainerStyle={{ paddingHorizontal: 10 }}>
                     <View style={{ marginTop: Platform.OS === 'ios' ? 80 : 100 }}>
+                        <Text style={{...sharedStyles.bigTitle, marginBottom: 30}}>Détail de l’atelier</Text>
                         <Text style={styles.title}>Quelle date vous interesse ?</Text>
                         {Platform.OS === 'ios' ?
                             <View style={{ alignItems: 'flex-start', width: '100%', paddingTop: 5 }}>
@@ -153,7 +155,7 @@ export default function PublishPost3({ navigation }) {
                     </View>
                     <View style={{ marginTop: 20 }}>
                         <Text style={styles.title}>Nombre d'invité ?</Text>
-                        <TextInput style={styles.guestInput} placeholder={'Choisir un nombre de place'} placeholderTextColor={colors.thirdBlue} value={"" + seats} onChangeText={(e) => setSeats(parseInt(e))} keyboardType={"number-pad"} />
+                        <TextInput style={styles.guestInput} placeholder={'Choisir un nombre de place'} placeholderTextColor={colors.darkGreen} value={seats} onChangeText={(e) => setSeats(parseInt(e))} keyboardType={"number-pad"} />
                     </View>
                     <View style={styles.kitchenType}>
                         <Text style={styles.title}>Type(s) de cuisine(s)</Text>
@@ -187,12 +189,18 @@ export default function PublishPost3({ navigation }) {
                     </View>
                 </ScrollView>
                 <View style={postCreateStyles.header}>
-                    <Text style={postCreateStyles.titleHeader}>Détail du repas</Text>
                     <TouchableOpacity style={postCreateStyles.crossView} onPress={() => navigation.navigate('Home')}>
                         <Image style={postCreateStyles.cross} source={require("../../assets/icon/cross.png")} />
                     </TouchableOpacity>
                 </View>
-                <PublishFooterNav firstScreen={false} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} />
+                {/* <PublishFooterNav firstScreen={false} lastScreen={false} disabledButton={buttonDisable} onPressBack={navigation.goBack} onPressContinue={onPressContinue} /> */}
+                <SignupFooterNav
+                disabledButton={buttonDisable}
+                title="Suivant"
+                onPressBack={navigation.goBack}
+                onPressContinue={onPressContinue}
+                canGoBack = {true}
+                ></SignupFooterNav>
             </View>
         </SafeAreaView>
     )
@@ -203,13 +211,11 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
     },
 
     title: {
-        color: colors.primaryBlue,
-        fontWeight: '500',
-        fontSize: 15,
+        ...sharedStyles.h3
     },
 
     containerDate: {
@@ -242,7 +248,7 @@ const styles = StyleSheet.create({
     guestInput: {
         height: 40,
         borderBottomWidth: 1,
-        borderBottomColor: colors.thirdBlue
+        borderBottomColor: colors.orange1
     },
 
     kitchenType: {
@@ -251,19 +257,17 @@ const styles = StyleSheet.create({
 
     renderKitchenType: {
         height: 44,
-        backgroundColor: colors.secondaryBlue,
-        marginTop: 20,
+        backgroundColor: 'white',
+        marginTop: 15,
         alignItems: "center",
         borderRadius: 4,
         flexDirection: "row",
+        justifyContent: 'space-between'
     },
 
     textKitchenType: {
-        color: colors.primaryBlue,
-        left: 20,
-        fontWeight: '500',
-        fontSize: 15,
-        width: '90%'
+        ...sharedStyles.shortText,
+        marginLeft: 15
     },
 
     checkImage: {
@@ -276,7 +280,7 @@ const styles = StyleSheet.create({
     },
 
     viewDiet: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.green1,
         width: 110,
         height: 110,
         margin: 5,
@@ -293,12 +297,12 @@ const styles = StyleSheet.create({
     textDiet: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         marginTop: 10
     },
 
     viewDietTrue: {
-        backgroundColor: colors.thirdBlue,
+        backgroundColor: colors.orange1,
         width: 110,
         height: 110,
         margin: 5,
@@ -310,7 +314,7 @@ const styles = StyleSheet.create({
     textDietTrue: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.white,
+        color: 'black',
         marginTop: 10
     },
 

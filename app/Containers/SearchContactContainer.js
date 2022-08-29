@@ -8,6 +8,7 @@ import { useUserContext } from '../context/UserContext';
 
 import { sharedStyles } from '../utils/styles';
 import { colors } from '../utils/colors';
+import notificationApi from '../services/notificationApi';
 
 export default function SearchContactContainer({ navigation, route }) {
 
@@ -15,7 +16,6 @@ export default function SearchContactContainer({ navigation, route }) {
 
   const [memberMatch, setMemberMatch] = React.useState([])
   const [selectedSponsor, setSelectedSponsor] = React.useState([])
-  const [sendAsk, setSendAsk] = React.useState(false)
 
   React.useEffect(() => {
     fetchMembers()
@@ -58,22 +58,43 @@ export default function SearchContactContainer({ navigation, route }) {
   }
 
   async function addSelectedSponsor(value, username) {
-    const arrayToEdit = [...selectedSponsor]
-    
-    arrayToEdit.push(value)
-    setSelectedSponsor(arrayToEdit)
+    try {
+      const arrayToEdit = [...selectedSponsor]
+      
+      arrayToEdit.push(value)
+      setSelectedSponsor(arrayToEdit)
+  
+      const arrayOfpendings = memberMatch.filter(element => element.id === value)[0]
+      const arrayToedditpendings = arrayOfpendings.pendings
+      arrayToedditpendings.push({ "id": userContext.authState.user.id })
+  
+      const data = new Object
+      data.pendings = arrayToedditpendings
+        
+      await userApi.updateUser(data, value)
+      
+      sendNotification(value)
+    } catch (error) {
+      console.log(error, "ERR SEND SPONSOR ====")
+    }
 
-    const arrayOfpendings = memberMatch.filter(element => element.id === value)[0]
-    const arrayToedditpendings = arrayOfpendings.pendings
-    arrayToedditpendings.push({ "id": userContext.authState.user.id })
+  }
 
-    const data = new Object
-    data.pendings = arrayToedditpendings
-    await userApi.updateUser(data, value).then(response => {
-      if (!response.status) {
-        setSendAsk(true)
-      }
-    })
+  async function sendNotification(id) {
+    try {
+      const res = await notificationApi.createNotification({
+        data: {
+            title: userContext.authState.user.username,
+            description: 'Vous a demandé votre parrainage.',
+            type: 'sponsor',
+            user: {id: id},
+            userRequest: {id: userContext.authState.user.id}
+        }
+      })
+      console.log(res, "NOTIF RES ====")
+    } catch (error) {
+      console.log(error, "ERR SEND NOTIF ====")
+    }
   }
 
   function onClickNext() {
@@ -90,7 +111,7 @@ export default function SearchContactContainer({ navigation, route }) {
     ({ item, index }) =>
       <View style={{ width: '100%', height: 90, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center', borderColor: 'black', borderStyle: 'solid', borderTopWidth: 0.3 }}>
         <View style={{ height: '100%', width: '20%', alignItems: 'center', justifyContent: 'center' }}>
-          <Image source={{ uri: item.avatarUrl }} style={{ maxWidth: '90%', width: 54, height: 54, borderRadius: 27, backgroundColor: colors.thirdBlue }}></Image>
+          <Image source={item.avatarUrl ? { uri: item.avatarUrl } : require('../assets/userFakeImage/avatar_blue.png')} style={{ maxWidth: '90%', width: 54, height: 54, borderRadius: 27, backgroundColor: colors.thirdBlue }}></Image>
         </View>
         <View style={{ width: '50%' }}>
           <Text style={{ fontWeight: 'bold' }}>{item.username}</Text>
@@ -98,14 +119,14 @@ export default function SearchContactContainer({ navigation, route }) {
         </View>
         <View style={{ width: '30%', alignItems: 'flex-end' }}>
           <TouchableOpacity
-            style={{ ...searchContactStyles.contactButton, backgroundColor: selectedSponsor.includes(item.id) ? "#a2a2a2" : "#F9BC0A" }}
+            style={{ ...searchContactStyles.contactButton, backgroundColor: selectedSponsor.includes(item.id) ? `${colors.orange1}55` : colors.orange1  }}
             disabled={selectedSponsor.includes(item.id) ? true : false} value={item.id}
             onPress={() => addSelectedSponsor(item.id, item.username)}
           >
             {selectedSponsor.includes(item.id) ?
               <Text style={{ color: 'white' }}> Envoyé </Text>
               :
-              <Text> Demander </Text>
+              <Text style={{...sharedStyles.textUnderPrimaryButton}}> Demander </Text>
             }
           </TouchableOpacity>
         </View>
@@ -114,9 +135,9 @@ export default function SearchContactContainer({ navigation, route }) {
   );
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', paddingHorizontal: 15 }}>
+    <SafeAreaView style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', paddingHorizontal: 15, backgroundColor: colors.backgroundColor }}>
       <FlatList
-        ListHeaderComponentStyle={{ backgroundColor: 'white' }}
+        ListHeaderComponentStyle={{ backgroundColor: colors.backgroundColor }}
         ListHeaderComponent={(
           <View style={{ width: '100%', height: 90, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Mes Contacts</Text>
@@ -136,7 +157,7 @@ export default function SearchContactContainer({ navigation, route }) {
         <TouchableOpacity
           style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}
           onPress={onClickNext}>
-          <Text style={{ fontWeight: '600', fontSize: 14, color: 'white' }}>Poursuivre</Text>
+          <Text style={{...sharedStyles.textUnderPrimaryButton }}>Poursuivre</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

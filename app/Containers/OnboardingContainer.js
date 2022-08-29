@@ -1,6 +1,5 @@
 import React from 'react';
 import { SafeAreaView, View, Image, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
-
 import { colors } from '../utils/colors';
 import { onBoardingData } from '../utils/onBoardingData';
 import { sharedStyles } from '../utils/styles';
@@ -20,10 +19,10 @@ export default function OnboardingContainer({ navigation, route }) {
     const dotMap = onBoardingData.map(
         (element) => {
             if (element.id === indexItemView) {
-                return <View key={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: '#005DB2E5' }}></View>
+                return <View key={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: colors.darkGreen }}></View>
             }
             else {
-                return <View key={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: '#005DB266' }}></View>
+                return <View key={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: colors.darkGreen, opacity: 0.6 }}></View>
             }
         }
     )
@@ -31,23 +30,22 @@ export default function OnboardingContainer({ navigation, route }) {
     const renderItem = React.useCallback(
         ({ item, index }) => {
             return (
-                <View key={item.id} style={{ height: '100%', width: Dimensions.get('window').width, alignItems: 'center', justifyContent: 'center' }} >
+                <View key={item.id} style={{ height: '80%', width: Dimensions.get('window').width, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 15}} >
                     <Image
-                        style={{ width: 161, height: 129, marginBottom: 83 }}
+                        style={{ width: '100%', height:390, resizeMode: 'contain', bottom: 80, position: 'absolute'}}
                         source={item.image}
                     />
-                    <Text style={{ width: '80%', fontSize: 24, fontWeight: "600", textAlign: 'center', color: '#0A4072' }}>{item.titre}</Text>
-                    <Text style={{ width: '80%', textAlign: 'center', color: '#0A4072' }}>{item.description}</Text>
-
+                    <Text style={{...sharedStyles.h1 }}>{item.titre}</Text>
+                    <Text style={{...sharedStyles.p, textAlign: 'center', width: '100%', paddingHorizontal: 15, lineHeight: 19}}>{item.description}</Text>
                 </View>)
         },
         []
     );
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: '#E6EFF7' }}>
+        <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: '#E6EFF7', justifyContent: 'flex-end', backgroundColor: colors.backgroundColor}}>
             <View style={{ height: '100%', width: '100%' }}>
-                <Text style={{ ...sharedStyles.titleH1, position: 'absolute', top: 60, width: '100%', textAlign: 'center' }}>FoodFood</Text>
+                <Image source={require('../assets/logo.png')} style={{position: 'absolute', top: '7%', width: '30%', height: 50, resizeMode: 'contain', alignSelf: 'center', zIndex: 1}}/>
                 <FlatList
                     data={onBoardingData}
                     horizontal
@@ -63,15 +61,15 @@ export default function OnboardingContainer({ navigation, route }) {
                     showsHorizontalScrollIndicator={false}
                 />
 
-                <View style={{ alignSelf: 'center', width: '80%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
-                    <View style={{ height: 10, marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ alignSelf: 'center', width: '80%', height: '20%', position: 'absolute', bottom: 10, alignItems: 'center' }}>
+                    <View style={{ height: 10, marginBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         {dotMap}
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('SignUpStep1')} style={{ ...sharedStyles.primaryButtonWithColor, marginBottom: 10 }}>
-                        <Text style={{ fontSize: 14, color: 'white', fontWeight: '600' }}>Démarrer</Text>
+                        <Text style={{...sharedStyles.textUnderPrimaryButton}}>Démarrer</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('Login', { isLogin: true })} style={{ ...sharedStyles.secondaryButton, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.primaryYellow }}>Déjà membre ?</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '600', color: colors.darkGreen }}>Déjà membre ?</Text>
                     </TouchableOpacity>
                 </View>
             </View>

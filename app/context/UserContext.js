@@ -172,6 +172,7 @@ const UserProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 authState,
+                getCurrentUser,
                 login,
                 updateUserInformation,
                 register,

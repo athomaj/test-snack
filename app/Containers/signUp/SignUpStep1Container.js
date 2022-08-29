@@ -57,10 +57,10 @@ export default function SignUpStep1Container({ navigation }) {
     return (
         <HideKeyboard>
             <View style={{ height: '100%', width: '100%' }}>
-                <SafeAreaView style={{ height: '100%', width: '100%' }}>
+                <SafeAreaView style={{...sharedStyles.wrapperHeaderSpace}}>
                     <View style={{ width: '100%', height: '100%', alignItems: 'center', paddingHorizontal: 10, paddingTop: isIphoneX() ? 40 : 20 }}>
-                        <Text style={{ ...sharedStyles.h2, width: '100%' }}>Créer un compte</Text>
-                        <Text style={{ ...sharedStyles.shortText, width: '100%' }}>Quelques informations pour faire partie du club...</Text>
+                        <Text style={{ ...sharedStyles.bigTitle, width: '100%' }}>Rejoins Food Food</Text>
+                        <Text style={{ ...sharedStyles.p, width: '100%' }}>Quelques informations pour faire partie du club...</Text>
                         <View style={{ height: 44, width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
                             <TextInput
                                 autoComplete='off'
@@ -71,7 +71,7 @@ export default function SignUpStep1Container({ navigation }) {
                                 value={email}
                                 onChangeText={onChangeEmail}
                                 placeholder='Entrer votre email'
-                                placeholderTextColor={colors.primaryYellow}
+                                placeholderTextColor={colors.darkGreen}
                                 style={{ ...sharedStyles.inputText }}
                                 onSubmitEditing={() => { passwordInput.current.focus(); }}
                             >
@@ -87,7 +87,7 @@ export default function SignUpStep1Container({ navigation }) {
                                 value={password}
                                 onChangeText={onChangePassword}
                                 placeholder='Créer un mot de passe'
-                                placeholderTextColor={colors.primaryYellow}
+                                placeholderTextColor={colors.darkGreen}
                                 style={{ ...sharedStyles.inputText, marginVertical: 15, }}
                                 returnKeyType='next'
                                 ref={passwordInput}
@@ -101,7 +101,7 @@ export default function SignUpStep1Container({ navigation }) {
                             <PhoneInput
                                 textInputProps={{
                                     placeholder: 'Numéro de téléphone',
-                                    placeholderTextColor: colors.primaryYellow
+                                    placeholderTextColor: colors.darkGreen
                                 }}
                                 containerStyle={{ ...sharedStyles.inputText }}
                                 textContainerStyle={{ height: 50, backgroundColor: "transparent" }}
@@ -117,7 +117,7 @@ export default function SignUpStep1Container({ navigation }) {
                                 <Image style={{ position: 'absolute', zIndex: 1, width: 15, height: 15, right: 15, top: 15 }} source={validPhoneNumber ? validateEmailicon : forbidenEmail}></Image>
                             }
                         </View>
-                        <Text style={{ ...sharedStyles.label, width: '100%', marginTop: 15 }}>En cliquant sur suivant, vous acceptez
+                        <Text style={{ ...sharedStyles.label, color: 'black', width: '100%', marginTop: 15 }}>En cliquant sur suivant, vous acceptez
                             <TextLinkComponent navigateTo={() => console.log("navigate to")} text=' termes de nos services '></TextLinkComponent>
                             , et notre
                             <TextLinkComponent navigateTo={() => console.log("navigate to")} text=' politique de confidentialité'></TextLinkComponent>

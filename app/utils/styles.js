@@ -1,7 +1,22 @@
 import { Platform, StyleSheet } from "react-native";
 import { colors } from '../utils/colors';
+import * as Font from "expo-font";
+
+const getFonts = () =>
+  Font.loadAsync({
+    Syne: require('../assets/fonts/Syne.ttf'),
+    Inter: require('../assets/fonts/Inter.ttf'),
+  });
+
+
 
 export const sharedStyles = StyleSheet.create({
+    wrapperHeaderSpace:{
+        height: '100%',
+        width: '100%',
+        backgroundColor: colors.backgroundColor,
+        paddingTop: '10%'
+    },
     shadow: {
         shadowColor: 'black',
         shadowOpacity: 0.2,
@@ -11,32 +26,43 @@ export const sharedStyles = StyleSheet.create({
     },
     borderBasic: {
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
+        borderColor: colors.darkGreen,
         borderRadius: 20,
         borderStyle: 'solid'
     },
     borderPublish: {
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
+        borderColor: colors.darkGreen,
         borderRadius: 20,
         borderStyle: 'solid'
     },
-    titleH1: {
-        fontWeight: '700',
-        fontSize: 41,
-        color: '#005DB2'
-    },
-    h2: {
+    bigTitle:{
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 30,
-        color: '#005DB2',
+        color: colors.darkGreen
+    },
+    h1: {
+        fontFamily: 'Syne',
+        fontWeight: '600',
+        fontSize: 25,
+        lineHeight: 30,
+        color: colors.darkGreen
+    },
+    h2: {
+        fontFamily: 'Syne',
+        fontWeight: '600',
+        fontSize: 24,
+        color: colors.darkGreen,
     },
     h3: {
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 18,
-        color: '#005DB2',
+        color: colors.darkGreen,
     },
     h4: {
+        fontFamily: 'Syne',
         fontWeight: '600',
         fontSize: 16,
         color: '#005DB2',
@@ -54,7 +80,7 @@ export const sharedStyles = StyleSheet.create({
         height: 50,
         width: '100%',
         borderRadius: 4,
-        backgroundColor: colors.primaryYellow,
+        backgroundColor: colors.orange1,
         justifyContent: 'center',
         alignItems: 'center',
         color: '#ffffff',
@@ -68,45 +94,60 @@ export const sharedStyles = StyleSheet.create({
         alignItems: 'center',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: colors.primaryYellow,
-        color: colors.primaryYellow,
+        borderColor: colors.darkGreen,
+        color: colors.darkGreen,
     },
     textPublish: {
+        fontFamily: 'Inter',
         fontSize: 1,
         marginBottom: 10,
         fontWeight: '500'
     },
     textUnderPrimaryButton:{
-        fontWeight: '600', fontSize: 14, color: 'white',
+        fontFamily: 'Inter',
+        fontWeight: 'bold',
+        fontSize: 14,
+        color: colors.darkGreen,
     },
+
     shortText:{
+        fontFamily: 'Inter',
         fontSize: 15,
-        color: colors.primaryYellow,
+        color: colors.darkGreen,
         fontWeight: '500',
 
     },
     inputText: {
-        backgroundColor: '#E6EFF7',
+        fontFamily: 'Inter',
+        backgroundColor: 'white',
         borderRadius: 4,
         height: 44,
         width: '100%',
-        color: colors.primaryYellow,
-        fontSize: 15,
-        fontWeight: '500',
+        color: colors.darkGreen,
+        fontSize: 16,
+        fontWeight: 'bold',
         paddingHorizontal: 15,
 
     },
     label: {
+        fontFamily: 'Inter',
         fontSize: 13,
-        color: colors.primaryYellow,
+        color: colors.darkGreen,
         fontWeight: '500',
 
     },
     bottomCaesura: {
-        borderBottomColor: colors.primaryYellow,
+        borderBottomColor: colors.orange1,
         borderStyle: 'solid',
-        borderBottomWidth: 0.5
+        borderBottomWidth: 1
     },
+    p:{
+        fontFamily: 'Inter',
+        fontSize: 16,
+        fontWeight: "400",
+        lineHeight: 24,
+        color: colors.black
+    }
 })
 
 export const postCreateStyles = StyleSheet.create({
@@ -116,13 +157,13 @@ export const postCreateStyles = StyleSheet.create({
         position: "absolute",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colors.white
+        backgroundColor: colors.backgroundColor
     },
 
     titleHeader: {
         fontWeight: '500',
         fontSize: 15,
-        color: colors.primaryBlue
+        color: colors.darkGreen
     },
 
     cross: {

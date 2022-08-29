@@ -6,10 +6,20 @@ import { colors } from '../utils/colors';
 import { BASE_URL } from '../config/config';
 
 export function PostListItemComponent({ item, index, navigateTo }) {
+    function avatarSource(item){
+        if(item.attributes.user.data?.attributes.avatarUrl){
+            if(item.attributes.user.data.attributes.avatarUrl.indexOf('/uploads/') === 0)
+            {
+                return BASE_URL+item.attributes.user.data.attributes.avatarUrl
+            }
+            else return item.attributes.user.data.attributes.avatarUrl
+        }
+        else return false
+    }
     return (
         <TouchableOpacity style={{ paddingTop: index === 0 ? 20 : 0 }} onPress={navigateTo}>
             <View style={styles.container}>
-                <Image style={styles.imagePost} source={{ uri: BASE_URL + item.attributes.pictures.data[0].attributes.url }} />
+                <Image style={styles.imagePost} source={{uri: BASE_URL + item.attributes.pictures.data[0].attributes.url}} />
                 <View style={styles.category}>
                     <Text style={styles.categoryText}>{item.attributes.category.data?.attributes.name}</Text>
                 </View>
@@ -22,7 +32,7 @@ export function PostListItemComponent({ item, index, navigateTo }) {
                     <Text style={styles.title}>{item.attributes.title}</Text>
                     <View style={styles.userAndDate}>
                         <View style={styles.user}>
-                            <Image style={styles.avatarUrl} source={{ uri: item.attributes.user.data?.attributes.avatarUrl }} />
+                            <Image style={styles.avatarUrl} source={avatarSource(item) ? { uri: avatarSource(item) } : require('../assets/userFakeImage/avatar_blue.png')} />
                             <Text style={styles.userdate}>{item.attributes.user.data?.attributes.username}</Text>
                         </View>
                         <Text style={styles.userdate}>{moment((item.attributes.datetime)).format('DD MMM à H:mm')}</Text>
@@ -54,8 +64,8 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: '600',
         fontSize: 20,
-        color: colors.primaryBlue,
-        marginBottom: 5
+        color: colors.darkGreen,
+        marginBottom: 4
     },
 
     avatarUrl: {
@@ -63,7 +73,6 @@ const styles = StyleSheet.create({
         height: 24,
         borderRadius: 12,
         marginRight: 5,
-        backgroundColor: colors.thirdBlue
     },
 
     user: {
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
     userdate: {
         fontSize: 13,
         fontWeight: '500',
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         marginLeft: 5
     },
 
@@ -98,7 +107,7 @@ const styles = StyleSheet.create({
     categoryText: {
         fontWeight: '500',
         fontSize: 11.5,
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         textAlign: 'center',
     },
 
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     districtText: {
         fontWeight: '500',
         fontSize: 11.5,
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         textAlign: 'center',
         padding: 3
     },

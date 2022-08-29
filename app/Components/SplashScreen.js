@@ -1,11 +1,10 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { Image, SafeAreaView, StyleSheet} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-
 import { useUserContext } from '../context/UserContext';
-
 import { getData, storeData } from '../utils/storage';
 import { sharedStyles } from '../utils/styles';
+import { colors } from '../utils/colors';
 
 export default function SplashScreen({ navigation }) {
 
@@ -18,7 +17,7 @@ export default function SplashScreen({ navigation }) {
             storeData('alreadyConnected', 'true')
             navigation.replace('onboarding')
         }
-        else navigation.navigate('Login', { isLogin: true })
+        else navigation.navigate('onboarding')
     }
 
     useFocusEffect(
@@ -41,10 +40,18 @@ export default function SplashScreen({ navigation }) {
     );
 
     return (
-        <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ ...sharedStyles.titleH1 }}>FoodFood</Text>
-            <Text style={{ ...sharedStyles.shortText, textAlign: 'center' }}>Texte de baseline ?</Text>
-            <Text style={{ ...sharedStyles.shortText, textAlign: 'center' }}>(facultatif)</Text>
+        <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.backgroundColor}}>
+            <Image source={require('../assets/logo.png')} style={{width: "50%", resizeMode: "contain"}}/>
+            <Image source={require('../assets/onboarding/SplashScreenTop.png')} style={{...styles.pictureSplashScreen, top: 0}}/>
+            <Image source={require('../assets/onboarding/SplashScreenDawn.png')} style={{...styles.pictureSplashScreen, bottom: 0}}/>
+            
         </SafeAreaView>
     );
 }
+
+
+const styles = StyleSheet.create({
+    pictureSplashScreen: {
+        width: '100%', height: '37%', position: 'absolute', resizeMode: 'cover'
+    }
+})

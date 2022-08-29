@@ -12,13 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "post": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::post.post",
-      "inversedBy": "chat"
-    },
-    "users_permissions_users": {
+    "users": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
@@ -26,7 +20,12 @@
     "messages": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::message.message",
+      "target": "api::message.message"
+    },
+    "post": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::post.post",
       "mappedBy": "chat"
     }
   }

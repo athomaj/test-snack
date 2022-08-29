@@ -1,16 +1,14 @@
 import React from 'react';
 import { SafeAreaView, Text, FlatList, Image, View, TouchableOpacity, Dimensions, Modal, StyleSheet } from 'react-native';
 import moment from 'moment';
-
 import { PostListItemComponent } from '../Components/PostListItemComponent';
 import FilterComponent from '../Components/FilterComponent';
-
 import { useUserContext } from '../context/UserContext';
-
 import postApi from '../services/postApi';
-
 import { colors } from '../utils/colors';
 import { useFocusEffect } from '@react-navigation/native';
+import { sharedStyles } from '../utils/styles';
+import userApi from '../services/userApi';
 
 const deviceHeight = Dimensions.get('screen').height
 
@@ -31,14 +29,31 @@ export default function HomeContainer({ navigation }) {
     );
 
     async function getPosts() {
-        const data = await postApi.getPosts()
+        const Mycity = await userApi.getMyCity()
+        const data = await postApi.getEventbyCity(Mycity.name)
+
         if (data) {
-            // console.log(data)
-            setPosts(data)
-            setFilterPosts(data)
+            const postValide = data.filter((post) => {
+                const dateOfPost = moment(post.attributes.datetime).format('LT').includes('PM') ? parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))+12 : parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))
+                const dateNow = moment().format('LT').includes('PM') ? parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))+12 : parseInt(moment().format('LT').slice(0,moment().format('LT').indexOf(':')))
+                if(moment(post.attributes.datetime).format('L') > moment().format('L') || (moment(post.attributes.datetime).format('L') === moment().format('L') && dateOfPost > dateNow)){
+                    return true
+                } else false
+            })
+            setPosts(postValide)
+            setFilterPosts(postValide)
         } else {
             setError(true)
         }
+    }
+
+    function ShortName(pseudo){
+         if(pseudo.includes(' ')){
+             const shortPseudo = pseudo.slice(0, pseudo.indexOf(' '))
+             return shortPseudo
+         }
+         return pseudo
+
     }
 
     function filtersPosts(filterData) {
@@ -100,24 +115,22 @@ export default function HomeContainer({ navigation }) {
     }
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
-
+    //navigation.navigate('Profil',{ userId: item.}
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostListItemComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", { index: item.id })}></PostListItemComponent>,
+        ({ item, index }) => <PostListItemComponent item={item} index={index} navigateTo={() => navigation.navigate('PostStack', { screen: 'Post', params: { index: item.id }})}></PostListItemComponent>,
         []
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ height: '100%', width: '100%' }}>
+            <View style={{...sharedStyles.wrapperHeaderSpace, paddingTop: '5%'}}>
                 <FlatList
-                    ListHeaderComponentStyle={{ backgroundColor: 'white', paddingHorizontal: 10 }}
+                    ListHeaderComponentStyle={{ backgroundColor: colors.backgroundColor, paddingHorizontal: 15 }}
                     ListHeaderComponent={(
                         <>
                             <View style={styles.header}>
-                                <Image style={styles.imageHeader} source={require('../assets/icon/defaultImage.png')} />
-                                <View style={styles.titleSize}>
-                                    <Text style={styles.title}>{'Bonjour ' + userContext.authState.user.username}</Text>
-                                </View>
+                                <Image style={styles.imageHeader} source={require('../assets/logo.png')} />
+                                <Text style={styles.title}><Text style={{...sharedStyles.h2}}>Bonjour </Text>{ShortName(userContext.authState.user.username)}</Text>
                                 <TouchableOpacity style={styles.searchBar} onPress={() => setModalVisible(true)}>
                                     <Image style={styles.searchPicture} source={require('../assets/icon/search.png')} />
                                     <Text style={styles.searchInput}>Que recherchez-vous ?</Text>
@@ -156,39 +169,39 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.white
+        backgroundColor: colors.backgroundColor
     },
 
     header: {
         height: 200,
         width: '100%',
-        paddingTop: '5%',
         justifyContent: 'center'
     },
 
     title: {
+        fontFamily: 'Syne',
         fontWeight: '600',
-        fontSize: 30,
-        color: colors.primaryBlue,
-    },
-
-    titleSize: {
-        height: 60,
-        justifyContent: 'center'
+        fontSize: 24,
+        color: colors.green1,
+        textAlign: 'center',
+        marginBottom: 20
     },
 
     imageHeader: {
-        width: 46,
-        height: 37
+        width: '33%',
+        height: 55,
+        resizeMode: 'contain',
+        alignSelf: 'center'
     },
 
     searchBar: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: 'white',
         height: 44,
         alignItems: "center",
         flexDirection: "row",
         padding: '2%',
         borderRadius: 4,
+        paddingHorizontal: 12,
     },
 
     searchPicture: {
@@ -199,6 +212,6 @@ const styles = StyleSheet.create({
     searchInput: {
         left: 10,
         width: '90%',
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
     },
 })

@@ -1,13 +1,15 @@
 import React from 'react';
-import { Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { colors } from '../utils/colors';
 import postApi from '../services/postApi';
 import moment from 'moment';
 import { isIphoneX } from '../utils/isIphoneX';
 import { useUserContext } from '../context/UserContext';
-import { onBoardingData } from '../utils/onBoardingData';
 import Caroussel from './Utils/Caroussel';
 import { BASE_URL } from '../config/config';
+import { sharedStyles } from '../utils/styles';
+import { displayAlert } from '../utils/displayAlert';
+import notificationApi from '../services/notificationApi';
 
 
 export function PostDetailComponent({ navigation, route }) {
@@ -27,6 +29,7 @@ export function PostDetailComponent({ navigation, route }) {
     }, [])
 
     React.useEffect(()=>{
+        //console.log('DISTRICT ======>',post?.attributes.postalCode)
        //post ? console.log('MY POST ______________________________________________>',post.attributes.pictures.data) : null
        if(post){
         let idOfpicture = -1;
@@ -57,10 +60,10 @@ export function PostDetailComponent({ navigation, route }) {
             }
         })
         const abadonState = await userContext.updateUserInformation({events : data})
-        setParticipant(false)
+        setParticipant('')
     }
 
-    const participateToEvent = ()=>{
+    async function participateToEvent () {
         const data = []
         userContext.authState.user.events ? userContext.authState.user?.events.forEach((element)=>{
             if(element?.id && element.id !== post.id)
@@ -69,8 +72,24 @@ export function PostDetailComponent({ navigation, route }) {
             }
         }) : null
         data.push(post.id)
-        userContext.updateUserInformation({eventPendings : data})
-        setParticipant(true)
+        await userContext.updateUserInformation({eventPendings : data})
+
+        await notificationApi.createNotification({
+            data: {
+                title: userContext.authState.user.username,
+                description: `Veux participer à votre atelier "${post.attributes.title}"`,
+                type: 'event',
+                user: {id: post?.attributes.user.data.id},
+                post: post.id,
+                userRequest: {id: userContext.authState.user.id}
+            }
+        })
+
+        setParticipant('pendings')
+        displayAlert(
+            'Votre demande a été envoyé',
+            `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`
+            )
     }
 
     function buttonStatus(text){
@@ -115,28 +134,23 @@ export function PostDetailComponent({ navigation, route }) {
                 );
         }
         else{
-                participateToEvent()
-                Alert.alert(
-                    'Votre demande a été envoyé',
-                    `Votre demande à bien été envoyé à ${post?.attributes.user.data.attributes.username} !`,
-                    [{
-                text: 'Ok',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-                },
-                    ]
-                );
+            participateToEvent()
         }
+    }
+
+    function navigateToProfilAuthor(){
+        navigation.navigate('Profil', {userId: post.attributes.user.data.id})
     }
     
     async function fetchData(id) {
         const response = await postApi.getOne(id)
+        const responseDiet = await postApi.getDietOfOne(id)
         setPost(response)
-        setDiet([...response.attributes.diets.data])
+        setDiet([...responseDiet.attributes.diets.data])
         
         if (response.attributes.moreInfo) {
             const array = []
-            response.attributes.moreInfo.data.map(item => {
+            response.attributes.moreInfo.data?.map(item => {
                 array.push({id: item.id, name: item.name })
             })
             setInfo(array)
@@ -144,12 +158,13 @@ export function PostDetailComponent({ navigation, route }) {
         return response
     }
 
-    const renderDiet = ({ item }) => (
+    const renderDiet = ({ item }) => {
+        return (
         <View style={styles.viewDiet}>
-            <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} />
+            {/* <Image style={styles.imageDiet} source={require('../assets/icon/blueCarrot.png')} /> */}
             <Text style={styles.textDiet}>{item.attributes.name}</Text>
         </View>
-    );
+    )};
 
     return (
         <View>
@@ -167,6 +182,18 @@ export function PostDetailComponent({ navigation, route }) {
                         <Text style={styles.title}>{post?.attributes.title}</Text>
                         <Text style={styles.desc}>{post?.attributes.description}</Text>
                     </View>
+                    <View style={styles.user}>
+                        <View style={styles.topUser}>
+                            <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
+                            <TouchableOpacity
+                            onPress = {navigateToProfilAuthor}
+                            >
+                                <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
+                                <Text style={{...sharedStyles.p, fontSize: 14}}>Organisation de <Text style={{...sharedStyles.shortText, fontSize: 14}}>5 Ateliers</Text></Text>
+                                {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     <View style={styles.diet}>
                         <Text style={styles.multipleTitle}>Régime alimentaire</Text>
                         <FlatList
@@ -176,24 +203,6 @@ export function PostDetailComponent({ navigation, route }) {
                             renderItem={renderDiet}
                             keyExtractor={item => item.id}
                         />
-                    </View>
-                    <View style={styles.user}>
-                        <View style={styles.topUser}>
-                            <View>
-                                <Text style={styles.username}>{post?.attributes.user.data.attributes.username}</Text>
-                                <Text style={styles.partEvent}>Votre hôte</Text>
-                                {/* <Text style={styles.partEvent}>Participation à 'undefined' évènement</Text> */}
-                            </View>
-                            <Image style={styles.userPicture} source={{ uri: post?.attributes.user.data.attributes.avatarUrl }} />
-                        </View>
-                        <View style={styles.flatlistUser}>
-                            {badge.map((item) => (
-                                <View key={item.id} style={styles.badge}>
-                                    <Image style={styles.man} source={require('../assets/icon/man.png')} />
-                                    <Text style={styles.badgeText}>{item.name}</Text>
-                                </View>
-                            ))}
-                        </View>
                     </View>
                     <View styles={styles.bring}>
                         <Text style={styles.multipleTitle}>Note supplémentaire</Text>
@@ -210,7 +219,8 @@ export function PostDetailComponent({ navigation, route }) {
                         { participant === 'participant' ?
                         <>
                         <Text style={styles.placeText}>{post?.attributes.user.data.attributes.username}</Text>
-                        <Text style={styles.placeText}>{post?.attributes.address + ', ' + post?.attributes.district}</Text>
+                        <Text style={styles.placeText}>{post?.attributes.address}{post?.attributes.address.includes(post?.attributes.postalCode.data.attributes.name) ? null : ', '+post?.attributes.postalCode.data.attributes.name }</Text>
+                        <Text style={{...styles.seats, color: colors.darkGreen}}>Obtenir l’itinaire</Text>
                         </> :
                         <Text style={styles.placeText}>Adresse indisponnible</Text>
                         }
@@ -225,18 +235,20 @@ export function PostDetailComponent({ navigation, route }) {
                     </View>
                 </View>
             </ScrollView>
-            <View style={styles.footer}>
-                <View>
-                    <Text style={styles.date}>{moment(post?.attributes.datetime).format("MMMM Do à h") + 'h'}</Text>
-                    <Text style={styles.seats}>{post?.attributes.seats + ' place disponible'}</Text>
+            {userContext.authState.user.id != post?.attributes.user.data.id &&
+                <View style={styles.footer}>
+                    <View>
+                        <Text style={styles.date}>{moment(post?.attributes.datetime).format("MMMM Do à h") + 'h'}</Text>
+                        <Text style={styles.seats}>{post?.attributes.seats-post?.attributes.participant.data.length + ' place disponible'}</Text>
+                    </View>
+                    <TouchableOpacity 
+                        style={participant ? styles.buttonDelete : styles.button}
+                        onPress={buttonParticipateByState}
+                    >
+                        <Text style={styles.participate}>{buttonStatus(participant)}</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity 
-                    style={participant ? styles.buttonDelete : styles.button}
-                    onPress={buttonParticipateByState}
-                >
-                    <Text style={styles.participate}>{buttonStatus(participant)}</Text>
-                </TouchableOpacity>
-            </View>
+            }
         </View>
     )
 }
@@ -245,7 +257,7 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: colors.white
+        backgroundColor: colors.backgroundColor
     },
 
     back: {
@@ -261,7 +273,7 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25,
         alignItems: 'center',
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         borderRadius: 40,
         alignItems: 'center',
         justifyContent: 'center'
@@ -270,7 +282,7 @@ const styles = StyleSheet.create({
     top: {
         height: 375,
         width: '100%',
-        backgroundColor: colors.backBlue,
+        backgroundColor: colors.beige1,
     },
 
     body: {
@@ -280,16 +292,13 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontWeight: '600',
-        fontSize: 22,
-        color: colors.primaryBlue,
+        ...sharedStyles.h1
     },
 
     desc: {
-        fontWeight: '400',
-        fontSize: 12,
-        color: colors.thirdBlue,
-        marginTop: 5
+        ...sharedStyles.p,
+        marginTop: 5,
+        marginBottom: 35
     },
 
     diet: {
@@ -298,14 +307,12 @@ const styles = StyleSheet.create({
     },
 
     multipleTitle: {
-        fontWeight: '600',
-        fontSize: 18,
-        color: colors.primaryBlue,
+        ...sharedStyles.h2,
         height: 35
     },
 
     viewDiet: {
-        backgroundColor: colors.secondaryBlue,
+        backgroundColor: colors.green1,
         width: Dimensions.get('window').width * 0.3,
         height: 110,
         margin: 5,
@@ -322,18 +329,20 @@ const styles = StyleSheet.create({
     textDiet: {
         fontWeight: '500',
         fontSize: 13,
-        color: colors.primaryBlue,
+        color: colors.darkGreen,
         marginTop: 10
     },
 
     user: {
-        marginBottom: 40
+        marginBottom: 35,
+        padding: 10,
+        borderRadius: 4,
+        backgroundColor: colors.beige1
     },
 
     topUser: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
     },
 
     userPicture: {
@@ -341,15 +350,17 @@ const styles = StyleSheet.create({
         height: 46,
         borderRadius: 23,
         borderWidth: 1,
-        borderColor: colors.thirdBlue,
-        backgroundColor: colors.thirdBlue
+        marginRight: 15,
+        borderColor: colors.darkGreen,
+        backgroundColor: colors.green1
     },
 
     username: {
+        fontFamily: 'Syne',
         textTransform: 'capitalize',
         fontWeight: '600',
-        fontSize: 18,
-        color: colors.primaryBlue,
+        fontSize: 22,
+        color: colors.darkGreen,
     },
 
     badge: {
@@ -364,10 +375,7 @@ const styles = StyleSheet.create({
     },
 
     badgeText: {
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue,
-        lineHeight: 30
+        ...sharedStyles.p
     },
 
     flatlistUser: {
@@ -382,18 +390,9 @@ const styles = StyleSheet.create({
         margin: 5
     },
 
-    partEvent: {
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue
-    },
-
     placeText: {
+        ...sharedStyles.p,
         textTransform: 'capitalize',
-        fontWeight: '500',
-        fontSize: 12,
-        color: colors.primaryBlue,
-        lineHeight: 18,
     },
 
     place: {
@@ -405,7 +404,7 @@ const styles = StyleSheet.create({
         height: 95,
         width: '100%',
         position: 'absolute',
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         bottom: 0,
         alignItems: 'center',
         flexDirection: 'row',
@@ -414,21 +413,18 @@ const styles = StyleSheet.create({
     },
 
     date: {
-        fontWeight: '600',
-        fontSize: 14,
-        color: colors.thirdBlue,
+        ...sharedStyles.h3
     },
 
     seats: {
-        fontWeight: '400',
-        fontSize: 10,
-        color: colors.thirdBlue
+        ...sharedStyles.p,
+        textDecorationLine: 'underline'
     },
 
     button: {
         height: 43,
         width: 114,
-        backgroundColor: colors.thirdBlue,
+        backgroundColor: colors.orange1,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 4,
@@ -437,12 +433,12 @@ const styles = StyleSheet.create({
     participate: {
         fontWeight: '600',
         fontSize: 14,
-        color: colors.white
+        color: colors.backgroundColor
     },
     buttonDelete:{
         height: 43,
         width: 114,
-        backgroundColor: 'red',
+        backgroundColor: colors.green1,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 4,
