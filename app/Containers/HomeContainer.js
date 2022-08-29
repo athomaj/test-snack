@@ -29,8 +29,8 @@ export default function HomeContainer({ navigation }) {
     );
 
     async function getPosts() {
-        const Mycity = await userApi.getMyCity()
-        const data = await postApi.getEventbyCity(Mycity.name)
+        const myCity = await userApi.getMyCity()
+        const data = await postApi.getEventbyCity(myCity.name)
 
         if (data) {
             const postValide = data.filter((post) => {

@@ -45,12 +45,16 @@ export default function PublishPost4({ navigation }) {
         <TouchableOpacity onPress={() => bonusChange(index)}>
             {item.status === true ?
                 <View style={styles.viewBonusTrue}>
-                    <Image style={styles.imageBonus} source={{uri : item.image}} />
+                    {item.image &&
+                        <Image style={styles.imageBonus} source={{uri : item.image}} />
+                    }
                     <Text style={styles.textBonusTrue}>{item.title}</Text>
                 </View>
                 :
                 <View style={styles.viewBonus}>
-                    <Image style={styles.imageBonus} source={{uri : item.image}} />
+                    {item.image &&
+                        <Image style={styles.imageBonus} source={{uri : item.image}} />
+                    }
                     <Text style={styles.textBonus}>{item.title}</Text>
                 </View>
             }

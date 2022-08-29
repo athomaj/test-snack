@@ -91,12 +91,16 @@ export default function PublishPost3({ navigation }) {
         <TouchableOpacity onPress={() => dietChange(index)}>
             {item.status === true ?
                 <View style={styles.viewDietTrue}>
-                    <Image style={styles.imageDiet} source={{uri : item.image}} />
+                    {item.image &&
+                        <Image style={styles.imageDiet} source={{uri : item.image}} />
+                    }
                     <Text style={styles.textDietTrue}>{item.title}</Text>
                 </View>
                 :
-                <View style={styles.viewDiet}>
-                    <Image style={styles.imageDiet} source={{uri : item.image}} />
+                <View style={styles.viewDiet}> 
+                    {item.image &&
+                        <Image style={styles.imageDiet} source={{uri : item.image}} />
+                    }
                     <Text style={styles.textDiet}>{item.title}</Text>
                 </View>
             }

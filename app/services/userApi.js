@@ -46,7 +46,6 @@ async function getSponsorsOf(idUser) {
 
 async function getMe() {
     const token = await getData("authToken")
-
     if (!token) {
         return null
     }
@@ -55,7 +54,6 @@ async function getMe() {
         return axios.get(`${API_URL}/users/${decode.id}?populate=*`, { headers: { Authorization: `Bearer ${token}` } }).then(response => {
             return response
         }).catch(error => {
-            deleteData("authToken")
             console.log("ERR GET ME ====", error)
             return null
         })
@@ -82,7 +80,6 @@ async function getMyCity() {
         return axios.get(`${API_URL}/users/${decode.id}?fields[0]=id&populate[district][populate][city]=*`, { headers: { Authorization: `Bearer ${token}` } }).then(response => {
             return response.data.district.city
         }).catch(error => {
-            deleteData("authToken")
             console.log("ERR GET ME ====", error)
             return null
         })

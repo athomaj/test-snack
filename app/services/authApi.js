@@ -8,7 +8,7 @@ async function login(email, password) {
         password: password,
     })
         .then(async response => {
-            await storeData('authToken', response.data.jwt + "")
+            await storeData('authToken', response.data.jwt)
             axios.defaults.headers["Authorization"] = "Bearer " + response.data.jwt
             return response
         })
