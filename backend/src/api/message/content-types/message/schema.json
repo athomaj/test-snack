@@ -4,26 +4,24 @@
   "info": {
     "singularName": "message",
     "pluralName": "messages",
-    "displayName": "Message"
+    "displayName": "Message",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "message": {
-      "type": "string"
-    },
-    "users_permissions_user": {
+    "user": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "chat": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::chat.chat",
-      "inversedBy": "messages"
+    "message": {
+      "type": "richtext"
+    },
+    "date": {
+      "type": "datetime"
     }
   }
 }

@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "description": {
-      "type": "text"
-    },
     "address": {
       "type": "string"
     },
@@ -99,7 +96,10 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::chat.chat",
-      "mappedBy": "post"
+      "inversedBy": "post"
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

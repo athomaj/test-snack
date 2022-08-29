@@ -9,10 +9,11 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function AccountContainer({ navigation }) {
     const userContext = useUserContext();
-    const [avatarUrl, setAvatarUrl] = React.useState(null)
-    const [userName, setUserName] = React.useState(null)
-    const [numberPendings, setNumberPendings] = React.useState(null)
-    const [image, setImage] = React.useState({ url: "https://i.stack.imgur.com/F6zSD.png" })
+
+    const [avatarUrl, setAvatarUrl] = React.useState(null);
+    const [userName, setUserName] = React.useState(null);
+    const [numberPendings, setNumberPendings] = React.useState(null);
+    const [image, setImage] = React.useState({ url: "https://i.stack.imgur.com/F6zSD.png" });
 
 
     function ImagePickerAcount({ image, setParamImage, imageUrl }) {
@@ -45,10 +46,10 @@ export default function AccountContainer({ navigation }) {
     }
 
     React.useEffect(() => {
-        setAvatarUrl(userContext.authState.user.avatar?.formats.thumbnail?.url ? BASE_URL + userContext.authState.user.avatar?.formats.thumbnail.url : null)
+        setAvatarUrl(userContext.authState.user.avatarUrl ? userContext.authState.user.avatarUrl : null)
         setUserName(userContext.authState.user.username)
         setNumberPendings(userContext.authState.user.pendings.length > 0 ? userContext.authState.user.pendings.length : null)
-    }, [])
+    }, [userContext.authState.user])
 
     React.useEffect(() => {
         if (!userContext.authState.isConnected) {

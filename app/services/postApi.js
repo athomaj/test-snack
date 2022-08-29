@@ -12,6 +12,17 @@ async function publish(data) {
         });
 }
 
+async function update(id, data) {
+    return await axios.put(`${API_URL}/posts/${id}`, data, { headers: { "Content-Type": "application/json" } })
+        .then(response => {
+            return response.data
+        })
+        .catch(error => {
+            console.log("ERROR PUBLISH ==== ", error)
+            return error
+        });
+}
+
 async function getPosts() {
     return await axios.get(`${API_URL}/posts?populate=*`)
         .then(response => {
@@ -76,6 +87,7 @@ async function getEventbyCity(city) {
 ///?filters[postalCode][city][name][$eq]=Marseille&sort[0]=datetime&populate=*
 export default {
     publish,
+    update,
     getOne,
     getPosts,
     getEvent,

@@ -72,7 +72,7 @@ const tabBarOptions = {
   headerShown: false,
   tabBarActiveTintColor: colors.orange1,
   tabBarInactiveTintColor: colors.darkGreen,
-  tabBarLabelStyle: { fontWeight: 'normal', fontSize: 10, paddingBottom: 4}
+  tabBarLabelStyle: { fontWeight: 'normal', fontSize: 10 }
 }
 
 
@@ -117,10 +117,10 @@ function MainTabStackScreen({ navigation }) {
   const userContext = useUserContext()
 
   return (
-    <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ tabBarStyle: { height: 70},headerTransparent: true, tabBarBackground: (() => (<View style={{backgroundColor: colors.backgroundColor, width: '100%', height: 70}}></View>)) }}>
+    <MainTabSatck.Navigator initialRouteName={"Home"} screenOptions={{ tabBarStyle: { height: 70,paddingTop: 5 },headerTransparent: true, tabBarBackground: (() => (<View style={{backgroundColor: colors.backgroundColor, width: '100%', height: 70}}></View>)) }}>
       <MainTabSatck.Screen name="Home" component={HomeContainer} options={{ ...tabBarOptions, title: 'Explorer', tabBarIcon: (props) => (<Image source={props.focused ? homeIconActive : homeIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 30, width: 30, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: '', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 50, width: 50, resizeMode: 'contain', position: 'absolute', top: 12.5 }}></Image>) }} />
+      <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 30, resizeMode: 'contain' }}></Image>) }} />
+      <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: '', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 50, width: 50, resizeMode: 'contain', position: 'absolute' }}></Image>) }} />
       <MainTabSatck.Screen name="ActivityStack" component={ActivityStackScreen} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Account', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'cover', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
     </MainTabSatck.Navigator>
@@ -152,6 +152,7 @@ export default function App() {
 
     const [loadedFonts] = useFonts({
       Inter: require("./assets/fonts/Inter.ttf"),
+      InterBold: require("./assets/fonts/Inter-SemiBold.ttf"),
       Syne: require("./assets/fonts/Syne.ttf")
 
   });
