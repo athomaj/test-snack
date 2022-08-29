@@ -48,7 +48,7 @@ export default function AccountContainer({ navigation }) {
     React.useEffect(() => {
         setAvatarUrl(userContext.authState.user.avatarUrl ? userContext.authState.user.avatarUrl : null)
         setUserName(userContext.authState.user.username)
-        setNumberPendings(userContext.authState.user.pendings.length > 0 ? userContext.authState.user.pendings.length : null)
+        setNumberPendings(userContext.authState.user.pendings?.length > 0 ? userContext.authState.user.pendings.length : null)
     }, [userContext.authState.user])
 
     React.useEffect(() => {
@@ -59,8 +59,8 @@ export default function AccountContainer({ navigation }) {
 
     return (
         <SafeAreaView style={{ height: '100%', width: '100%', alignItems: 'center', backgroundColor: colors.secondaryBlue }}>
-            <ScrollView style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
-                <View style={{ backgroundColor: colors.secondaryBlue, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25 }}>
+            <ScrollView style={{...sharedStyles.wrapperHeaderSpace, paddingTop: 0}}>
+                <View style={{ backgroundColor: colors.beige1, paddingTop: 48, width: '100%', justifyContent: 'center', alignItems: 'center', paddingBottom: 25 }}>
 
                     <ImagePickerAcount image={image?.uri} imageUrl={avatarUrl} setParamImage={(returnImage) => setImage(returnImage)}></ImagePickerAcount>
 

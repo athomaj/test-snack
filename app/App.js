@@ -56,6 +56,7 @@ const MainTabSatck = createBottomTabNavigator();
 const PublishStack = createNativeStackNavigator();
 const ActivityStack = createNativeStackNavigator();
 const ProfilStack = createNativeStackNavigator();
+const PostStack  = createNativeStackNavigator();
 
 const homeIconActive = require('./assets/tabBar/loupeIconActive.png')
 const homeIconInactive = require('./assets/tabBar/loupeIcon.png')
@@ -122,7 +123,7 @@ function MainTabStackScreen({ navigation }) {
       <MainTabSatck.Screen name="Meals" component={MealContainer} options={{ ...tabBarOptions, title: 'Repas', tabBarIcon: (props) => (<Image source={props.focused ? eventIconActive : eventIconInactive} style={{ height: 25, width: 30, resizeMode: 'contain' }}></Image>) }} />
       <MainTabSatck.Screen name="Publish" component={PublishParentComponent} listeners={{ tabPress: (e) => { e.preventDefault(); navigation.navigate("PublishStack") } }} options={{ ...tabBarOptions, title: '', tabBarIcon: (props) => (<Image source={props.focused ? addIconIconActive : addIconIconInactive} style={{ height: 50, width: 50, resizeMode: 'contain', position: 'absolute' }}></Image>) }} />
       <MainTabSatck.Screen name="ActivityStack" component={ActivityStackScreen} options={{ ...tabBarOptions, title: 'Activité', tabBarIcon: (props) => (<Image source={props.focused ? messageIconActive : messageIconInactive} style={{ height: 25, width: 25, resizeMode: 'contain' }}></Image>) }} />
-      <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Profil', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'cover', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
+      <MainTabSatck.Screen name="AccountStack" component={ProfilStackScreen} options={{ ...tabBarOptions, title: 'Account', tabBarIcon: (props) => (<Image source={userContext.authState.user.avatarUrl ? { uri: userContext.authState.user.avatarUrl } : (props.focused ? userIconActive : userIconInactive)} style={{ height: 25, width: 25, resizeMode: 'cover', borderWidth: 1, borderColor: colors.primaryBlue, borderRadius: 13 }}></Image>) }} />
     </MainTabSatck.Navigator>
   );
 }
@@ -145,6 +146,15 @@ function ActivityStackScreen({ navigation }) {
       <ActivityStack.Screen name="Chat" component={ChatContainer} />
       <ActivityStack.Screen name="ChatDetails" component={ChatDetailsContainer} />
     </ActivityStack.Navigator>
+  );
+}
+
+function PostStackScreen({ navigation }) {
+  return (
+    <PostStack.Navigator initialRouteName={"Post"} screenOptions={{ headerTransparent: true, headerShown: false }}>
+      <PostStack.Screen name="Post" component={PostDetailComponent} />
+      <PostStack.Screen name="Profil" component={ProfilContainer} />
+    </PostStack.Navigator>
   );
 }
 
@@ -189,8 +199,8 @@ export default function App() {
                 options={{ headerShown: false, gestureEnabled: false }}
               />
               <RootStack.Screen
-                name="PostDetail"
-                component={PostDetailComponent}
+                name="PostStack"
+                component={PostStackScreen}
                 options={{ headerShown: false, gestureEnabled: false }}
               />
             </RootStack.Group>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, Image, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { colors } from '../../utils/colors';
 import { sharedStyles } from '../../utils/styles';
 
 /**
@@ -24,10 +25,10 @@ export default function Caroussel({ data, viewHeight }) {
     const dotMap = data.map(
         (element) => {
             if (element.id === indexItemView) {
-                return <View key={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: '#005DB2E5' }}></View>
+                return <View key={element.id} style={{ height: 10, marginHorizontal: 4, width: 10, borderRadius: 5, backgroundColor: colors.darkGreen }}></View>
             }
             else {
-                return <View key={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: '#005DB266' }}></View>
+                return <View key={element.id} style={{ height: 8, marginHorizontal: 4, width: 8, borderRadius: 4, backgroundColor: colors.green1 }}></View>
             }
         }
     )

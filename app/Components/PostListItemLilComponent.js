@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
         height: 27.5,
         borderRadius: 14,
         borderWidth: 0.7,
-        borderColor: colors.thirdBlue
+        borderColor: colors.thirdBlue,
+        marginRight: 10
     },
 
     user: {

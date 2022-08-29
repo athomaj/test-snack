@@ -71,6 +71,25 @@ async function updateUser(data, id) {
     })
 }
 
+async function getMyCity() {
+    const token = await getData("authToken")
+
+    if (!token) {
+        return null
+    }
+    else {
+        const decode = jwt_decode(token)
+        return axios.get(`${API_URL}/users/${decode.id}?fields[0]=id&populate[district][populate][city]=*`, { headers: { Authorization: `Bearer ${token}` } }).then(response => {
+            return response.data.district.city
+        }).catch(error => {
+            deleteData("authToken")
+            console.log("ERR GET ME ====", error)
+            return null
+        })
+    }
+}
+///users/28
+
 
 export default {
     getUser,
@@ -81,5 +100,6 @@ export default {
     getPendingsOfSponsor,
     getMePopulate,
     getUserPopulate,
-    getSponsorsOf
+    getSponsorsOf,
+    getMyCity
 }

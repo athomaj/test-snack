@@ -107,7 +107,7 @@ export default function ChatContainer({ navigation }) {
                         referrals: [...arrayReferrals, {id: item.attributes.userRequest.data.id}],
                         pendings: arrayPendings,
                 }, userContext.authState.user.id)
-                // await notificationApi.deleteNotification(item.id);
+                await notificationApi.deleteNotification(item.id);
                 
                 fetchData()
                 setLoading(false)

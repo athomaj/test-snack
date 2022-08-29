@@ -8,6 +8,7 @@ import postApi from '../services/postApi';
 import { colors } from '../utils/colors';
 import { useFocusEffect } from '@react-navigation/native';
 import { sharedStyles } from '../utils/styles';
+import userApi from '../services/userApi';
 
 const deviceHeight = Dimensions.get('screen').height
 
@@ -28,7 +29,9 @@ export default function HomeContainer({ navigation }) {
     );
 
     async function getPosts() {
-        const data = await postApi.getPosts()
+        const Mycity = await userApi.getMyCity()
+        const data = await postApi.getEventbyCity(Mycity.name)
+
         if (data) {
             const postValide = data.filter((post) => {
                 const dateOfPost = moment(post.attributes.datetime).format('LT').includes('PM') ? parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))+12 : parseInt(moment(post.attributes.datetime).format('LT').slice(0, post.attributes.datetime.indexOf(':')-1))
@@ -112,9 +115,9 @@ export default function HomeContainer({ navigation }) {
     }
 
     const flatListKeyExtractor = React.useCallback((item) => "" + item.id, []);
-
+    //navigation.navigate('Profil',{ userId: item.}
     const renderItem = React.useCallback(
-        ({ item, index }) => <PostListItemComponent item={item} index={index} navigateTo={() => navigation.navigate("PostDetail", { index: item.id })}></PostListItemComponent>,
+        ({ item, index }) => <PostListItemComponent item={item} index={index} navigateTo={() => navigation.navigate('PostStack', { screen: 'Post', params: { index: item.id }})}></PostListItemComponent>,
         []
     );
 

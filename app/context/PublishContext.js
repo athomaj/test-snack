@@ -110,7 +110,8 @@ const PublishProvider = ({ children }) => {
                 level: publishPost.level,
                 address: address,
                 moreInfo: JSON.stringify(bonus),
-                user: { id: userContext.authState.user.id }
+                user: { id: userContext.authState.user.id },
+                postalCode: {id: userContext.authState.user.district.id}
             },
             picture: newPictures,
         }
